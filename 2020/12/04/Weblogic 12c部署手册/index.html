@@ -91,20 +91,20 @@
 
 
 
-<meta name="description" content="Weblogic 12c部署手册标签（空格分隔）： Weblogic 1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）###2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver">
+<meta name="description" content="Weblogic 12c部署手册1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver soft]# yum remove jav">
 <meta name="keywords" content="Weblogic">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Weblogic 12c部署手册">
 <meta property="og:url" content="http://www.lisirlife.cn/2020/12/04/Weblogic 12c部署手册/index.html">
 <meta property="og:site_name" content="Lisir&#39;s Blog">
-<meta property="og:description" content="Weblogic 12c部署手册标签（空格分隔）： Weblogic 1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）###2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver">
+<meta property="og:description" content="Weblogic 12c部署手册1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver soft]# yum remove jav">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://static.zybuluo.com/a807257775/blnq8u8ygafy9jiru2mpo4bh/image_1els39tqh1ddgmeg1aar1ht12me9.png">
 <meta property="og:image" content="http://static.zybuluo.com/a807257775/tv9chanmb92dnzcfsyo68g0w/image_1els3h89mddmeqrsf111811khf16.png">
-<meta property="og:updated_time" content="2020-12-07T01:09:34.463Z">
+<meta property="og:updated_time" content="2020-12-07T01:21:01.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Weblogic 12c部署手册">
-<meta name="twitter:description" content="Weblogic 12c部署手册标签（空格分隔）： Weblogic 1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）###2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver">
+<meta name="twitter:description" content="Weblogic 12c部署手册1、实验环境：   平台 IP 用途      CentOS 7.8 64Bit 192.168.x.x weblogic12c+oracle11gr2    2、服务器环境配置（优化这里不提）2.1、安装jdk1.812345678910111213141516#卸载系统自带的openjdk[root@aupserver soft]# yum remove jav">
 <meta name="twitter:image" content="http://static.zybuluo.com/a807257775/blnq8u8ygafy9jiru2mpo4bh/image_1els39tqh1ddgmeg1aar1ht12me9.png">
 
 
@@ -467,8 +467,7 @@
       
 
       
-        <h1 id="Weblogic-12c部署手册"><a href="#Weblogic-12c部署手册" class="headerlink" title="Weblogic 12c部署手册"></a>Weblogic 12c部署手册</h1><p>标签（空格分隔）： Weblogic</p>
-<h2 id="1、实验环境："><a href="#1、实验环境：" class="headerlink" title="1、实验环境："></a>1、实验环境：</h2><table>
+        <h1 id="Weblogic-12c部署手册"><a href="#Weblogic-12c部署手册" class="headerlink" title="Weblogic 12c部署手册"></a>Weblogic 12c部署手册</h1><h2 id="1、实验环境："><a href="#1、实验环境：" class="headerlink" title="1、实验环境："></a>1、实验环境：</h2><table>
 <thead>
 <tr>
 <th>平台</th>
@@ -484,9 +483,8 @@
 </tr>
 </tbody>
 </table>
-<h2 id="2、服务器环境配置（优化这里不提）"><a href="#2、服务器环境配置（优化这里不提）" class="headerlink" title="2、服务器环境配置（优化这里不提）"></a>2、服务器环境配置（优化这里不提）</h2><p>###2.1、安装jdk1.8<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#卸载系统自带的openjdk</span><br><span class="line">[root@aupserver soft]# yum remove java* </span><br><span class="line">[root@aupserver soft]# mkdir -p /usr/java/</span><br><span class="line">[root@aupserver soft]# tar xzvf jdk-8u131-linux-x64.tar.gz -C /usr/java/</span><br><span class="line">[root@aupserver soft]# ln -s /usr/java/jdk1.8.0_131/bin/java /usr/sbin/</span><br><span class="line">[root@aupserver soft]# java -version</span><br><span class="line">#配置root用户环境变量</span><br><span class="line">[root@aupserver soft]# vim /etc/profile</span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_131</span><br><span class="line">export JAVA_HOME</span><br><span class="line">CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export CLASSPATH</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$JAVA_HOME/bin</span><br><span class="line">export PATH</span><br><span class="line">export LANG=zh_CN.UTF-8</span><br><span class="line">export CONFIG_JVM_ARGS=&apos;-Djava.security.egd=file:/dev/urandom&apos;</span><br></pre></td></tr></table></figure></p>
-<p>###2.2、下载weblogic12c安装包</p>
-<ul>
+<h2 id="2、服务器环境配置（优化这里不提）"><a href="#2、服务器环境配置（优化这里不提）" class="headerlink" title="2、服务器环境配置（优化这里不提）"></a>2、服务器环境配置（优化这里不提）</h2><h3 id="2-1、安装jdk1-8"><a href="#2-1、安装jdk1-8" class="headerlink" title="2.1、安装jdk1.8"></a>2.1、安装jdk1.8</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#卸载系统自带的openjdk</span><br><span class="line">[root@aupserver soft]# yum remove java* </span><br><span class="line">[root@aupserver soft]# mkdir -p /usr/java/</span><br><span class="line">[root@aupserver soft]# tar xzvf jdk-8u131-linux-x64.tar.gz -C /usr/java/</span><br><span class="line">[root@aupserver soft]# ln -s /usr/java/jdk1.8.0_131/bin/java /usr/sbin/</span><br><span class="line">[root@aupserver soft]# java -version</span><br><span class="line">#配置root用户环境变量</span><br><span class="line">[root@aupserver soft]# vim /etc/profile</span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_131</span><br><span class="line">export JAVA_HOME</span><br><span class="line">CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export CLASSPATH</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$JAVA_HOME/bin</span><br><span class="line">export PATH</span><br><span class="line">export LANG=zh_CN.UTF-8</span><br><span class="line">export CONFIG_JVM_ARGS=&apos;-Djava.security.egd=file:/dev/urandom&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2、下载weblogic12c安装包"><a href="#2-2、下载weblogic12c安装包" class="headerlink" title="2.2、下载weblogic12c安装包"></a>2.2、下载weblogic12c安装包</h3><ul>
 <li>在下载页面选择 Generic (800 MB) ：<a href="http://www.oracle.com/technetwork/middleware/weblogic/downloads/wls-for-dev-1703574.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/middleware/weblogic/downloads/wls-for-dev-1703574.html</a></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@aupserver soft]# pwd</span><br><span class="line">/soft</span><br><span class="line">[root@aupserver soft]# ls fmw_12.2.1.4.0_wls_Disk1_1of1.zip </span><br><span class="line">fmw_12.2.1.4.0_wls_Disk1_1of1.zip</span><br><span class="line">[root@aupserver soft]# unzip fmw_12.2.1.4.0_wls_Disk1_1of1.zip -d /soft</span><br></pre></td></tr></table></figure>
@@ -729,7 +727,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -740,7 +738,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -808,7 +806,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Weblogic-12c部署手册"><span class="nav-number">1.</span> <span class="nav-text">Weblogic 12c部署手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、实验环境："><span class="nav-number">1.1.</span> <span class="nav-text">1、实验环境：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、服务器环境配置（优化这里不提）"><span class="nav-number">1.2.</span> <span class="nav-text">2、服务器环境配置（优化这里不提）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、创建weblogic用户"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.3、创建weblogic用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、采用静默模式安装（需创建响应文件）"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.4、采用静默模式安装（需创建响应文件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、创建域"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.5、创建域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、修改建域脚本"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.6、修改建域脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7、执行脚本"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.7、执行脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8、启动和停止weblogic服务"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.8、启动和停止weblogic服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9、免密启动和后台运行"><span class="nav-number">1.2.7.</span> <span class="nav-text">2.9、免密启动和后台运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、新建SRV及免密配置"><span class="nav-number">1.3.</span> <span class="nav-text">3、新建SRV及免密配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Weblogic-12c部署手册"><span class="nav-number">1.</span> <span class="nav-text">Weblogic 12c部署手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、实验环境："><span class="nav-number">1.1.</span> <span class="nav-text">1、实验环境：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、服务器环境配置（优化这里不提）"><span class="nav-number">1.2.</span> <span class="nav-text">2、服务器环境配置（优化这里不提）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、安装jdk1-8"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、安装jdk1.8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、下载weblogic12c安装包"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、下载weblogic12c安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、创建weblogic用户"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、创建weblogic用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、采用静默模式安装（需创建响应文件）"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4、采用静默模式安装（需创建响应文件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、创建域"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.5、创建域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、修改建域脚本"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.6、修改建域脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7、执行脚本"><span class="nav-number">1.2.7.</span> <span class="nav-text">2.7、执行脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8、启动和停止weblogic服务"><span class="nav-number">1.2.8.</span> <span class="nav-text">2.8、启动和停止weblogic服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9、免密启动和后台运行"><span class="nav-number">1.2.9.</span> <span class="nav-text">2.9、免密启动和后台运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、新建SRV及免密配置"><span class="nav-number">1.3.</span> <span class="nav-text">3、新建SRV及免密配置</span></a></li></ol></li></ol></div>
             
 
           </div>
