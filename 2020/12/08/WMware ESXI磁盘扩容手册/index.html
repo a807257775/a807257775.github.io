@@ -78,7 +78,7 @@
 
 
 
-  <meta name="keywords" content="Linux基础,">
+  <meta name="keywords" content="虚拟化技术,">
 
 
 
@@ -91,18 +91,39 @@
 
 
 
-<meta name="description" content="linux命令之SSHFS远程挂载目录1、什么是SSHFS SSHFS（Secure SHell FileSystem）是一个客户端，可以让我们通过 SSH 文件传输协议（SFTP）挂载远程的文件系统并且在本地机器上和远程的目录和文件进行交互。SFTP 是一种通过 SSH协议提供文件访问、文件传输和文件管理功能的安全文件传输协议。因为 SSH 在网络中从一台电脑到另一台电脑传输文件的时候使用数据加">
-<meta name="keywords" content="Linux基础">
+<meta name="description" content="WMware ESXI磁盘扩容手册1、磁盘扩容需知 任何类型的（精简置备、厚置备）磁盘，都无法在ESXI控制台缩减容量； Linux虚机在未使用的lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，但无法合并分区，只能单独挂载目录使用； Linux虚机在使用了lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，通过lvm命令，在线扩容指定分区； 虚拟机磁盘扩容时，任何时候都可以热添加硬盘，不受免费">
+<meta name="keywords" content="虚拟化技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux命令之SSHFS远程挂载目录">
-<meta property="og:url" content="http://www.lisirlife.cn/2020/08/15/linux命令之SSHFS远程挂载目录/index.html">
+<meta property="og:title" content="Hyper-V虚拟机迁移至ESXI操作手册">
+<meta property="og:url" content="http://www.lisirlife.cn/2020/12/08/WMware ESXI磁盘扩容手册/index.html">
 <meta property="og:site_name" content="Lisir&#39;s Blog">
-<meta property="og:description" content="linux命令之SSHFS远程挂载目录1、什么是SSHFS SSHFS（Secure SHell FileSystem）是一个客户端，可以让我们通过 SSH 文件传输协议（SFTP）挂载远程的文件系统并且在本地机器上和远程的目录和文件进行交互。SFTP 是一种通过 SSH协议提供文件访问、文件传输和文件管理功能的安全文件传输协议。因为 SSH 在网络中从一台电脑到另一台电脑传输文件的时候使用数据加">
+<meta property="og:description" content="WMware ESXI磁盘扩容手册1、磁盘扩容需知 任何类型的（精简置备、厚置备）磁盘，都无法在ESXI控制台缩减容量； Linux虚机在未使用的lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，但无法合并分区，只能单独挂载目录使用； Linux虚机在使用了lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，通过lvm命令，在线扩容指定分区； 虚拟机磁盘扩容时，任何时候都可以热添加硬盘，不受免费">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-12T12:53:21.259Z">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/b2l4xgte09lkzm220tbqrwav/image_1ep3hembv1pnc3ksbkgpf5spk7j.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/qyta721qx5z88zprqziurrsy/image_1ep3hhgqnrjs10rs1j0qee6bpr80.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/8mrlcjj4dchvoo55999frswy/image_1ep3hj289kbn1d9m1vgan4k11br8d.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/xqi3s05b23vwnk8e3rgvhc2k/image_1ep3hnolmvb8158u1buh8a211lr8q.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/qmm7h2i4j373h4koj3kr6l68/image_1ep58lbinle1182j1ste1eqc1j0vm.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/nf7ez3v3siz6zqydegma8x0j/image_1ep3i9pmi15tnqdj11l618mm187ua1.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/981epe624jo8k83fa9zbgn18/image_1ep562k9hcuj74ig7uq7vbv19.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/tx6cr3aeah85722cdczmq7z6/image_1ep5929h3n5gadc2b711h7kao13.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/awh6vdf1pyh82d83vweoo7y0/image_1ep59cja6a705hk1jcm19nt9q51g.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/ez9voyhnwnxi02uru0x9ji2k/image_1ep59vpklms3pamrkf1dqj15gj1t.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/dper8ppofnbgjr3t32mpl4kf/image_1ep5akc4b1c5t9kolff15ttfq82a.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/klvj21ytoipxf5phq1apgd3k/image_1ep3fmsnp184cr9nqhq1pb514ocm.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/f0bfqtc2cwh2uwz6harlcpgg/image_1ep3fpnhj17im3h5nbms4o2o613.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/nbvqiz17uvnmnj9wzmkfw08d/image_1ep3fqemi1igfsb3h13r01mul1g.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/ijfapzjg2t2aq7qmi4ne9mis/image_1ep3fuk3j9q018lo13291c4gp3o1t.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/yfggs87lknxt5o1x6cc6d4y0/image_1ep3g06ng1b451crj1f6v16ctqeq2a.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/k5vxfhmih4w8sbbkt3rcrhv1/image_1ep3g0fuv1qoqt6vsjvkp611222n.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/mtiw7m6lcyzm5ctm8jmg2z16/image_1ep3g10m1c41iqkorfrmo4kp34.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/h9sdk3czjqlek2mn9sx44kg6/image_1ep3g16at176tdagefmeiv7m43h.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/8hbp02ci83ipokjkdl2dqpkl/image_1ep3g2bv65bb19i5lc91aoakej3u.png">
+<meta property="og:updated_time" content="2020-12-11T01:10:06.083Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux命令之SSHFS远程挂载目录">
-<meta name="twitter:description" content="linux命令之SSHFS远程挂载目录1、什么是SSHFS SSHFS（Secure SHell FileSystem）是一个客户端，可以让我们通过 SSH 文件传输协议（SFTP）挂载远程的文件系统并且在本地机器上和远程的目录和文件进行交互。SFTP 是一种通过 SSH协议提供文件访问、文件传输和文件管理功能的安全文件传输协议。因为 SSH 在网络中从一台电脑到另一台电脑传输文件的时候使用数据加">
+<meta name="twitter:title" content="Hyper-V虚拟机迁移至ESXI操作手册">
+<meta name="twitter:description" content="WMware ESXI磁盘扩容手册1、磁盘扩容需知 任何类型的（精简置备、厚置备）磁盘，都无法在ESXI控制台缩减容量； Linux虚机在未使用的lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，但无法合并分区，只能单独挂载目录使用； Linux虚机在使用了lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，通过lvm命令，在线扩容指定分区； 虚拟机磁盘扩容时，任何时候都可以热添加硬盘，不受免费">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/b2l4xgte09lkzm220tbqrwav/image_1ep3hembv1pnc3ksbkgpf5spk7j.png">
 
 
 
@@ -132,13 +153,13 @@
 
 
 
-  <link rel="canonical" href="http://www.lisirlife.cn/2020/08/15/linux命令之SSHFS远程挂载目录/">
+  <link rel="canonical" href="http://www.lisirlife.cn/2020/12/08/WMware ESXI磁盘扩容手册/">
 
 
 
 
 
-  <title>linux命令之SSHFS远程挂载目录 | Lisir's Blog</title>
+  <title>Hyper-V虚拟机迁移至ESXI操作手册 | Lisir's Blog</title>
   
 
 
@@ -329,7 +350,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2020/08/15/linux命令之SSHFS远程挂载目录/">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2020/12/08/WMware ESXI磁盘扩容手册/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LiGuanCheng">
@@ -346,7 +367,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">linux命令之SSHFS远程挂载目录</h1>
+          <h1 class="post-title" itemprop="name headline">Hyper-V虚拟机迁移至ESXI操作手册</h1>
         
 
         <div class="post-meta">
@@ -358,8 +379,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-15T08:00:00+08:00">
-                2020-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-08T15:37:00+08:00">
+                2020-12-08
               </time>
             
 
@@ -381,8 +402,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux基础</span>
+                  <a href="/categories/虚拟化技术/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化技术</span>
                   </a>
                 </span>
 
@@ -399,8 +420,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/08/15/linux命令之SSHFS远程挂载目录/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/15/linux命令之SSHFS远程挂载目录/" itemprop="commentCount"></span>
+                <a href="/2020/12/08/WMware ESXI磁盘扩容手册/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/12/08/WMware ESXI磁盘扩容手册/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -427,7 +448,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  553
+                  585
                 </span>
               
 
@@ -464,37 +485,71 @@
       
 
       
-        <h1 id="linux命令之SSHFS远程挂载目录"><a href="#linux命令之SSHFS远程挂载目录" class="headerlink" title="linux命令之SSHFS远程挂载目录"></a>linux命令之SSHFS远程挂载目录</h1><h2 id="1、什么是SSHFS"><a href="#1、什么是SSHFS" class="headerlink" title="1、什么是SSHFS"></a>1、什么是SSHFS</h2><blockquote>
-<p>SSHFS（Secure SHell FileSystem）是一个客户端，可以让我们通过 SSH 文件传输协议（SFTP）挂载远程的文件系统并且在本地机器上和远程的目录和文件进行交互。SFTP 是一种通过 SSH协议提供文件访问、文件传输和文件管理功能的安全文件传输协议。因为 SSH 在网络中从一台电脑到另一台电脑传输文件的时候使用数据加密通道，并且 SSHFS 内置在 FUSE（用户空间的文件系统）内核模块，允许任何非特权用户在不修改内核代码的情况下创建他们自己的文件系统。</p>
-</blockquote>
-<ul>
-<li><a href="https://www.vultr.com/docs/mount-a-remote-file-system-with-sshfs-on-centos-6" title="安装手册（英文）" target="_blank" rel="noopener">SSHFS指导手册</a></li>
+        <h1 id="WMware-ESXI磁盘扩容手册"><a href="#WMware-ESXI磁盘扩容手册" class="headerlink" title="WMware ESXI磁盘扩容手册"></a>WMware ESXI磁盘扩容手册</h1><h2 id="1、磁盘扩容需知"><a href="#1、磁盘扩容需知" class="headerlink" title="1、磁盘扩容需知"></a>1、磁盘扩容需知</h2><ul>
+<li>任何类型的（精简置备、厚置备）磁盘，都无法在ESXI控制台缩减容量；</li>
+<li>Linux虚机在未使用的lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，但无法合并分区，只能单独挂载目录使用；</li>
+<li>Linux虚机在使用了lvm的分区格式下，可以实现磁盘在线扩容及新增硬盘，通过lvm命令，在线扩容指定分区；</li>
+<li>虚拟机磁盘扩容时，任何时候都可以热添加硬盘，不受免费授权影响；</li>
+<li>当ESXI宿主机磁盘空间不足时，可以通过ESXI控制台在线扩充容量，不需要停机操作，前提是已有多余的硬盘在服务器上；</li>
 </ul>
-<h2 id="2、安装先决条件"><a href="#2、安装先决条件" class="headerlink" title="2、安装先决条件"></a>2、安装先决条件</h2><blockquote>
-<p>目标主机必须安装ssh服务，确保服务启动和端口通信正常，要实现开机永久挂载，可添加fstab，需实现主机间免密即可，可用于docker容器间的目录挂载非常方便。</p>
+<h2 id="2、Linux虚拟机磁盘扩容"><a href="#2、Linux虚拟机磁盘扩容" class="headerlink" title="2、Linux虚拟机磁盘扩容"></a>2、Linux虚拟机磁盘扩容</h2><blockquote>
+<p>提示：由于Linux特殊的文件系统，若要对指定的分区（挂载目录）进行扩容，必须在首次安装系统的时候，使用LVM分区格式，否则不支持动态扩缩容；</p>
 </blockquote>
-<h2 id="3、安装SSHFS"><a href="#3、安装SSHFS" class="headerlink" title="3、安装SSHFS"></a>3、安装SSHFS</h2><table>
+<h3 id="2-1、实验环境"><a href="#2-1、实验环境" class="headerlink" title="2.1、实验环境"></a>2.1、实验环境</h3><table>
 <thead>
 <tr>
 <th>平台</th>
 <th>IP</th>
-<th>系统类型</th>
-<th>主机类型</th>
+<th>磁盘类型</th>
+<th>是否使用LVM</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>CentOS 7.8 64Bit</td>
-<td>192.168.1.200</td>
-<td>默认</td>
-<td>Docker Server</td>
+<td>192.168.8.164</td>
+<td>精简置备</td>
+<td>是</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# yum install epel-release -y</span><br><span class="line">[root@docker ~]# yum install sshfs -y</span><br><span class="line">#-p端口 用户@IP:远程目录 目标目录 -o确认无误</span><br><span class="line">[root@docker ~]# sshfs -p22 root@172.17.0.3:/usr/local/nginx/html/ /soft/nginx_wwww/ -o nonempty</span><br><span class="line">root@172.17.0.3:</span><br><span class="line">[root@docker ~]# df -h</span><br><span class="line">Filesystem                              Size  Used Avail Use% Mounted on</span><br><span class="line">...</span><br><span class="line">root@172.17.0.3:/usr/local/nginx/html/   98G   11G   87G  12% /soft/nginx_wwww</span><br></pre></td></tr></table></figure>
-<h2 id="4、连接容器测试"><a href="#4、连接容器测试" class="headerlink" title="4、连接容器测试"></a>4、连接容器测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#写入测试页面</span><br><span class="line">[root@docker nginx_wwww]# echo &apos;sshfs mount test!&apos; &gt; index.html</span><br><span class="line">[root@docker ~]# docker exec -it 89899938084b /bin/bash</span><br><span class="line">#进入容器</span><br><span class="line">[root@89899938084b html]# cat index.html </span><br><span class="line">sshfs mount test!</span><br></pre></td></tr></table></figure>
-<h2 id="5、开机永久挂载"><a href="#5、开机永久挂载" class="headerlink" title="5、开机永久挂载"></a>5、开机永久挂载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#开机宿主机与容器间的免密</span><br><span class="line">[root@docker ~]# ssh-keygen -t rsa</span><br><span class="line">[root@docker ~]# ssh-copy-id -i /root/.ssh/id_rsa.pub &quot;root@172.17.0.3&quot;</span><br><span class="line">[root@docker nginx_wwww]# ssh root@172.17.0.3 &apos;date&apos;</span><br><span class="line">Sun Jul 26 09:43:53 UTC 2020</span><br><span class="line">#关于sshfs的其他参数可在&quot;defaults,&quot;后面追加</span><br><span class="line">[root@docker ~]# echo &apos;root@172.17.0.3:/usr/local/nginx/html/ /soft/nginx_wwww/ fuse.sshfs defaults,allow_other,nonempty 0 0&apos; &gt;&gt; /etc/fstab</span><br><span class="line">[root@docker ~]# mount -a</span><br><span class="line">[root@docker ~]# df -h</span><br><span class="line">Filesystem                              Size  Used Avail Use% Mounted on</span><br><span class="line">...</span><br><span class="line">root@172.17.0.3:/usr/local/nginx/html/   98G   11G   87G  12% /soft/nginx_wwww</span><br></pre></td></tr></table></figure>
+<h3 id="2-2、单硬盘在线扩容"><a href="#2-2、单硬盘在线扩容" class="headerlink" title="2.2、单硬盘在线扩容"></a>2.2、单硬盘在线扩容</h3><ul>
+<li><strong>选择要扩容的虚拟机，点击编辑</strong><br><img src="http://static.zybuluo.com/a807257775/b2l4xgte09lkzm220tbqrwav/image_1ep3hembv1pnc3ksbkgpf5spk7j.png" alt="image_1ep3hembv1pnc3ksbkgpf5spk7j.png-122.5kB"><br><img src="http://static.zybuluo.com/a807257775/qyta721qx5z88zprqziurrsy/image_1ep3hhgqnrjs10rs1j0qee6bpr80.png" alt="image_1ep3hhgqnrjs10rs1j0qee6bpr80.png-106.5kB"><br><img src="http://static.zybuluo.com/a807257775/8mrlcjj4dchvoo55999frswy/image_1ep3hj289kbn1d9m1vgan4k11br8d.png" alt="image_1ep3hj289kbn1d9m1vgan4k11br8d.png-126.9kB"></li>
+<li><strong>需执行命令对硬盘容量进行刷新，否则需要重启服务器，才可以看到变化</strong><br><img src="http://static.zybuluo.com/a807257775/xqi3s05b23vwnk8e3rgvhc2k/image_1ep3hnolmvb8158u1buh8a211lr8q.png" alt="image_1ep3hnolmvb8158u1buh8a211lr8q.png-61.7kB"></li>
+<li><strong>使用fdisk命令对/dev/sda磁盘进行lvm分区</strong><br><img src="http://static.zybuluo.com/a807257775/qmm7h2i4j373h4koj3kr6l68/image_1ep58lbinle1182j1ste1eqc1j0vm.png" alt="image_1ep58lbinle1182j1ste1eqc1j0vm.png-81kB"></li>
+<li><strong>执行fdisk查看磁盘分区状态</strong><br><img src="http://static.zybuluo.com/a807257775/nf7ez3v3siz6zqydegma8x0j/image_1ep3i9pmi15tnqdj11l618mm187ua1.png" alt="image_1ep3i9pmi15tnqdj11l618mm187ua1.png-57kB"></li>
+<li><strong>此时系统并未出现/dev/sda3，执行partprobe命令后刷新分区表</strong><br><img src="http://static.zybuluo.com/a807257775/981epe624jo8k83fa9zbgn18/image_1ep562k9hcuj74ig7uq7vbv19.png" alt="image_1ep562k9hcuj74ig7uq7vbv19.png-31.9kB"></li>
+<li><strong>创建pv物理卷</strong><br><img src="http://static.zybuluo.com/a807257775/tx6cr3aeah85722cdczmq7z6/image_1ep5929h3n5gadc2b711h7kao13.png" alt="image_1ep5929h3n5gadc2b711h7kao13.png-39.4kB"></li>
+<li><strong>将新增的pv添加至vg卷组</strong><br><img src="http://static.zybuluo.com/a807257775/awh6vdf1pyh82d83vweoo7y0/image_1ep59cja6a705hk1jcm19nt9q51g.png" alt="image_1ep59cja6a705hk1jcm19nt9q51g.png-41.1kB"></li>
+<li><strong>扩展lv逻辑卷</strong><br><img src="http://static.zybuluo.com/a807257775/ez9voyhnwnxi02uru0x9ji2k/image_1ep59vpklms3pamrkf1dqj15gj1t.png" alt="image_1ep59vpklms3pamrkf1dqj15gj1t.png-68.2kB"></li>
+<li><strong>重新丈量磁盘空间</strong><br><img src="http://static.zybuluo.com/a807257775/dper8ppofnbgjr3t32mpl4kf/image_1ep5akc4b1c5t9kolff15ttfq82a.png" alt="image_1ep5akc4b1c5t9kolff15ttfq82a.png-72.2kB"></li>
+</ul>
+<h2 id="3、Win虚拟机磁盘扩容"><a href="#3、Win虚拟机磁盘扩容" class="headerlink" title="3、Win虚拟机磁盘扩容"></a>3、Win虚拟机磁盘扩容</h2><h3 id="3-1、实验环境"><a href="#3-1、实验环境" class="headerlink" title="3.1、实验环境"></a>3.1、实验环境</h3><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>IP</th>
+<th>磁盘类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Winodws 2012 R2 DataCenter</td>
+<td>192.168.8.165</td>
+<td>基本磁盘</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-2、单硬盘在线扩容"><a href="#3-2、单硬盘在线扩容" class="headerlink" title="3.2、单硬盘在线扩容"></a>3.2、单硬盘在线扩容</h3><ul>
+<li><strong>通过esxi web控制台选中要扩容的主机，选择编辑</strong><br><img src="http://static.zybuluo.com/a807257775/klvj21ytoipxf5phq1apgd3k/image_1ep3fmsnp184cr9nqhq1pb514ocm.png" alt="image_1ep3fmsnp184cr9nqhq1pb514ocm.png-115.6kB"></li>
+<li><strong>选择要扩容的应用，输入扩充后的容量，保存即可</strong><br><img src="http://static.zybuluo.com/a807257775/f0bfqtc2cwh2uwz6harlcpgg/image_1ep3fpnhj17im3h5nbms4o2o613.png" alt="image_1ep3fpnhj17im3h5nbms4o2o613.png-103.6kB"></li>
+<li><strong>左上角提示已成功配置虚机win2012，证明物理大小已扩充成功</strong><br><img src="http://static.zybuluo.com/a807257775/nbvqiz17uvnmnj9wzmkfw08d/image_1ep3fqemi1igfsb3h13r01mul1g.png" alt="image_1ep3fqemi1igfsb3h13r01mul1g.png-121.4kB"></li>
+<li><strong>通过控制台或mstsc连接虚拟机，对硬盘逻辑空间进行扩容</strong><br><img src="http://static.zybuluo.com/a807257775/ijfapzjg2t2aq7qmi4ne9mis/image_1ep3fuk3j9q018lo13291c4gp3o1t.png" alt="image_1ep3fuk3j9q018lo13291c4gp3o1t.png-122.7kB"></li>
+<li><strong>选择要扩容的分区，右键扩展卷</strong><br><img src="http://static.zybuluo.com/a807257775/yfggs87lknxt5o1x6cc6d4y0/image_1ep3g06ng1b451crj1f6v16ctqeq2a.png" alt="image_1ep3g06ng1b451crj1f6v16ctqeq2a.png-134.8kB"><br><img src="http://static.zybuluo.com/a807257775/k5vxfhmih4w8sbbkt3rcrhv1/image_1ep3g0fuv1qoqt6vsjvkp611222n.png" alt="image_1ep3g0fuv1qoqt6vsjvkp611222n.png-175.5kB"><br><img src="http://static.zybuluo.com/a807257775/mtiw7m6lcyzm5ctm8jmg2z16/image_1ep3g10m1c41iqkorfrmo4kp34.png" alt="image_1ep3g10m1c41iqkorfrmo4kp34.png-95.7kB"><br><img src="http://static.zybuluo.com/a807257775/h9sdk3czjqlek2mn9sx44kg6/image_1ep3g16at176tdagefmeiv7m43h.png" alt="image_1ep3g16at176tdagefmeiv7m43h.png-170.4kB"></li>
+<li><strong>完成容量扩容，全程无需重启即可生效</strong><br><img src="http://static.zybuluo.com/a807257775/8hbp02ci83ipokjkdl2dqpkl/image_1ep3g2bv65bb19i5lc91aoakej3u.png" alt="image_1ep3g2bv65bb19i5lc91aoakej3u.png-120.6kB"></li>
+</ul>
 
       
     </div>
@@ -565,7 +620,7 @@
         </li>
         <li class="post-copyright-link">
           <strong>本文链接：</strong>
-          <a href="/2020/08/15/linux命令之SSHFS远程挂载目录/" title="linux命令之SSHFS远程挂载目录">2020/08/15/linux命令之SSHFS远程挂载目录/</a>
+          <a href="/2020/12/08/WMware ESXI磁盘扩容手册/" title="Hyper-V虚拟机迁移至ESXI操作手册">2020/12/08/WMware ESXI磁盘扩容手册/</a>
         </li>
         <li class="post-copyright-license">
           <strong>版权： </strong>
@@ -578,7 +633,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux基础/" rel="tag"><i class="fa fa-tag"></i> Linux基础</a>
+            <a href="/tags/虚拟化技术/" rel="tag"><i class="fa fa-tag"></i> 虚拟化技术</a>
           
         </div>
       
@@ -606,8 +661,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/21/Ansible-cmdb使用手册/" rel="next" title="Ansible-cmdb使用手册">
-                <i class="fa fa-chevron-left"></i> Ansible-cmdb使用手册
+              <a href="/2020/12/05/Hyper-V虚拟机迁移至ESXI操作手册/" rel="next" title="Hyper-V虚拟机迁移至ESXI操作手册">
+                <i class="fa fa-chevron-left"></i> Hyper-V虚拟机迁移至ESXI操作手册
               </a>
             
           </div>
@@ -616,8 +671,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/08/16/linux命令之-tmux终端复用器/" rel="prev" title="linux命令之-tmux终端复用器">
-                linux命令之-tmux终端复用器 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/12/09/Centos7操作系统常规设置/" rel="prev" title="Centos7操作系统常规设置">
+                Centos7操作系统常规设置 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -790,7 +845,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux命令之SSHFS远程挂载目录"><span class="nav-number">1.</span> <span class="nav-text">linux命令之SSHFS远程挂载目录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、什么是SSHFS"><span class="nav-number">1.1.</span> <span class="nav-text">1、什么是SSHFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、安装先决条件"><span class="nav-number">1.2.</span> <span class="nav-text">2、安装先决条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、安装SSHFS"><span class="nav-number">1.3.</span> <span class="nav-text">3、安装SSHFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、连接容器测试"><span class="nav-number">1.4.</span> <span class="nav-text">4、连接容器测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、开机永久挂载"><span class="nav-number">1.5.</span> <span class="nav-text">5、开机永久挂载</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WMware-ESXI磁盘扩容手册"><span class="nav-number">1.</span> <span class="nav-text">WMware ESXI磁盘扩容手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、磁盘扩容需知"><span class="nav-number">1.1.</span> <span class="nav-text">1、磁盘扩容需知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、Linux虚拟机磁盘扩容"><span class="nav-number">1.2.</span> <span class="nav-text">2、Linux虚拟机磁盘扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、实验环境"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、实验环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、单硬盘在线扩容"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、单硬盘在线扩容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、Win虚拟机磁盘扩容"><span class="nav-number">1.3.</span> <span class="nav-text">3、Win虚拟机磁盘扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、实验环境"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、实验环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、单硬盘在线扩容"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、单硬盘在线扩容</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
