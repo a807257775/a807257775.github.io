@@ -114,7 +114,7 @@
 <meta property="og:image" content="http://static.zybuluo.com/a807257775/60w08q5ew8d1zfvvf8sv9bqb/image_1f1evvic78421d5g4nv5a81mhaaf.png">
 <meta property="og:image" content="http://static.zybuluo.com/a807257775/yj9pntbeprfxpfw20nayo3w3/image_1f1f02uvv1iv116p5hja1bl9lfsas.png">
 <meta property="og:image" content="http://static.zybuluo.com/a807257775/djh7k7iv9fk2mhg7gmutbf8k/image_1f1f08sqv1km51dhkm2rbsejob9.png">
-<meta property="og:updated_time" content="2021-03-23T08:12:40.136Z">
+<meta property="og:updated_time" content="2021-03-24T01:11:28.847Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="云原生存储系统Longhorn的部署与基本使用">
 <meta name="twitter:description" content="云原生存储系统Longhorn的部署与基本使用1、Longhorn基本介绍 Longhorn是用于Kubernetes的轻量级，可靠且易于使用的分布式块存储系统； Longhorn轻巧，可靠且功能强大。您可以使用一个kubectl； apply命令或使用Helm图表在现有Kubernetes集群上安装Longhorn 。一旦安装Longhorn，它将为Kubernetes集群添加持久的卷支持。 L">
@@ -443,7 +443,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.9k
+                  2k
                 </span>
               
 
@@ -570,7 +570,7 @@
 </li>
 </ul>
 <blockquote>
-<p>总结：Longhorn受整个K8S集群的CPU、磁盘负载、api活动压力等影响，严格的测试应该在一个干净的K8S集群上进行测试，并尽量使用光纤或者万兆网络进行互连，发挥其最大化性能，评判一个磁盘性能除了读写速率外，一般要看IOPS这个指标，SSD的顺序读写IOPS可达上万，普通的机械硬盘最多可能才几百，顺序读写的场景一般是单个大文件，而实际生产，我们大部分是零碎的小文件，这个时候就特别考验随机读写的性能，那么测试结果中IOPS的数值越大，代表其性能越佳；</p>
+<p>总结：Longhorn的性能受整个K8S集群的影响，其服务是建立在K8S集群之上的，所以集群中如果CPU压力过大、内存不足、API调用超时等等因素都会影响存储性能，所以Longhorn中有一项参数：<code>Guaranteed Engine CPU</code>，给Longhorn Instance Manager Pod保留一定数量的CPU，这将有助于在高节点工作负载期间保持引擎稳定性。严格的测试应该在一个干净的K8S集群上进行测试，并尽量使用光纤或者万兆网络进行互连，发挥其最大化性能，评判一个磁盘性能除了读写速率外，一般要看IOPS这个指标，SSD的随机读写IOPS可达上万，普通的机械硬盘最多可能才几百，顺序读写的场景一般是单个大文件，而实际生产，我们大部分是零碎的小文件，这个时候就特别考验随机读写的性能，那么测试结果中IOPS的数值越大，代表其性能越佳，如果要投产使用，请参考官网的最佳实践！</p>
 </blockquote>
 <h2 id="7、其他"><a href="#7、其他" class="headerlink" title="7、其他"></a>7、其他</h2><ul>
 <li>官方手册：<a href="https://longhorn.io/docs/1.1.0/" target="_blank" rel="noopener">Longhorn文档</a></li>
@@ -907,7 +907,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">83.9k</span>
+    <span title="Site words total count">84k</span>
   
 -->  
 </div>
