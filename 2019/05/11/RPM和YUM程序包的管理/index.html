@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Linux基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="RPM和YUM程序包的管理1、RPM简介 RPM，是RPM Package Manager（RPM软件包管理器）的缩写，这一文件格式名称虽然打上了RedHat的标志，但是其原始设计理念是开放式的，现在包括OpenLinux、S.u.S.E.以及Turbo、Linux等Linux的分发版本都有采用，可以算是公认的行业标准了。   2、RPM的管理和组成2.1、程序包管理 内核功能：进程管理、内存管理">
+<meta name="keywords" content="Linux基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RPM和YUM程序包的管理">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/05/11/RPM和YUM程序包的管理/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="RPM和YUM程序包的管理1、RPM简介 RPM，是RPM Package Manager（RPM软件包管理器）的缩写，这一文件格式名称虽然打上了RedHat的标志，但是其原始设计理念是开放式的，现在包括OpenLinux、S.u.S.E.以及Turbo、Linux等Linux的分发版本都有采用，可以算是公认的行业标准了。   2、RPM的管理和组成2.1、程序包管理 内核功能：进程管理、内存管理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/ynfk0kghw1xfzmb9xvcnmmov/image_1daid9ehb1nvu1rg01i0c1h8ggv99.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/7qrmtuh8lypnqt3v7uzv850o/image_1daidbrj81a3k11u113tk75h1ocmm.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.402Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RPM和YUM程序包的管理">
+<meta name="twitter:description" content="RPM和YUM程序包的管理1、RPM简介 RPM，是RPM Package Manager（RPM软件包管理器）的缩写，这一文件格式名称虽然打上了RedHat的标志，但是其原始设计理念是开放式的，现在包括OpenLinux、S.u.S.E.以及Turbo、Linux等Linux的分发版本都有采用，可以算是公认的行业标准了。   2、RPM的管理和组成2.1、程序包管理 内核功能：进程管理、内存管理">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/ynfk0kghw1xfzmb9xvcnmmov/image_1daid9ehb1nvu1rg01i0c1h8ggv99.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/05/11/RPM和YUM程序包的管理/">
+
+
+
+
+
+  <title>RPM和YUM程序包的管理 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/05/11/RPM和YUM程序包的管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RPM和YUM程序包的管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-11T11:05:00+08:00">
+                2019-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/11/RPM和YUM程序包的管理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/11/RPM和YUM程序包的管理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="RPM和YUM程序包的管理"><a href="#RPM和YUM程序包的管理" class="headerlink" title="RPM和YUM程序包的管理"></a>RPM和YUM程序包的管理</h1><h2 id="1、RPM简介"><a href="#1、RPM简介" class="headerlink" title="1、RPM简介"></a>1、RPM简介</h2><ul>
+<li>RPM，是RPM Package Manager（RPM软件包管理器）的缩写，这一文件格式名称虽然打上了RedHat的标志，但是其原始设计理念是开放式的，现在包括OpenLinux、S.u.S.E.以及Turbo、Linux等Linux的分发版本都有采用，可以算是公认的行业标准了。</li>
+</ul>
+<hr>
+<h2 id="2、RPM的管理和组成"><a href="#2、RPM的管理和组成" class="headerlink" title="2、RPM的管理和组成"></a>2、RPM的管理和组成</h2><h3 id="2-1、程序包管理"><a href="#2-1、程序包管理" class="headerlink" title="2.1、程序包管理"></a>2.1、程序包管理</h3><ul>
+<li>内核功能：进程管理、内存管理、网络协议栈、驱动程序、…</li>
+<li>应用程序：由二进制程序、管理程序文件、配置文件、文档文件、帮助手册文件组</li>
+</ul>
+<h3 id="2-2、程序包的组成部分"><a href="#2-2、程序包的组成部分" class="headerlink" title="2.2、程序包的组成部分"></a>2.2、程序包的组成部分</h3><ul>
+<li>二进制程序：/bin, /sbin,/ /usr/bin, /usr/sbin；</li>
+<li>库文件：/lib64, /usr/lib64；</li>
+<li>配置文件：/etc；</li>
+<li>帮助文件：/usr/share/man</li>
+<li>软件手册：/usr/share/doc</li>
+</ul>
+<h3 id="2-3、linux软件包类型"><a href="#2-3、linux软件包类型" class="headerlink" title="2.3、linux软件包类型"></a>2.3、linux软件包类型</h3><ul>
+<li>deb：debian</li>
+<li>rpm：redhat package manager </li>
+<li>tar：linux系统的打包工具tar打包的</li>
+<li>bin：有些Linux软件不公开源代码，只发布二进制可执行程序，这类程序一般会以bin来标记</li>
+</ul>
+<h3 id="2-4、分包机制"><a href="#2-4、分包机制" class="headerlink" title="2.4、分包机制"></a>2.4、分包机制</h3><ul>
+<li>testapp-VERSION.tar.gz</li>
+<li>核心包：<code>testapp-VERSION</code></li>
+<li>支包：<code>testapp-devel-VERSION</code></li>
+<li>VERSION：<code>major.minor.release</code></li>
+</ul>
+<h3 id="2-5、rpm包的命名机制："><a href="#2-5、rpm包的命名机制：" class="headerlink" title="2.5、rpm包的命名机制："></a>2.5、rpm包的命名机制：</h3><ul>
+<li>name-VERSION-RELEASE.ARCH.rpm</li>
+<li>bash-4.2.4-1.el7.x86_64.rpm</li>
+<li>bash-devel-4.2.4-1.el7.x86_64.rpm</li>
+<li>RELEASE: rpm release</li>
+<li>例子：sfotware-1.2.3-1.i386.rpm </li>
+<li>软件名称：software ｜ 版本号：1.2.3 ｜修正版本：1 ｜可用平台：i386，x86平台 ｜ 类型：rpm<blockquote>
+<p>提示：包和包之间：有可能存在依赖关系， X –&gt; Y –&gt; Z</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="2-6、基于rpm命令实现程序包管理"><a href="#2-6、基于rpm命令实现程序包管理" class="headerlink" title="2.6、基于rpm命令实现程序包管理"></a>2.6、基于rpm命令实现程序包管理</h3><ul>
+<li>如何获取rpm包：<br>1、发行版提供的程序包；<br>2、Fedora-EPEL<br>3、项目的官方站点<br>4、本地光盘<br>5、搜索引擎<br><a href="http://rpmfind.net" target="_blank" rel="noopener">http://rpmfind.net</a><br><a href="http://rpm.pbone.net" target="_blank" rel="noopener">http://rpm.pbone.net</a><br><a href="http://pkgs.org" target="_blank" rel="noopener">http://pkgs.org</a></li>
+</ul>
+<hr>
+<h2 id="3、RPM的使用"><a href="#3、RPM的使用" class="headerlink" title="3、RPM的使用"></a>3、RPM的使用</h2><h3 id="3-1、安装RPM软件包"><a href="#3-1、安装RPM软件包" class="headerlink" title="3.1、安装RPM软件包"></a>3.1、安装RPM软件包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-i|--install&#125; [install-options] PACKAGE_FILE ...</span><br><span class="line">  -i：install package(s)</span><br><span class="line">  -v：显示详细过程，-vv, -vvv</span><br><span class="line">  -h：打印软件包安装过程</span><br><span class="line">  </span><br><span class="line">  每个rpm包都提供一个或多个capabilities</span><br><span class="line">    --nodeps：忽略依赖关系安装</span><br><span class="line">    --replacepkgs：重装程序包</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：安装一个RPM包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost /]# mount /dev/cdrom /media/    #挂载光盘</span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting read-only</span><br><span class="line">[root@localhost /]# cd /media/Packages/    #切换RPM目录</span><br><span class="line">[root@localhost Packages]# rpm -ivh zsh-4.3.11-4.el6.centos.x86_64.rpm    #安装zshRPM包</span><br><span class="line">warning: zsh-4.3.11-4.el6.centos.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">Preparing...                ########################################### [100%]</span><br><span class="line">   1:zsh                    ########################################### [100%]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>例子：遇到依赖关系怎么处理？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Packages]# rpm -ivh mysql-server-5.1.73-5.el6_6.x86_64.rpm    #安装mysql-server</span><br><span class="line">warning: mysql-server-5.1.73-5.el6_6.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">error: Failed dependencies:    #发生依赖关系</span><br><span class="line">        mysql = 5.1.73-5.el6_6 is needed by mysql-server-5.1.73-5.el6_6.x86_64</span><br><span class="line">        perl(DBI) is needed by mysql-server-5.1.73-5.el6_6.x86_64</span><br><span class="line">        perl-DBD-MySQL is needed by mysql-server-5.1.73-5.el6_6.x86_64</span><br><span class="line">        perl-DBI is needed by mysql-server-5.1.73-5.el6_6.x86_64</span><br><span class="line">[root@localhost Packages]# rpm -ivh mysql-server-5.1.73-5.el6_6.x86_64.rpm perl-DBD-MySQL-4.013-3.el6.x86_64.rpm perl-DBI-1.609-4.el6.x86_64.rpm mysql-5.1.73-5.el6_6.x86_64.rpm    #逐一安装所依赖的包</span><br><span class="line">warning: mysql-server-5.1.73-5.el6_6.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">Preparing...                ########################################### [100%]</span><br><span class="line">   1:perl-DBI               ########################################### [ 25%]</span><br><span class="line">   2:perl-DBD-MySQL         ########################################### [ 50%]</span><br><span class="line">   3:mysql                  ########################################### [ 75%]</span><br><span class="line">   4:mysql-server           ########################################### [100%]</span><br><span class="line">[root@localhost Packages]# rpm -qa | grep mysql    #查询mysql是否安装完毕</span><br><span class="line">mysql-server-5.1.73-5.el6_6.x86_64</span><br><span class="line">mysql-libs-5.1.73-5.el6_6.x86_64</span><br><span class="line">mysql-5.1.73-5.el6_6.x86_64</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>例子：忽略依赖关系，强行安装（一般不建议这样做）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Packages]# rpm -ivh mysql-server-5.1.73-5.el6_6.x86_64.rpm  --nodeps    #强制安装参数</span><br><span class="line">warning: mysql-server-5.1.73-5.el6_6.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">Preparing...                ########################################### [100%]</span><br><span class="line">   1:mysql-server           ########################################### [100%]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-2、RPM包升级"><a href="#3-2、RPM包升级" class="headerlink" title="3.2、RPM包升级"></a>3.2、RPM包升级</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-Uvh: 如果有旧版程序包，则升级之；如果没有，则安装之；</span><br><span class="line">-Fvh: 如果有旧版程序包，则升级之；如果没有，则不安装；</span><br><span class="line">--nodeps</span><br><span class="line">--oldpackage：降级；</span><br><span class="line">--force</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：升级sudo软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost soft]# ls #先去相关站点找到最新软件包下载</span><br><span class="line">sudo-1.8.6p3-20.el6_7.x86_64.rpm        VMwareTools-9.6.1-1378637.tar.gz</span><br><span class="line">sudo-devel-1.8.6p3-20.el6_7.i686.rpm    vmware-tools-distrib</span><br><span class="line">sudo-devel-1.8.6p3-20.el6_7.x86_64.rpm</span><br><span class="line">[root@localhost soft]# rpm -qa | grep sudo</span><br><span class="line">sudo-1.8.6p3-19.el6.x86_64</span><br><span class="line">[root@localhost soft]# rpm -Uvh sudo-1.8.6p3-20.el6_7.x86_64.rpm    #进行升级</span><br><span class="line">warning: sudo-1.8.6p3-20.el6_7.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">Preparing...                ########################################### [100%]</span><br><span class="line">   1:sudo                   ########################################### [100%]</span><br><span class="line">[root@localhost soft]# rpm -qa | grep sudo    #查询已经是最新版本</span><br><span class="line">sudo-1.8.6p3-20.el6_7.x86_64</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-2、RPM包卸载"><a href="#3-2、RPM包卸载" class="headerlink" title="3.2、RPM包卸载"></a>3.2、RPM包卸载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-e|--erase&#125; [--nodeps] [--noscripts] [--notriggers] [--test] PACKAGE_NAME ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>列子：卸载zsh软件包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Packages]# rpm -e zsh-4.3.11-4.el6.centos.x86_64</span><br><span class="line">[root@localhost Packages]# rpm -e zsh-4.3.11-4.el6.centos.x86_64 --nodeps</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-2、RPM信息查询"><a href="#3-2、RPM信息查询" class="headerlink" title="3.2、RPM信息查询"></a>3.2、RPM信息查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-qa: 查询本机已经安装的所有程序包；</span><br><span class="line">-qf /PATH/TO/SOMEFILE: 查询此处的文件由哪个程序包安装生成；</span><br><span class="line">-qc: 查询指定程序包安装生成的配置文件</span><br><span class="line">-qd: 查询指定的程序包安装生成的文档</span><br><span class="line">-qi: 查询指定的程序包的相关信息；</span><br><span class="line">-ql: 查询程序包安装生成的所有文件的列表；</span><br><span class="line">-q --scripts：查询程序包相关的脚本：</span><br><span class="line">preinstall: 安装前脚本</span><br><span class="line">postinstall：安装后脚本</span><br><span class="line">preuninstall: 卸载前脚本</span><br><span class="line">postuninstall: 卸载后脚本</span><br><span class="line">-p: 查询针对是未安装的程序包文件；</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：相关查询命令使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Packages]# rpm -qa | grep ^httpd    #查询httpd是否安装</span><br><span class="line">httpd-tools-2.2.15-45.el6.centos.x86_64</span><br><span class="line">httpd-2.2.15-45.el6.centos.x86_64</span><br><span class="line">[root@localhost Packages]# rpm -qf /etc/httpd/conf/httpd.conf</span><br><span class="line">httpd-2.2.15-45.el6.centos.x86_64</span><br><span class="line">[root@localhost Packages]# rpm -qc httpd</span><br><span class="line">/etc/httpd/conf.d/welcome.conf</span><br><span class="line">/etc/httpd/conf/httpd.conf</span><br><span class="line">/etc/httpd/conf/magic</span><br><span class="line">/etc/logrotate.d/httpd</span><br><span class="line">/etc/sysconfig/htcacheclean</span><br><span class="line">/etc/sysconfig/httpd</span><br><span class="line">.....</span><br><span class="line">[root@localhost Packages]# rpm -qd httpd    #查询httpd安装生成的相关文档</span><br><span class="line">/usr/share/doc/httpd-2.2.15/ABOUT_APACHE</span><br><span class="line">/usr/share/doc/httpd-2.2.15/CHANGES</span><br><span class="line">/usr/share/doc/httpd-2.2.15/LICENSE</span><br><span class="line">/usr/share/doc/httpd-2.2.15/NOTICE</span><br><span class="line">/usr/share/doc/httpd-2.2.15/README</span><br><span class="line">/usr/share/doc/httpd-2.2.15/VERSIONING</span><br><span class="line">.....</span><br><span class="line">[root@localhost Packages]# rpm -qi httpd    #查询httpd软件包的相关信息</span><br><span class="line">Name        : httpd                        Relocations: (not relocatable)</span><br><span class="line">Version     : 2.2.15                            Vendor: CentOS</span><br><span class="line">Release     : 45.el6.centos                 Build Date: 2015年07月24日 星期五 19时53分33秒</span><br><span class="line">Install Date: 2015年08月25日 星期二 21时15分23秒      Build Host: c6b9.bsys.dev.centos.org</span><br><span class="line">Group       : System Environment/Daemons    Source RPM: httpd-2.2.15-45.el6.centos.src.rpm</span><br><span class="line">Size        : 3090869                          License: ASL 2.0</span><br><span class="line">Signature   : RSA/SHA1, 2015年07月25日 星期六 04时42分58秒, Key ID 0946fca2c105b9de</span><br><span class="line">Packager    : CentOS BuildSystem &lt;http://bugs.centos.org&gt;</span><br><span class="line">URL         : http://httpd.apache.org/</span><br><span class="line">Summary     : Apache HTTP Server</span><br><span class="line">Description :</span><br><span class="line">The Apache HTTP Server is a powerful, efficient, and extensible</span><br><span class="line">web server.</span><br><span class="line">[root@localhost Packages]# rpm -ql httpd    #查询httpd程序包安装生成的所有文件的列表</span><br><span class="line">/etc/httpd</span><br><span class="line">/etc/httpd/conf</span><br><span class="line">/etc/httpd/conf.d</span><br><span class="line">/etc/httpd/conf.d/README</span><br><span class="line">/etc/httpd/conf.d/welcome.conf</span><br><span class="line">/etc/httpd/conf/httpd.conf</span><br><span class="line">/etc/httpd/conf/magic</span><br><span class="line">/etc/httpd/logs</span><br><span class="line">/etc/httpd/modules</span><br><span class="line">/etc/httpd/run</span><br><span class="line">/etc/logrotate.d/httpd</span><br><span class="line">/etc/rc.d/init.d/htcacheclean</span><br><span class="line">/etc/rc.d/init.d/httpd</span><br><span class="line">/etc/sysconfig/htcacheclean</span><br><span class="line">/etc/sysconfig/httpd</span><br><span class="line">......</span><br><span class="line">[root@localhost Packages]# rpm -q --scripts httpd    #查询httpd所要执行的相关脚本</span><br><span class="line">preinstall scriptlet (using /bin/sh):    #安装前</span><br><span class="line"># Add the &quot;apache&quot; user</span><br><span class="line">getent group apache &gt;/dev/null || groupadd -g 48 -r apache</span><br><span class="line">getent passwd apache &gt;/dev/null || \</span><br><span class="line">  useradd -r -u 48 -g apache -s /sbin/nologin \</span><br><span class="line">    -d /var/www -c &quot;Apache&quot; apache</span><br><span class="line">exit 0</span><br><span class="line">postinstall scriptlet (using /bin/sh):    #安装后</span><br><span class="line"># Register the httpd service</span><br><span class="line">/sbin/chkconfig --add httpd</span><br><span class="line">/sbin/chkconfig --add htcacheclean</span><br><span class="line">preuninstall scriptlet (using /bin/sh):   #卸载前</span><br><span class="line">if [ $1 = 0 ]; then</span><br><span class="line">        /sbin/service httpd stop &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">        /sbin/chkconfig --del httpd</span><br><span class="line">        /sbin/service htcacheclean stop &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">        /sbin/chkconfig --del htcacheclean</span><br><span class="line">fi</span><br><span class="line">posttrans scriptlet (using /bin/sh):    #卸载后</span><br><span class="line">test -f /etc/sysconfig/httpd-disable-posttrans || \</span><br><span class="line"> /sbin/service httpd condrestart &gt;/dev/null 2&gt;&amp;1 || :</span><br><span class="line"> [root@localhost Packages]# rpm -qR zsh    #查询软件所依赖的服务器库</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/zsh</span><br><span class="line">/sbin/install-info</span><br><span class="line">/sbin/install-info</span><br><span class="line">config(zsh) = 4.3.11-4.el6.centos</span><br><span class="line">coreutils</span><br><span class="line">grep</span><br><span class="line">grep</span><br><span class="line">libc.so.6()(64bit)</span><br><span class="line">libc.so.6(GLIBC_2.11)(64bit)</span><br><span class="line">libc.so.6(GLIBC_2.2.5)(64bit)</span><br><span class="line">[root@localhost Packages]# rpm -qpi php-5.3.3-40.el6_6.x86_64.rpm    #查询未安装的软件信息（需要加p选项）</span><br><span class="line">warning: php-5.3.3-40.el6_6.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY</span><br><span class="line">Name        : php                          Relocations: (not relocatable)</span><br><span class="line">Version     : 5.3.3                             Vendor: CentOS</span><br><span class="line">Release     : 40.el6_6                      Build Date: 2014年10月31日 星期五 04时22分27秒</span><br><span class="line">Install Date: (not installed)               Build Host: c6b8.bsys.dev.centos.org</span><br><span class="line">Group       : Development/Languages         Source RPM: php-5.3.3-40.el6_6.src.rpm</span><br><span class="line">Size        : 3702253                          License: PHP</span><br><span class="line">Signature   : RSA/SHA1, 2014年10月31日 星期五 21时11分06秒, Key ID 0946fca2c105b9de</span><br><span class="line">Packager    : CentOS BuildSystem &lt;http://bugs.centos.org&gt;</span><br><span class="line">URL         : http://www.php.net/</span><br><span class="line">Summary     : PHP scripting language for creating dynamic web sites</span><br><span class="line">Description :</span><br><span class="line">PHP is an HTML-embedded scripting language. PHP attempts to make it</span><br><span class="line">easy for developers to write dynamically generated webpages. PHP also</span><br><span class="line">offers built-in database integration for several commercial and</span><br><span class="line">non-commercial database management systems, so writing a</span><br><span class="line">database-enabled webpage with PHP is fairly simple. The most common</span><br><span class="line">use of PHP coding is probably as a replacement for CGI scripts.</span><br><span class="line"></span><br><span class="line">The php package contains the module which adds support for the PHP</span><br><span class="line">language to Apache HTTP Server.</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-3、RPM包校验"><a href="#3-3、RPM包校验" class="headerlink" title="3.3、RPM包校验"></a>3.3、RPM包校验</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rpm &#123;-V|--verify&#125; [select-options] [verify-options]</span><br><span class="line">  S file Size differs---文件大小不同</span><br><span class="line">  M Mode differs (includes permissions and file type)---权限和文件类型不同</span><br><span class="line">  5 digest (formerly MD5 sum) differs---MD5文件校验码发生变化</span><br><span class="line">  D Device major/minor number mismatch---设备主要/次要编号不匹配</span><br><span class="line">  L readLink(2) path mismatch</span><br><span class="line">  U User ownership differs---用户属主发生变化</span><br><span class="line">  G Group ownership differs---用户属组发生变化</span><br><span class="line">  T mTime differs---文件的时间戳发生变化</span><br><span class="line">  P caPabilities differ</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：查看相关软件文件的变化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Packages]# rpm -ql zsh   #查询zsh文件的相关所有文件 </span><br><span class="line">[root@localhost Packages]# vim /usr/share/zsh/4.3.11/functions/zftype   #修改zsh相关的文件</span><br><span class="line">[root@localhost Packages]# rpm -V zsh   #校验软件包</span><br><span class="line">S.5....T.    /usr/share/zsh/4.3.11/functions/zftype</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>例子：导入密钥<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost media]# rpm --import RPM-GPG-KEY-CentOS-6</span><br><span class="line">[root@localhost media]# cd Packages/</span><br><span class="line">[root@localhost Packages]# rpm -ivh zsh-4.3.11-4.el6.centos.x86_64.rpm</span><br><span class="line">Preparing...                ########################################### [100%]</span><br><span class="line">   1:zsh                    ########################################### [100%]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h2 id="4、YUM简介"><a href="#4、YUM简介" class="headerlink" title="4、YUM简介"></a>4、YUM简介</h2><ul>
+<li>Yum（全称为 Yellow dog Updater,Modified），是一个在Fedora和RedHat以及CentOS中的Shell前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。</li>
+</ul>
+<hr>
+<h2 id="5、YUM配置与管理"><a href="#5、YUM配置与管理" class="headerlink" title="5、YUM配置与管理"></a>5、YUM配置与管理</h2><h3 id="5-1、文件服务器"><a href="#5-1、文件服务器" class="headerlink" title="5.1、文件服务器"></a>5.1、文件服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ftp://hostname/PATH/TO/REPO</span><br><span class="line">http://hostname/PATH/TO/REPO</span><br><span class="line">file:///PATH/TO/REPO</span><br></pre></td></tr></table></figure>
+<h3 id="5-2、yum程序的配置文件"><a href="#5-2、yum程序的配置文件" class="headerlink" title="5.2、yum程序的配置文件"></a>5.2、yum程序的配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/yum.conf</span><br></pre></td></tr></table></figure>
+<h3 id="5-3、定义全局配置"><a href="#5-3、定义全局配置" class="headerlink" title="5.3、定义全局配置"></a>5.3、定义全局配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#对所有仓库都适用的配置，一个文件通常用于一个或一组功能相近或相关的仓库</span><br><span class="line">/etc/yum.repos.d/*.repo</span><br></pre></td></tr></table></figure>
+<h3 id="5-4、定义一个仓库指向"><a href="#5-4、定义一个仓库指向" class="headerlink" title="5.4、定义一个仓库指向"></a>5.4、定义一个仓库指向</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[REPO_ID]</span><br><span class="line">name=</span><br><span class="line">baseurl=</span><br><span class="line"># mirrorlist=SCHEME://HOSTNAME/PATH/TO/MIRROR_LIST_FILE</span><br><span class="line">enabled=&#123;1|0&#125;</span><br><span class="line">gpgcheck=&#123;1|0&#125;</span><br><span class="line">gpgkey=</span><br><span class="line">cost=</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：配置实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[a]</span><br><span class="line">name=a    #定义yum源名字</span><br><span class="line">baseurl=file:///media    #来源仓库类型 </span><br><span class="line">gpgcheck=0    #关闭校验</span><br><span class="line">enabled=1    #开启本源</span><br><span class="line"></span><br><span class="line">[163]</span><br><span class="line">name=163yum    #定义yum源名字</span><br><span class="line">baserul=http://mirrors.163.com/centos/6.7/os/x86_64/    #来源仓库类型 </span><br><span class="line">gpgcheck=0    #关闭校验</span><br><span class="line">enabled=1    #开启本源</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="5-5、定义仓库指向可用变量"><a href="#5-5、定义仓库指向可用变量" class="headerlink" title="5.5、定义仓库指向可用变量"></a>5.5、定义仓库指向可用变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$releasever: 引用当前系统的主版本号；</span><br><span class="line">$basearch: 当前系统的基本架构；</span><br><span class="line">i386, i486, i586, i686: i386</span><br><span class="line">http://mirrors.magedu.com/CentOS/$releasever/os/$basearch</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="6、YUM命令详解与使用"><a href="#6、YUM命令详解与使用" class="headerlink" title="6、YUM命令详解与使用"></a>6、YUM命令详解与使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">yum [options] [command] [package ...]</span><br><span class="line">命令：</span><br><span class="line">安装：install</span><br><span class="line">卸载：remove</span><br><span class="line">升级：update</span><br><span class="line">查询：</span><br><span class="line">  info</span><br><span class="line">  search KEYWORD</span><br><span class="line">  list all|installed|availiable</span><br><span class="line">  provides /PATH/TO/SOMEFILE: 查询指定文件由哪个包安装生成</span><br><span class="line">重新安装：reinstall</span><br><span class="line">降级：downgrade</span><br><span class="line">清理缓存：clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]</span><br><span class="line">生动生成缓存：makecache</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：yum命令相关操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yum.repos.d]# yum clean all   #清理yum所有缓存</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit, security</span><br><span class="line">Cleaning repos: 163 a</span><br><span class="line">清理一切</span><br><span class="line">Cleaning up list of fastest mirrors</span><br><span class="line">[root@localhost yum.repos.d]# yum makecache   #刷新yum缓存（一般是有新的yum仓库）</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit, security</span><br><span class="line">Determining fastest mirrors</span><br><span class="line">163                                                                 | 3.7 kB     00:00</span><br><span class="line">163/group_gz                                                        | 219 kB     00:00</span><br><span class="line">163/filelists_db                                                    | 6.3 MB     00:13</span><br><span class="line">163/primary_db                                                      | 4.6 MB     00:09</span><br><span class="line">163/other_db                                                        | 2.8 MB     00:06</span><br><span class="line">a                                                                   | 4.0 kB     00:00 ...</span><br><span class="line">a/group_gz                                                          | 219 kB     00:00 ...</span><br><span class="line">a/filelists_db                                                      | 6.2 MB     00:00 ...</span><br><span class="line">a/primary_db                                                        | 4.6 MB     00:00 ...</span><br><span class="line">a/other_db                                                          | 2.8 MB     00:00 ...</span><br><span class="line">元数据缓存已建立</span><br><span class="line">[root@localhost yum.repos.d]# yum remove wget telnet -y    #安装wget 和telnet</span><br><span class="line">已安装:</span><br><span class="line">  telnet.x86_64 1:0.17-48.el6                 wget.x86_64 0:1.12-5.el6_6.1</span><br><span class="line"></span><br><span class="line">完毕！</span><br><span class="line"></span><br><span class="line">[root@localhost yum.repos.d]# yum remove wget telnet -y    #卸载wget和telnet</span><br><span class="line">删除:</span><br><span class="line">  telnet.x86_64 1:0.17-48.el6                                                           wget.x86_64 0:1.12-5.el6_6.1</span><br><span class="line"></span><br><span class="line">完毕！</span><br><span class="line">[root@localhost yum.repos.d]# yum list    #查询当前源所有安装包</span><br><span class="line">[root@localhost yum.repos.d]# yum list installed    #查询所有以安装的包</span><br><span class="line">[root@localhost yum.repos.d]# yum list all    #查询所有安装和源仓库的包</span><br><span class="line">[root@localhost yum.repos.d]# yum info php-mysql    #查询指定软件的相关信息</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">可安装的软件包</span><br><span class="line">Name        : php-mysql</span><br><span class="line">Arch        : x86_64</span><br><span class="line">Version     : 5.3.3</span><br><span class="line">Release     : 40.el6_6</span><br><span class="line">Size        : 84 k</span><br><span class="line">Repo        : 163</span><br><span class="line">Summary     : A module for PHP applications that use MySQL databases</span><br><span class="line">URL         : http://www.php.net/</span><br><span class="line">License     : PHP</span><br><span class="line">Description : The php-mysql package contains a dynamic shared object that will add</span><br><span class="line">            : MySQL database support to PHP. MySQL is an object-relational database</span><br><span class="line">            : management system. PHP is an HTML-embeddable scripting language. If</span><br><span class="line">            : you need MySQL support for PHP applications, you will need to install</span><br><span class="line">            : this package and the php package.</span><br><span class="line">[root@localhost yum.repos.d]# yum provides /etc/fstab    #查询指定文件的安装包</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">setup-2.8.14-20.el6_4.1.noarch : A set of system configuration and setup files</span><br><span class="line">Repo        : 163</span><br><span class="line">匹配来自于:</span><br><span class="line">Filename    : /etc/fstab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">setup-2.8.14-20.el6_4.1.noarch : A set of system configuration and setup files</span><br><span class="line">Repo        : a</span><br><span class="line">匹配来自于:</span><br><span class="line">Filename    : /etc/fstab</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">setup-2.8.14-20.el6_4.1.noarch : A set of system configuration and setup files</span><br><span class="line">Repo        : installed</span><br><span class="line">匹配来自于:</span><br><span class="line">Other       : 提供依赖满足：/etc/fstab</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="6-1、包组（group）操作指令"><a href="#6-1、包组（group）操作指令" class="headerlink" title="6.1、包组（group）操作指令"></a>6.1、包组（group）操作指令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grouplist</span><br><span class="line">groupinfo &quot;GRP_NAME&quot;</span><br><span class="line">groupinstall &quot;GRP_NAME&quot;</span><br><span class="line">groupremove &quot;GRP_NAME&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：安装一个仓库组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yum.repos.d]# yum groupinstall &quot;Development Tools&quot; -y</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="6-2、仓库（repo）操作指令"><a href="#6-2、仓库（repo）操作指令" class="headerlink" title="6.2、仓库（repo）操作指令"></a>6.2、仓库（repo）操作指令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">repolist [all|enabled|disabled]</span><br><span class="line">repoinfo [all|enabled|disabled]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>例子：查看当前yum仓库有哪些<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yum.repos.d]# yum repolist</span><br><span class="line">已加载插件：fastestmirror, refresh-packagekit, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">仓库标识                                                                              仓库名称                                                                            状态</span><br><span class="line">163                                                                                   163yum                                                                              6,575</span><br><span class="line">a                                                                                     a                                                                                   6,575</span><br><span class="line">repolist: 13,150</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="6-3、创建本地仓库-首先要安装http或ftp服务等"><a href="#6-3、创建本地仓库-首先要安装http或ftp服务等" class="headerlink" title="6.3、创建本地仓库(首先要安装http或ftp服务等)"></a>6.3、创建本地仓库(首先要安装http或ftp服务等)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#安装</span><br><span class="line">yum install createrepo</span><br><span class="line"></span><br><span class="line">#命令语法</span><br><span class="line">createrepo [option] &lt;directory&gt;</span><br><span class="line">-u  --baseurl &lt;url&gt;</span><br><span class="line">    指定Base URL的地址</span><br><span class="line">-o --outputdir &lt;url&gt;</span><br><span class="line">    指定元数据的输出位置</span><br><span class="line">-x --excludes &lt;packages&gt;</span><br><span class="line">    指定在形成元数据时需要排除的包</span><br><span class="line">-i --pkglist &lt;filename&gt;</span><br><span class="line">    指定一个文件，该文件内的包信息将被包含在即将生成的元数据中，格式为每个包信息独占一行，不含通配符、正则，以及范围表达式。</span><br><span class="line">-n --includepkg</span><br><span class="line">    通过命令行指定要纳入本地库中的包信息，需要提供URL或本地路径。</span><br><span class="line">-q --quiet</span><br><span class="line">    安静模式执行操作，不输出任何信息。</span><br><span class="line">-g --groupfile &lt;groupfile&gt;</span><br><span class="line">    指定本地软件仓库的组划分，范例如下：</span><br><span class="line">    createrepo -g comps.xml /path/to/rpms</span><br><span class="line">    注意：组文件需要和rpm包放置于同一路径下。</span><br><span class="line">-v --verbose</span><br><span class="line">    输出详细信息。</span><br><span class="line">-c --cachedir &lt;path&gt;</span><br><span class="line">    指定一个目录，用作存放软件仓库中软件包的校验和信息。</span><br><span class="line">    当createrepo在未发生明显改变的相同仓库文件上持续多次运行时，指定cachedir会明显提高其性能。</span><br><span class="line">--update</span><br><span class="line">    如果元数据已经存在，且软件仓库中只有部分软件发生了改变或增减，</span><br><span class="line">    则可用update参数直接对原有元数据进行升级，效率比重新分析rpm包依赖并生成新的元数据要高很多。</span><br><span class="line">-p --pretty</span><br><span class="line">    以整洁的格式输出xml文件。</span><br><span class="line">-d --database</span><br><span class="line">    该选项指定使用SQLite来存储生成的元数据，默认项</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库"><a href="#6-3-1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库" class="headerlink" title="6.3.1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库"></a>6.3.1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /yum/repo</span><br><span class="line">creatrepo /yum/repo  #将该目录制作成软件</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-2、命令执行成功后会在该目录下创建一个repodata目录"><a href="#6-3-2、命令执行成功后会在该目录下创建一个repodata目录" class="headerlink" title="6.3.2、命令执行成功后会在该目录下创建一个repodata目录"></a>6.3.2、命令执行成功后会在该目录下创建一个repodata目录</h3><p><img src="http://static.zybuluo.com/a807257775/ynfk0kghw1xfzmb9xvcnmmov/image_1daid9ehb1nvu1rg01i0c1h8ggv99.png" alt="image_1daid9ehb1nvu1rg01i0c1h8ggv99.png-35.7kB"></p>
+<h3 id="6-3-3、创建-repo配置文件指向到本地仓库的路径"><a href="#6-3-3、创建-repo配置文件指向到本地仓库的路径" class="headerlink" title="6.3.3、创建.repo配置文件指向到本地仓库的路径"></a>6.3.3、创建.repo配置文件指向到本地仓库的路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/yum.repos.d/test.repo</span><br><span class="line">[test]</span><br><span class="line">name=test  #yum仓库的名字</span><br><span class="line">baseurl=file:///yum/repo  #仓库路径，由于是放在本地的只能用file协议而不是http</span><br><span class="line">enabled=1  #开启该仓库</span><br><span class="line">gpgcheck=0  #不做gpg检查</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-4、通过yum-repolist命令查看仓库及包的数量"><a href="#6-3-4、通过yum-repolist命令查看仓库及包的数量" class="headerlink" title="6.3.4、通过yum repolist命令查看仓库及包的数量"></a>6.3.4、通过yum repolist命令查看仓库及包的数量</h3><p><img src="http://static.zybuluo.com/a807257775/7qrmtuh8lypnqt3v7uzv850o/image_1daidbrj81a3k11u113tk75h1ocmm.png" alt="image_1daidbrj81a3k11u113tk75h1ocmm.png-32kB"></p>
+<h3 id="6-3-5、创建YUM仓库"><a href="#6-3-5、创建YUM仓库" class="headerlink" title="6.3.5、创建YUM仓库"></a>6.3.5、创建YUM仓库</h3><blockquote>
+<p>在第二步的操作中只是在本地建立了一个YUM仓库，这样别人是无法使用的。所以通常会在计划任务中把公网YUM源同步到本地（推荐使用reposync），同步后再执行一次createrepo更新元数据，最后把仓库目录通过FTP或者Nginx、Apache、NFS服务等共享出来，然后客户端的配置文件中修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[test]</span><br><span class="line">name=test</span><br><span class="line">enable=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">baseurl=http://192.168.1.231</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/05/11/RPM和YUM程序包的管理/" title="RPM和YUM程序包的管理">2019/05/11/RPM和YUM程序包的管理/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux基础/" rel="tag"><i class="fa fa-tag"></i> Linux基础</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/10/Nginx内置变量速查表/" rel="next" title="Nginx内置变量速查表">
+                <i class="fa fa-chevron-left"></i> Nginx内置变量速查表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/18/vim编辑器使用详解/" rel="prev" title="vim编辑器使用详解">
+                vim编辑器使用详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RPM和YUM程序包的管理"><span class="nav-number">1.</span> <span class="nav-text">RPM和YUM程序包的管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、RPM简介"><span class="nav-number">1.1.</span> <span class="nav-text">1、RPM简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、RPM的管理和组成"><span class="nav-number">1.2.</span> <span class="nav-text">2、RPM的管理和组成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、程序包管理"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、程序包管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、程序包的组成部分"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、程序包的组成部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、linux软件包类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、linux软件包类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、分包机制"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4、分包机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、rpm包的命名机制："><span class="nav-number">1.2.5.</span> <span class="nav-text">2.5、rpm包的命名机制：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、基于rpm命令实现程序包管理"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.6、基于rpm命令实现程序包管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、RPM的使用"><span class="nav-number">1.3.</span> <span class="nav-text">3、RPM的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、安装RPM软件包"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、安装RPM软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、RPM包升级"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、RPM包升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、RPM包卸载"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.2、RPM包卸载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、RPM信息查询"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.2、RPM信息查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3、RPM包校验"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.3、RPM包校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、YUM简介"><span class="nav-number">1.4.</span> <span class="nav-text">4、YUM简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、YUM配置与管理"><span class="nav-number">1.5.</span> <span class="nav-text">5、YUM配置与管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1、文件服务器"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1、文件服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2、yum程序的配置文件"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2、yum程序的配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3、定义全局配置"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3、定义全局配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4、定义一个仓库指向"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4、定义一个仓库指向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5、定义仓库指向可用变量"><span class="nav-number">1.5.5.</span> <span class="nav-text">5.5、定义仓库指向可用变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、YUM命令详解与使用"><span class="nav-number">1.6.</span> <span class="nav-text">6、YUM命令详解与使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1、包组（group）操作指令"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1、包组（group）操作指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2、仓库（repo）操作指令"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2、仓库（repo）操作指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3、创建本地仓库-首先要安装http或ftp服务等"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.3、创建本地仓库(首先要安装http或ftp服务等)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库"><span class="nav-number">1.6.4.</span> <span class="nav-text">6.3.1、创建一个目录存放RPM安装包，然后使用createrepo来创建repository仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2、命令执行成功后会在该目录下创建一个repodata目录"><span class="nav-number">1.6.5.</span> <span class="nav-text">6.3.2、命令执行成功后会在该目录下创建一个repodata目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-3、创建-repo配置文件指向到本地仓库的路径"><span class="nav-number">1.6.6.</span> <span class="nav-text">6.3.3、创建.repo配置文件指向到本地仓库的路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-4、通过yum-repolist命令查看仓库及包的数量"><span class="nav-number">1.6.7.</span> <span class="nav-text">6.3.4、通过yum repolist命令查看仓库及包的数量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-5、创建YUM仓库"><span class="nav-number">1.6.8.</span> <span class="nav-text">6.3.5、创建YUM仓库</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

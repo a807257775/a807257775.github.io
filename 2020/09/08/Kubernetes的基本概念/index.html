@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Kubernetes,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Kubernetes的基本概念1、Kubernetes概述1.1、kubernetes是什么 Kubernetes是一个可移植的、可扩展、分布式架构的开源平台，用于管理容器化的工作负载和服务，可促进声明式配置和自动化。Kubernetes 拥有一个庞大且快速增长的生态系统。Kubernetes的服务、支持和工具广泛可用。名称 Kubernetes 源于希腊语，意为 “舵手” 或 “飞行员”。Goo">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes的基本概念">
+<meta property="og:url" content="http://www.lisirlife.cn/2020/09/08/Kubernetes的基本概念/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Kubernetes的基本概念1、Kubernetes概述1.1、kubernetes是什么 Kubernetes是一个可移植的、可扩展、分布式架构的开源平台，用于管理容器化的工作负载和服务，可促进声明式配置和自动化。Kubernetes 拥有一个庞大且快速增长的生态系统。Kubernetes的服务、支持和工具广泛可用。名称 Kubernetes 源于希腊语，意为 “舵手” 或 “飞行员”。Goo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/ku1dz8unp5ij5q6shw1b9yet/image_1eh6vbct61o0vfp915q6uv1c5qm.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/fjsisv2aliow9w75uy0gb42p/image_1ehk518vb1jachp51q30spvhbe9.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/upakxydzt7fr7x67npplnl22/image_1ehk9ocq4c9k1pdq17rl1gbpous13.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/frfe2ruvxpr4agekva453asx/image_1ehmofcit7hre3q1a5sflvnjt1t.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/pbgqoinscwaaxk46hok2b4nk/image_1ehmm8ts7bdf1esanet1tkd1nml1g.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.391Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes的基本概念">
+<meta name="twitter:description" content="Kubernetes的基本概念1、Kubernetes概述1.1、kubernetes是什么 Kubernetes是一个可移植的、可扩展、分布式架构的开源平台，用于管理容器化的工作负载和服务，可促进声明式配置和自动化。Kubernetes 拥有一个庞大且快速增长的生态系统。Kubernetes的服务、支持和工具广泛可用。名称 Kubernetes 源于希腊语，意为 “舵手” 或 “飞行员”。Goo">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/ku1dz8unp5ij5q6shw1b9yet/image_1eh6vbct61o0vfp915q6uv1c5qm.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2020/09/08/Kubernetes的基本概念/">
+
+
+
+
+
+  <title>Kubernetes的基本概念 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2020/09/08/Kubernetes的基本概念/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes的基本概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-08T19:49:00+08:00">
+                2020-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/08/Kubernetes的基本概念/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/08/Kubernetes的基本概念/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  26
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Kubernetes的基本概念"><a href="#Kubernetes的基本概念" class="headerlink" title="Kubernetes的基本概念"></a>Kubernetes的基本概念</h1><h2 id="1、Kubernetes概述"><a href="#1、Kubernetes概述" class="headerlink" title="1、Kubernetes概述"></a>1、Kubernetes概述</h2><h3 id="1-1、kubernetes是什么"><a href="#1-1、kubernetes是什么" class="headerlink" title="1.1、kubernetes是什么"></a>1.1、kubernetes是什么</h3><blockquote>
+<p>Kubernetes是一个可移植的、可扩展、分布式架构的开源平台，用于管理容器化的工作负载和服务，可促进声明式配置和自动化。Kubernetes 拥有一个庞大且快速增长的生态系统。Kubernetes的服务、支持和工具广泛可用。名称 Kubernetes 源于希腊语，意为 “舵手” 或 “飞行员”。Google 在 2014 年开源了 Kubernetes 项目。确切来说，Kubernetes是建立在Borg的一个开源版本，而Borg是谷歌的一个久负盛名的内部使 用的大规模集群管理系统，它基于容器技术，目的是实现资源管理的自动化，以及跨多个数据中心的资源利用率的最大化，正是由于站在Borg这个前辈的肩膀上，汲取了Borg过去十年间的经验与教训， 所以Kubernetes一经开源就一鸣惊人，并迅速称霸容器领域。</p>
+</blockquote>
+<h3 id="1-2、容器优势"><a href="#1-2、容器优势" class="headerlink" title="1.2、容器优势"></a>1.2、容器优势</h3><blockquote>
+<p>容器类似于 VM，但是它们具有轻量级的隔离属性，可以在应用程序之间共享操作系统（OS）。因此，容器被认为是轻量级的。容器与 VM 类似，具有自己的文件系统、CPU、内存、进程空间等。由于它们与基础架构分离，因此可以跨云和 OS 分发进行移植。</p>
+</blockquote>
+<ul>
+<li>下面列出了容器的一些好处：<ul>
+<li><strong>敏捷应用程序的创建和部署</strong>：与使用 VM 镜像相比，提高了容器镜像创建的简便性和效率。</li>
+<li><strong>持续开发、集成和部署</strong>：通过快速简单的回滚(由于镜像不可变性)，提供可靠且频繁的容器镜像构建和部署。</li>
+<li><strong>关注开发与运维的分离</strong>：在构建/发布时而不是在部署时创建应用程序容器镜像，从而将应用程序与基础架构分离。</li>
+<li><strong>可观察性</strong>：不仅可以显示操作系统级别的信息和指标，还可以显示应用程序的运行状况和其他指标信号。</li>
+<li><strong>跨开发、测试和生产的环境一致性</strong>：在便携式计算机上与在云中相同地运行。</li>
+<li><strong>云和操作系统分发的可移植性</strong>：可在 Ubuntu、RHEL、CoreOS、本地、Google Kubernetes Engine 和其他任何地方运行。</li>
+<li><strong>以应用程序为中心的管理</strong>：提高抽象级别，从在虚拟硬件上运行 OS 到使用逻辑资源在 OS 上运行应用程序。</li>
+<li><strong>松散耦合、分布式、弹性、解放的微服务</strong>：应用程序被分解成较小的独立部分，并且可以动态部署和管理 - 而不是在一台大型单机上整体运行。</li>
+<li><strong>资源隔离</strong>：可预测的应用程序性能。</li>
+<li><strong>资源利用</strong>：高效率和高密度。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3、Kubernetes的特性"><a href="#1-3、Kubernetes的特性" class="headerlink" title="1.3、Kubernetes的特性"></a>1.3、Kubernetes的特性</h3><ul>
+<li>Kubernetes是一个完备的分布式系统支撑平台。Kubernetes具有完备的集群管理能力， 包括多层次的安全防护和准入机制、多租户应用支撑能力、透明的服务注册和服务发现机制、 内建的智能负载均衡器、强大的故障发现和自我修复能力、服务滚动升级和在线扩容能力、 可扩展的资源自动调度机制，以及多粒度的资源配额管理能力。同时，Kubernetes提供了完善的管理工具， 这些工具涵盖了包括开发、部署测试、运维监控在内的各个环节。因此，Kubernetes是一个全新的基于容 器技术的分布式架构解决方案，并且是一个一站式的完备的分布式系统开发和支撑平台。<ul>
+<li><strong>服务发现和负载均衡</strong>：Kubernetes 可以使用 DNS 名称或自己的 IP 地址公开容器，如果到容器的流量很大，Kubernetes 可以负载均衡并分配网络流量，从而使部署稳定。</li>
+<li><strong>存储编排</strong>：Kubernetes 允许您自动挂载您选择的存储系统，例如本地存储、公共云提供商等。</li>
+<li><strong>自动部署和回滚</strong>：您可以使用 Kubernetes 描述已部署容器的所需状态，它可以以受控的速率将实际状态更改为所需状态。例如，您可以自动化 Kubernetes 来为您的部署创建新容器，删除现有容器并将它们的所有资源用于新容器。</li>
+<li><strong>自动二进制打包</strong>：Kubernetes 允许您指定每个容器所需 CPU 和内存（RAM）。当容器指定了资源请求时，Kubernetes 可以做出更好的决策来管理容器的资源。</li>
+<li><strong>自我修复</strong>：Kubernetes 重新启动失败的容器、替换容器、杀死不响应用户定义的运行状况检查的容器，并且在准备好服务之前不将其通告给客户端。</li>
+<li><strong>密钥与配置管理</strong>：Kubernetes 允许您存储和管理敏感信息，例如密码、OAuth 令牌和 ssh 密钥。您可以在不重建容器镜像的情况下部署和更新密钥和应用程序配置，也无需在堆栈配置中暴露密钥。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、Kubernetes-组件"><a href="#2、Kubernetes-组件" class="headerlink" title="2、Kubernetes 组件"></a>2、Kubernetes 组件</h2><blockquote>
+<p>前言：一个 Kubernetes 集群包含 集群由一组被称作节点的机器组成。这些节点上运行 Kubernetes 所管理的容器化应用。集群具有至少一个工作节点和至少一个主节点。工作节点托管作为应用程序组件的 Pod 。主节点管理集群中的工作节点和 Pod 。多个主节点用于为集群提供故障转移和高可用性。</p>
+</blockquote>
+<ul>
+<li><strong>下图表展示了包含所有相互关联组件的 Kubernetes 集群</strong><br><img src="http://static.zybuluo.com/a807257775/ku1dz8unp5ij5q6shw1b9yet/image_1eh6vbct61o0vfp915q6uv1c5qm.png" alt="image_1eh6vbct61o0vfp915q6uv1c5qm.png-166.1kB"></li>
+</ul>
+<h3 id="2-1、Master"><a href="#2-1、Master" class="headerlink" title="2.1、Master"></a>2.1、Master</h3><ul>
+<li><p>Kubernetes里的Master指的是集群控制节点，在每个Kubernetes集群 里都需要有一个Master来负责整个集群的管理和控制，基本上 Kubernetes的所有控制命令都发给它， 它负责具体的执行过程，我们后面执行的所有命令基本都是在Master上运行的。Master通常会占据一个 独立的服务器（高可用部署建议用3台服务器） ，主要原因是它太重要了，是整个集群的“首脑”， 如果它宕机或者不可用，那么对集群内容器应用的管理都将失效。</p>
+<ul>
+<li><strong>Kubernetes API Server（kube-apiserver）</strong>：提供了HTTP Rest接口的关键服务进程， 是Kubernetes里所有资源的增、 删、改、查等操作 的唯一入口，也是集群控制的入口进程</li>
+<li><strong>Kubernetes Controller Manager（kube-controller-manager）</strong>： Kubernetes里所有资源对象的自动化控制中心， 可以将其理解为资源对象的“大总管”。<ul>
+<li>节点控制器<code>（Node Controller）</code>: 负责在节点出现故障时进行通知和响应。</li>
+<li>副本控制器<code>（Replication Controller）</code>: 负责为系统中的每个副本控制器对象维护正确数量的 Pod。</li>
+<li>端点控制器<code>（Endpoints Controller）</code>: 填充端点(Endpoints)对象(即加入 Service 与 Pod)。</li>
+<li>服务帐户和令牌控制器<code>（Service Account &amp; Token Controllers）</code>: 为新的命名空间创建默认帐户和 API 访问令牌.</li>
+</ul>
+</li>
+<li><p><strong>Kubernetes Scheduler（kube-scheduler）</strong> ：负责资源调度（Pod 调度）的进程， 相当于公交公司的“调度室”。该组件监视那些新创建的未指定运行节点的 Pod，并选择节点让 Pod 在上面运行</p>
+</li>
+<li><p><strong>etcd</strong>：etcd 是兼具一致性和高可用性的键值数据库，可以作为保存 Kubernetes 所有集群数据的后台数据库。 您的 Kubernetes 集群的 etcd 数据库通常需要有个备份计划。</p>
+</li>
+<li><strong>cloud-controller-manager</strong>：云控制器管理器是 1.8 的 alpha 特性。在未来发布的版本中，这是将 Kubernetes 与任何其他云集成的最佳方式。<code>cloud-controller-manager</code> 进运行特定于云平台的控制回路。 如果你在自己的环境中运行 Kubernetes，或者在本地计算机中运行学习环境， 所部属的环境中不需要云控制器管理器。与 <code>kube-controller-manager</code> 类似，<code>cloud-controller-manager</code> 将若干逻辑上独立的 控制回路组合到同一个可执行文件中，供你以同一进程的方式运行。 你可以对其执行水平扩容（运行不止一个副本）以提升性能或者增强容错能力。<ul>
+<li>节点控制器<code>（Node Controller）</code>: 用于在节点终止响应后检查云提供商以确定节点是否已被删除</li>
+<li>路由控制器<code>（Route Controller）</code>: 用于在底层云基础架构中设置路由</li>
+<li>服务控制器<code>（Service Controller）</code>: 用于创建、更新和删除云提供商负载均衡器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2、Node"><a href="#2-2、Node" class="headerlink" title="2.2、Node"></a>2.2、Node</h3><ul>
+<li>Kubernetes集群中的其他机器被称为Node， 在较早的 版本中也被称为Minion。 与Master一样， Node可以是一台物理主机， 也 可以是一台虚拟机。 Node是Kubernetes集群中的工作负载节点， 每个 Node都会被Master分配一些工作负载（Docker容器） ，当某个Node宕机时， 其上的工作负载会被Master自动转移到其他节点上。<ul>
+<li><code>kubelet</code>： 负责Pod对应的容器的创建、启停等任务，同时与 Master密切协作， 实现集群管理的基本功能。 </li>
+<li><code>kube-proxy</code>： 实现Kubernetes Service的通信与负载均衡机制的重要组件。 </li>
+<li><code>Docker Engine（docker）</code> ：Docker引擎，负责本机的容器创建 和管理工作。</li>
+<li><code>容器运行时（Container Runtime）</code>：Kubernetes 支持多个容器运行环境: Docker、containerd、cri-o、 rktlet 以及任何实现 Kubernetes CRI (容器运行环境接口)。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>提示：Node可以在运行期间动态增加到Kubernetes集群中， 前提是在这个 节点上已经正确安装、 配置和启动了上述关键进程， 在默认情况下 kubelet会向Master注册自己， 这也是Kubernetes推荐的Node管理方式。 一旦Node被纳入集群管理范围， kubelet进程就会定时向Master汇报自身 的情报， 例如操作系统、 Docker版本、 机器的CPU和内存情况， 以及当 前有哪些Pod在运行等， 这样Master就可以获知每个Node的资源使用情 况， 并实现高效均衡的资源调度策略。 而某个Node在超过指定时间不上 报信息时， 会被Master判定为“失联”， Node的状态被标记为不可用 （Not Ready） ， 随后Master会触发“工作负载大转移”的自动流程</p>
+</blockquote>
+<h3 id="2-3、Pod"><a href="#2-3、Pod" class="headerlink" title="2.3、Pod"></a>2.3、Pod</h3><ul>
+<li><p>Pod 是可以在 Kubernetes 中创建和管理的、最小的可部署的计算单元。Pod是一组（一个或多个）容器；这些容器共享存储、网络、以及怎样运行这些容器的声明。 Pod 中的内容总是并置（colocated）的并且一同调度，在共享的上下文中运行。 Pod 所建模的是特定于应用的“逻辑主机”，其中包含一个或多个应用容器， 这些容器是相对紧密的耦合在一起的。 在非云环境中，在相同的物理机或虚拟机上运行的应用类似于 在同一逻辑主机上运行的云应用。</p>
+</li>
+<li><p>Pod的两种用法</p>
+<ul>
+<li><strong>运行单个容器的 Pod</strong>：”每个 Pod 一个容器”模型是最常见的 Kubernetes 用例； 在这种情况下，可以将 Pod 看作单个容器的包装器，并且 Kubernetes 直接管理 Pod，而不是容器。</li>
+<li><strong>运行多个协同工作的容器的 Pod</strong>：Pod 可能封装由多个紧密耦合且需要共享资源的共处容器组成的应用程序。 这些位于同一位置的容器可能形成单个内聚的服务单元 —— 一个容器将文件从共享卷提供给公众， 而另一个单独的“挂斗”（sidecar）容器则刷新或更新这些文件。 Pod 将这些容器和存储资源打包为一个可管理的实体。</li>
+</ul>
+</li>
+<li><p>Pod 和控制器</p>
+<ul>
+<li>你可以使用工作负载资源来创建和管理多个 Pod。 资源的控制器能够处理副本的管理、上线，并在 Pod 失效时提供自愈能力。 例如，如果一个节点失败，控制器注意到该节点上的 Pod 已经停止工作， 就可以创建替换性的 Pod。调度器会将替身 Pod 调度到一个健康的节点执行</li>
+<li>下面是一些管理一个或者多个 Pod 的工作负载资源的示例：<ul>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">Deployments</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/statefulset/" target="_blank" rel="noopener">StatefulSet</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/daemonset/" target="_blank" rel="noopener">DaemonSet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>资源共享和通信</p>
+<ul>
+<li>Pod 使它的成员容器间能够进行数据共享和通信</li>
+</ul>
+</li>
+<li><p>Pod 中的存储</p>
+<ul>
+<li>一个 Pod 可以设置一组共享的存储卷。 Pod 中的所有容器都可以访问该共享卷，从而允许这些容器共享数据。 卷还允许 Pod 中的持久数据保留下来，即使其中的容器需要重新启动。 有关 Kubernetes 如何在 Pod 中实现共享存储并将其提供给 Pod 的更多信息， 请参考<a href="https://kubernetes.io/zh/docs/concepts/storage/" target="_blank" rel="noopener">卷</a>。</li>
+</ul>
+</li>
+<li><p>Pod 网络</p>
+<ul>
+<li>Kubernetes为每个Pod都分配了唯一的IP地址， 称之为Pod IP， 一个 Pod里的多个容器共享Pod IP地址。 Kubernetes要求底层网络支持集群内 任意两个Pod之间的TCP/IP直接通信， 这通常采用虚拟二层网络技术来 实现， 例如Flannel、 Open vSwitch等， 因此我们需要牢记一点： 在 Kubernetes里， 一个Pod里的容器与另外主机上的Pod容器能够直接通 信。</li>
+</ul>
+</li>
+<li><p>Pod及Pod周边对象示意图：<br><img src="http://static.zybuluo.com/a807257775/fjsisv2aliow9w75uy0gb42p/image_1ehk518vb1jachp51q30spvhbe9.png" alt="image_1ehk518vb1jachp51q30spvhbe9.png-89.9kB"></p>
+</li>
+</ul>
+<blockquote>
+<p>提示： 除了 Docker 之外，Kubernetes 支持 很多其他容器运行时， Docker 是最有名的运行时， 使用 Docker 的术语来描述 Pod 会很有帮助。 Pod 的共享上下文包括一组 Linux 名字空间、控制组（cgroup）和可能一些其他的隔离 方面，即用来隔离 Docker 容器的技术。 在 Pod 的上下文中，每个独立的应用可能会进一步实施隔离。就 Docker 概念的术语而言，Pod 类似于共享名字空间和文件系统卷的一组 Docker 容器。</p>
+</blockquote>
+<h3 id="2-4、Label"><a href="#2-4、Label" class="headerlink" title="2.4、Label"></a>2.4、Label</h3><ul>
+<li><p>Label（标签）是Kubernetes系统中另外一个核心概念。一个Label是 一个<code>key=value</code>的键值对，其中key与value由用户自己指定。Label可以被 附加到各种资源对象上，例如Node、Pod、Service、RC等，一个资源对 象可以定义任意数量的Label，同一个Label也可以被添加到任意数量的 资源对象上。Label通常在资源对象定义时确定，也可以在对象创建后 动态添加或者删除。</p>
+</li>
+<li><p>我们可以通过给指定的资源对象捆绑一个或多个不同的Label来实 现多维度的资源分组管理功能，以便灵活、方便地进行资源分配、调 度、配置、部署等管理工作。例如，部署不同版本的应用到不同的环境 中；监控和分析应用（日志记录、监控、告警）等。一些常用的Label 示例如下。 </p>
+<ul>
+<li><strong>版本标签</strong>：”release”:”stable”、”release”:”canary”。</li>
+<li><strong>环境标签</strong>：”environment”:”dev”、”environment”:”qa”、”environment”:”production”。</li>
+<li><strong>架构标签</strong>：”tier”:”frontend”、”tier”:”backend”、”tier”:”middleware”。</li>
+<li><strong>分区标签</strong>：”partition”:”customerA”、”partition”:”customerB”。</li>
+<li><strong>质量管控标签</strong>：”track”:”daily”、”track”:”weekly”。</li>
+</ul>
+</li>
+<li><p>Label相当于我们熟悉的“标签”。给某个资源对象定义一个Label， 就相当于给它打了一个标签，随后可以通过<code>LabelSelector</code>（标签选择 器）查询和筛选拥有某些Label的资源对象，Kubernetes通过这种方式实 现了类似SQL的简单又通用的对象查询机制。 <code>LabelSelector</code>可以被类比为SQL语句中的where查询条件，例如， <code>name=redis-slave</code>这个<code>LabelSelector</code>作用于Pod时，可以被类比为<code>select* frompodwherepod’sname=‘redis-slave’</code>这样的语句。当前有两种<code>Label Selector</code>表达式：基于等式的（Equality-based）和基于集合的（Setbased），前者采用等式类表达式匹配标签，下面是一些具体的例子。</p>
+<ul>
+<li><strong>name=redis-slave</strong>：匹配所有具有标签<code>name=redis-slave</code>的资源对象。</li>
+<li><strong>env!=production</strong>：匹配所有不具有标<code>签env=production</code>的资源对象，比如<code>env=test</code>就是满足此条件的标签之一。后者则使用集合操作类表达式匹配标签，下面是一些具体的例子。</li>
+<li><strong>namein（redis-master,redis-slave）</strong>：匹配所有具有标签<code>name=redis-master</code>或者<code>name=redis-slave</code>的资源对象。</li>
+<li><strong>namenotin（php-frontend）</strong>：匹配所有不具有标签<code>name=phpfrontend</code>的资源对象。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-5、Replication-Controller"><a href="#2-5、Replication-Controller" class="headerlink" title="2.5、Replication Controller"></a>2.5、Replication Controller</h3><ul>
+<li><p>RC是Kubernetes系统中的核心概念之一， 简单来说， 它其实定义了 一个期望的场景， 即声明某种Pod的副本数量在任意时刻都符合某个预 期值， 所以RC的定义包括如下几个部分。</p>
+<ul>
+<li><strong>Pod期待的副本数量。</strong></li>
+<li><strong>用于筛选目标Pod的Label Selector。</strong></li>
+<li><strong>当Pod的副本数量小于预期数量时， 用于创建新Pod的Pod模板 （template） 。</strong></li>
+</ul>
+</li>
+<li><p>RS是Kubernetes 1.2中， 将RC升级为另外一个新概念—<code>Replica Set</code>，官方解释 其为“下一代的RC”。 <code>Replica Set</code>与RC当前的唯一区别是， <code>Replica Sets</code>支 持基于集合的Label selector（Set-based selector） ， 而RC只支持基于等 式的Label Selector（equality-based selector） ， 这使得<code>Replica Set</code>的功能 更强</p>
+</li>
+<li><p><code>Replica Set</code>与<code>Deployment</code>这两个重要的资源对象逐步替代了之前RC的作用，是Kubernetes 1.3里Pod自动扩容（伸缩）这个告警功能实现的基础， 也将继续在Kubernetes未来的版本中发挥重要的作用，最后总结一下RC（Replica Set）的一些特性与作用。</p>
+<ul>
+<li><strong>在大多数情况下，我们通过定义一个RC实现Pod的创建及副本数量的自动控制。</strong></li>
+<li><strong>在RC里包括完整的Pod定义模板。</strong></li>
+<li><strong>RC通过Label Selector机制实现对Pod副本的自动控制。</strong></li>
+<li><strong>通过改变RC里的Pod副本数量，可以实现Pod的扩容或缩容。</strong></li>
+<li><strong>通过改变RC里Pod模板中的镜像版本，可以实现Pod的滚动升级。</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-6、Deployment"><a href="#2-6、Deployment" class="headerlink" title="2.6、Deployment"></a>2.6、Deployment</h3><ul>
+<li><p>Deployment是Kubernetes在1.2版本中引入的新概念， 用于更好地解 决Pod的编排问题。 为此， Deployment在内部使用了Replica Set来实现目 的， 无论从Deployment的作用与目的、 YAML定义， 还是从它的具体命 令行操作来看， 我们都可以把它看作RC的一次升级， 两者的相似度超 过90%。</p>
+</li>
+<li><p>Deployment相对于RC的一个最大升级是我们可以随时知道当前 Pod“部署”的进度。 实际上由于一个Pod的创建、 调度、 绑定节点及在目 标Node上启动对应的容器这一完整过程需要一定的时间， 所以我们期待 系统启动N个Pod副本的目标状态， 实际上是一个连续变化的“部署过 程”导致的最终状态。</p>
+</li>
+<li><p>Deployment的典型使用场景有以下几个：</p>
+<ul>
+<li>创建一个Deployment对象来生成对应的ReplicaSet并完成Pod副本的创建。检查Deployment的状态来看部署动作是否完成（Pod副本数量是否达到预期的值）。</li>
+<li>更新Deployment以创建新的Pod（比如镜像升级）。如果当前Deployment不稳定，则回滚到一个早先的Deployment 版本。</li>
+<li>暂停Deployment以便于一次性修改多个PodTemplateSpec的配置项，之后再恢复Deployment，进行新的发布。 扩展Deployment以应对高负载。</li>
+<li>查看Deployment的状态，以此作为发布是否成功的指标。</li>
+<li>清理不再需要的旧版本ReplicaSets。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-7、Horizontal-Pod-Autoscaler"><a href="#2-7、Horizontal-Pod-Autoscaler" class="headerlink" title="2.7、Horizontal Pod Autoscaler"></a>2.7、Horizontal Pod Autoscaler</h3><ul>
+<li><p>HPA与之前的RC、Deployment一样，也属于一种Kubernetes资源对象。通过追踪分析指定RC控制的所有目标Pod的负载变化情况，来确定是否需要有针对性地调整目标Pod的副本数量，这是HPA的实现原理。</p>
+</li>
+<li><p>Pod水平自动扩缩（HorizontalPodAutoscaler）可以基于CPU利用率自动扩缩ReplicationController、Deployment和ReplicaSet中的Pod数量。除了CPU利用率，也可以基于其他应程序提供的自定义度量指标来执行自动扩缩。Pod自动扩缩不适用于无法扩缩的对象，比如DaemonSet。</p>
+</li>
+<li><p>Pod水平自动扩缩工作机制：<br><img src="http://static.zybuluo.com/a807257775/upakxydzt7fr7x67npplnl22/image_1ehk9ocq4c9k1pdq17rl1gbpous13.png" alt="image_1ehk9ocq4c9k1pdq17rl1gbpous13.png-22kB"></p>
+</li>
+</ul>
+<h3 id="2-8、StatefulSet"><a href="#2-8、StatefulSet" class="headerlink" title="2.8、StatefulSet"></a>2.8、StatefulSet</h3><ul>
+<li><p>在Kubernetes系统中，Pod的管理对象RC、Deployment、DaemonSet和Job都面向无状态的服务。但现实中有很多服务是有状态的，特别是一些复杂的中间件集群，例如MySQL集群、MongoDB集群、Akka集群、ZooKeeper集群等，而StatefulSet则是用来创建有状态的集群控制器。</p>
+</li>
+<li><p>StatefulSet有如下特性：</p>
+<ul>
+<li>StatefulSet里的每个Pod都有稳定、唯一的网络标识，可以用来发现集群内的其他成员。假设StatefulSet的名称为kafka，那么第1个Pod叫kafka-0，-第2个叫kafka-1，以此类推。</li>
+<li>StatefulSet控制的Pod副本的启停顺序是受控的，操作第n个Pod时，前n-1个Pod已经是运行且准备好的状态。</li>
+<li>StatefulSet里的Pod采用稳定的持久化存储卷，通过PV或PVC来实现，删除Pod时默认不会删除与StatefulSet相关的存储卷（为了保证数据的安全）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-9、Service"><a href="#2-9、Service" class="headerlink" title="2.9、Service"></a>2.9、Service</h3><ul>
+<li><p>RC、RS和Deployment只是保证了支撑服务的微服务Pod的数量，但是没有解决如何访问这些服务的问题。一个Pod只是一个运行服务的实例，随时可能在一个节点上停止，在另一个节点以一个新的IP启动一个新的Pod，因此不能以确定的IP和端口号提供服务。要稳定地提供服务需要服务发现和负载均衡能力。服务发现完成的工作，是针对客户端访问的服务，找到对应的的后端服务实例。在K8s集群中，客户端需要访问的服务就是Service对象。每个Service会对应一个集群内部有效的虚拟IP，集群内部通过虚拟IP访问一个服务。</p>
+</li>
+<li><p>Pod、 RC与Service的逻辑关系：<br><img src="http://static.zybuluo.com/a807257775/frfe2ruvxpr4agekva453asx/image_1ehmofcit7hre3q1a5sflvnjt1t.png" alt="image_1ehmofcit7hre3q1a5sflvnjt1t.png-165.5kB"></p>
+</li>
+</ul>
+<h3 id="2-10、Job"><a href="#2-10、Job" class="headerlink" title="2.10、Job"></a>2.10、Job</h3><ul>
+<li><p>Job是K8s用来控制批处理型任务的API对象。批处理业务与长期伺服业务的主要区别是批处理业务的运行有头有尾，而长期伺服业务在用户不停止的情况下永远运行。Job管理的Pod根据用户的设置把任务成功完成就自动退出了。成功完成的标志根据不同的spec.completions策略而不同：单Pod型任务有一个Pod成功就标志完成；定数成功型任务保证有N个任务全部成功；工作队列型任务根据应用确认的全局成功而标志成功</p>
+</li>
+<li><p>Job所控制的Pod副本是短暂运行的，可以将其视为一组Docker容器，其中的每个Docker容器都仅仅运行一次。当Job控制的所有Pod副本都运行结束时，对应的Job也就结束了。Job在实现方式上与RC等副本控制器不同，Job生成的Pod副本是不能自动重启的，对应Pod副本的RestartPoliy都被设置为Never。因此，当对应的Pod副本都执行完成时，相应的Job也就完成了控制使命，即Job生成的Pod在Kubernetes中是短暂存在的。Kubernetes在1.5版本之后又提供了类似crontab的定时任务——CronJob，解决了某些批处理任务需要定时反复执行的问题。</p>
+</li>
+<li><p>Job所控制的Pod副本的工作模式能够多实例并行计算，以TensorFlow框架为例，可以将一个机器学习的计算任务分布到10台机器上，在每台机器上都运行一个worker执行计算任务，这很适合通过Job生成10个Pod副本同时启动运算。</p>
+</li>
+</ul>
+<h3 id="2-11、Volume"><a href="#2-11、Volume" class="headerlink" title="2.11、Volume"></a>2.11、Volume</h3><ul>
+<li><p>Volume（存储卷）是Pod中能够被多个容器访问的共享目录。Kubernetes的Volume概念、用途和目的与Docker的Volume比较类似，但两者不能等价。首先，Kubernetes中的Volume被定义在Pod上，然后被一个Pod里的多个容器挂载到具体的文件目录下；其次，Kubernetes中的Volume与Pod的生命周期相同，但与容器的生命周期不相关，当容器终止或者重启时，Volume中的数据也不会丢失。最后，Kubernetes支持多种类型的Volume，例如GlusterFS、Ceph等先进的分布式文件系统。</p>
+</li>
+<li><p>Volume的使用也比较简单，在大多数情况下，我们先在Pod上声明一个Volume，然后在容器里引用该Volume并挂载（Mount）到容器里的某个目录上。举例来说，我们要给之前的TomcatPod增加一个名为datavol的Volume，并且挂载到容器的/mydata-data目录上，则只要对Pod的定义文件做如下修正即可（注意代码中的粗体部分）</p>
+</li>
+<li><p>Kubernetes 支持下列类型的卷：</p>
+<ul>
+<li>awsElasticBlockStore、azureDisk、azureFile、cephfs、cinder、configMap、csi、downwardAPI、emptyDir、fc (fibre channel)、flexVolume、flocker、gcePersistentDisk、gitRepo (deprecated)、glusterfs、hostPath、iscsi、local、nfs、persistentVolumeClaim、projected、portworxVolume、quobyte、rbd、scaleIO、secret、storageos、vsphereVolume</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-12、Persistent-Volume"><a href="#2-12、Persistent-Volume" class="headerlink" title="2.12、Persistent Volume"></a>2.12、Persistent Volume</h3><ul>
+<li>Volume是被定义在Pod上的，属于计算资源的一部分，而实际上，网络存储是相对独立于计算资源而存在的一种实体资源。比如在使用虚拟机的情况下，我们通常会先定义一个网络存储，然后从中划出一个“网盘”并挂接到虚拟机上。<code>PersistentVolume（PV）</code>和与之相关联的<code>PersistentVolumeClaim（PVC）</code>也起到了类似的作用。PV可以被理解成Kubernetes集群中的某个网络存储对应的一块存储，它与Volume类似，但有以下区别。<ul>
+<li><code>PV</code>只能是网络存储，不属于任何Node，但可以在每个Node上访问。◎PV并不是被定义在Pod上的，而是独立于Pod之外定义的。</li>
+<li><code>PV</code>目前支持的类型包括：<code>gcePersistentDisk</code>、<code>AWSElasticBlockStore</code>、<code>AzureFile</code>、<code>AzureDisk</code>、<code>FC（FibreChannel）</code>、<code>Flocker</code>、<code>NFS</code>、<code>iSCSI</code>、<code>RBD（RadosBlockDevice）</code>、<code>CephFS</code>、<code>Cinder</code>、<code>GlusterFS</code>、<code>VsphereVolume</code>、<code>QuobyteVolumes</code>、<code>VMwarePhoton</code>、<code>PortworxVolumes</code>、<code>ScaleIOVolumes</code>和<code>HostPath（仅供单机测试）</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-13、Namespace"><a href="#2-13、Namespace" class="headerlink" title="2.13、Namespace"></a>2.13、Namespace</h3><ul>
+<li><p>Namespace（命名空间）是Kubernetes系统中的另一个非常重要的概念，Namespace在很多情况下用于实现多租户的资源隔离。Namespace通过将集群内部的资源对象“分配”到不同的Namespace中，形成逻辑上分组的不同项目、小组或用户组，便于不同的分组在共享使用整个集群的资源的同时还能被分别管理。</p>
+</li>
+<li><p>Kubernetes 会创建三个初始名字空间：</p>
+<ul>
+<li><code>default</code> 没有指明使用其它名字空间的对象所使用的默认名字空间</li>
+<li><code>kube-system Kubernetes</code> 系统创建对象所使用的名字空间</li>
+<li><code>kube-public</code> 这个名字空间是自动创建的，所有用户（包括未经过身份验证的用户）都可以读取它。 这个名字空间主要用于集群使用，以防某些资源在整个集群中应该是可见和可读的。 这个名字空间的公共方面只是一种约定，而不是要求。</li>
+<li><code>kube-node-lease</code> 此名字空间用于与各个节点相关的租期（Lease）对象； 此对象的设计使得集群规模很大时节点心跳检测性能得到提升</li>
+</ul>
+</li>
+<li><p>当给每个租户创建一个Namespace来实现多租户的资源隔离时，还能结合Kubernetes的资源配额管理，限定不同租户能占用的资源，例如CPU使用量、内存使用量等</p>
+</li>
+</ul>
+<h3 id="2-14、Annotation"><a href="#2-14、Annotation" class="headerlink" title="2.14、Annotation"></a>2.14、Annotation</h3><ul>
+<li>Annotation（注解）与Label类似，也使用key/value键值对的形式进行定义。不同的是Label具有严格的命名规则，它定义的是Kubernetes对 象的元数据（Metadata），并且用于LabelSelector。Annotation则是用户 任意定义的附加信息，以便于外部工具查找。在很多时候，Kubernetes的模块自身会通过Annotation标记资源对象的一些特殊信息。通常来说，用Annotation来记录的信息如下。<ul>
+<li>build信息、release信息、Docker镜像信息等，例如时间戳、 releaseid号、PR号、镜像Hash值、DockerRegistry地址等。 </li>
+<li>日志库、监控库、分析库等资源库的地址信息。</li>
+<li>程序调试工具信息，例如工具名称、版本号等。</li>
+<li>团队的联系信息，例如电话号码、负责人名称、网址等。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-15、ConfigMap"><a href="#2-15、ConfigMap" class="headerlink" title="2.15、ConfigMap"></a>2.15、ConfigMap</h3><ul>
+<li><p>ConfigMap 是一种 API 对象，用来将非机密性的数据保存到健值对中。使用时可以用作环境变量、命令行参数或者存储卷中的配置文件。ConfigMap将您的环境配置信息和容器镜像解耦，便于应用配置的修改。当您需要储存机密信息时可以使用 Secret 对象</p>
+</li>
+<li><p>Kubernetes提供了一种内建机制，将存储在etcd中的ConfigMap通过Volume映射的方式变成目标Pod内的配置文件，不管目标Pod被调度到哪台服务器上，都会完成自动映射。进一步地，如果ConfigMap中的key-value数据被修改，则映射到Pod中的“配置文件”也会随之自动更新。于是，KubernetesConfigMap就成了分布式系统中最为简单（使用方法简单，但背后实现比较复杂）且对应用无侵入的配置中心。</p>
+</li>
+<li><p>ConfigMap配置集中化的一种简单方案如图：<br><img src="http://static.zybuluo.com/a807257775/pbgqoinscwaaxk46hok2b4nk/image_1ehmm8ts7bdf1esanet1tkd1nml1g.png" alt="image_1ehmm8ts7bdf1esanet1tkd1nml1g.png-233.2kB"></p>
+</li>
+</ul>
+<h2 id="3、官方手册合集"><a href="#3、官方手册合集" class="headerlink" title="3、官方手册合集"></a>3、官方手册合集</h2><ul>
+<li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/" target="_blank" rel="noopener">Labels and Selectors官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">Deployments官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/replicationcontroller/" target="_blank" rel="noopener">ReplicationController官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/pods/" target="_blank" rel="noopener">Pod官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/architecture/nodesnetes.io/zh/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">Node官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Horizontal Pod Autoscaler官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/tutorials/stateful-application/basic-stateful-set3:" target="_blank" rel="noopener">StatefulSet官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/configuration/configmap/" target="_blank" rel="noopener">ConfigMap官方手册</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/" target="_blank" rel="noopener">Annotations官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/overview/working-with-objects/namespaces/" target="_blank" rel="noopener">Namespace官方手册</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener">Persistent Volumes官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/storage/volumes/" target="_blank" rel="noopener">Volume官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/workloads/controllers/job/" target="_blank" rel="noopener">Job官方手册</a></li>
+<li><a href="https://kubernetes.io/zh/docs/concepts/services-networking/service-topology/" target="_blank" rel="noopener">Service官方手册</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2020/09/08/Kubernetes的基本概念/" title="Kubernetes的基本概念">2020/09/08/Kubernetes的基本概念/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes/" rel="tag"><i class="fa fa-tag"></i> Kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/16/linux命令之-tmux终端复用器/" rel="next" title="linux命令之-tmux终端复用器">
+                <i class="fa fa-chevron-left"></i> linux命令之-tmux终端复用器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/09/08/Kubernetes常用网站记录/" rel="prev" title="Kubernetes常用网站记录">
+                Kubernetes常用网站记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes的基本概念"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、Kubernetes概述"><span class="nav-number">1.1.</span> <span class="nav-text">1、Kubernetes概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、kubernetes是什么"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、kubernetes是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2、容器优势"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2、容器优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3、Kubernetes的特性"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、Kubernetes的特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、Kubernetes-组件"><span class="nav-number">1.2.</span> <span class="nav-text">2、Kubernetes 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、Master"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、Master</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、Node"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、Pod"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、Label"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4、Label</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、Replication-Controller"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.5、Replication Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、Deployment"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.6、Deployment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7、Horizontal-Pod-Autoscaler"><span class="nav-number">1.2.7.</span> <span class="nav-text">2.7、Horizontal Pod Autoscaler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8、StatefulSet"><span class="nav-number">1.2.8.</span> <span class="nav-text">2.8、StatefulSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9、Service"><span class="nav-number">1.2.9.</span> <span class="nav-text">2.9、Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10、Job"><span class="nav-number">1.2.10.</span> <span class="nav-text">2.10、Job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11、Volume"><span class="nav-number">1.2.11.</span> <span class="nav-text">2.11、Volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-12、Persistent-Volume"><span class="nav-number">1.2.12.</span> <span class="nav-text">2.12、Persistent Volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-13、Namespace"><span class="nav-number">1.2.13.</span> <span class="nav-text">2.13、Namespace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-14、Annotation"><span class="nav-number">1.2.14.</span> <span class="nav-text">2.14、Annotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-15、ConfigMap"><span class="nav-number">1.2.15.</span> <span class="nav-text">2.15、ConfigMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、官方手册合集"><span class="nav-number">1.3.</span> <span class="nav-text">3、官方手册合集</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

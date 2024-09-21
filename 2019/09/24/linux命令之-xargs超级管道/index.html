@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Linux基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="linux命令之-xargs超级管道1、xagrs命令详解1.1、命简单令介绍  xargs - build and execute command lines from standard input，xargs 命令的作用，是将标准输入转为命令行参数，Unix 命令都带有参数，有些命令可以接受”标准输入”（stdin）作为参数。如:(cat /etc/passwd | grep root)上面的">
+<meta name="keywords" content="Linux基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux命令之-xargs超级管道">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/09/24/linux命令之-xargs超级管道/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="linux命令之-xargs超级管道1、xagrs命令详解1.1、命简单令介绍  xargs - build and execute command lines from standard input，xargs 命令的作用，是将标准输入转为命令行参数，Unix 命令都带有参数，有些命令可以接受”标准输入”（stdin）作为参数。如:(cat /etc/passwd | grep root)上面的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/v8zaxf1h9qvck7l40vkxvtdz/image_1dlhn08g81asfmcf1h541dc81b7mm.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.409Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux命令之-xargs超级管道">
+<meta name="twitter:description" content="linux命令之-xargs超级管道1、xagrs命令详解1.1、命简单令介绍  xargs - build and execute command lines from standard input，xargs 命令的作用，是将标准输入转为命令行参数，Unix 命令都带有参数，有些命令可以接受”标准输入”（stdin）作为参数。如:(cat /etc/passwd | grep root)上面的">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/v8zaxf1h9qvck7l40vkxvtdz/image_1dlhn08g81asfmcf1h541dc81b7mm.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/09/24/linux命令之-xargs超级管道/">
+
+
+
+
+
+  <title>linux命令之-xargs超级管道 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/09/24/linux命令之-xargs超级管道/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux命令之-xargs超级管道</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T22:15:00+08:00">
+                2019-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/24/linux命令之-xargs超级管道/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/24/linux命令之-xargs超级管道/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="linux命令之-xargs超级管道"><a href="#linux命令之-xargs超级管道" class="headerlink" title="linux命令之-xargs超级管道"></a>linux命令之-xargs超级管道</h1><h2 id="1、xagrs命令详解"><a href="#1、xagrs命令详解" class="headerlink" title="1、xagrs命令详解"></a>1、xagrs命令详解</h2><h3 id="1-1、命简单令介绍"><a href="#1-1、命简单令介绍" class="headerlink" title="1.1、命简单令介绍"></a>1.1、命简单令介绍</h3><p><img src="http://static.zybuluo.com/a807257775/v8zaxf1h9qvck7l40vkxvtdz/image_1dlhn08g81asfmcf1h541dc81b7mm.png" alt="image_1dlhn08g81asfmcf1h541dc81b7mm.png-619.7kB"></p>
+<ul>
+<li>xargs - build and execute command lines from standard input，xargs 命令的作用，是将标准输入转为命令行参数，Unix 命令都带有参数，有些命令可以接受”标准输入”（<code>stdin</code>）作为参数。如:(<code>cat /etc/passwd | grep root</code>)上面的代码使用了管道命令（<code>|</code>）。管道命令的作用，是将左侧命令（<code>cat /etc/passwd</code>）的标准输出转换为标准输入，提供给右侧命令（<code>grep root</code>）作为参数。因为 grep 命令可以接受标准输入作为参数，所以上面的代码等同于下面的代码。(<code>grep root /etc/passwd</code>),但是，大多数命令都不接受标准输入作为参数，只能直接在命令行输入参数，这导致无法用管道命令传递参数。举例来说，echo 命令就不接受管道传参。(<code>echo &quot;hello world&quot; | echo</code>)，上面的代码不会有输出。因为管道右侧的 echo 不接受管道传来的标准输入作为参数。</li>
+</ul>
+<h3 id="1-2、命令应用场景"><a href="#1-2、命令应用场景" class="headerlink" title="1.2、命令应用场景"></a>1.2、命令应用场景</h3><ul>
+<li>xargs 的作用在于，大多数命令（比如 rm、mkdir、ls ）与管道一起使用时，都需要 xargs 将标准输入转为命令行参数，主要是将标准输入转为命令行参数；<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#如下的指令将管道左侧的标准输入，转为命令行参数 hello world，传给第二个 echo 命令。</span><br><span class="line">[root@elk ~]# echo &quot;hello world&quot; | xargs echo</span><br><span class="line">hello world</span><br><span class="line">#如下的指令等同于 mkdir one two three。如果不加 xargs 就会报错，提示 mkdir 缺少操作参数。</span><br><span class="line">[root@elk ~]# echo &quot;one two three&quot; | xargs mkdir -pv</span><br><span class="line">mkdir: 已创建目录 &quot;one&quot;</span><br><span class="line">mkdir: 已创建目录 &quot;two&quot;</span><br><span class="line">mkdir: 已创建目录 &quot;three&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2、xargs命令实战"><a href="#2、xargs命令实战" class="headerlink" title="2、xargs命令实战"></a>2、xargs命令实战</h2><h3 id="2-1、命令帮助手册"><a href="#2-1、命令帮助手册" class="headerlink" title="2.1、命令帮助手册"></a>2.1、命令帮助手册</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">#NAME</span><br><span class="line">       xargs - build and execute command lines from standard input</span><br><span class="line"></span><br><span class="line">#SYNOPSIS</span><br><span class="line">       xargs  [-0prtx]  [-E eof-str] [-e[eof-str]] [--eof[=eof-str]] [--null] [-d delimiter] [--delimiter delimiter] [-I replace-str] [-i[replace-str]] [--replace[=replace-str]] [-l[max-lines]] [-L max-lines] [--max-lines[=max-lines]] [-n max-</span><br><span class="line">       args] [--max-args=max-args] [-s max-chars] [--max-chars=max-chars] [-P max-procs] [--max-procs=max-procs] [--interactive] [--verbose] [--exit] [--no-run-if-empty] [--arg-file=file] [--show-limits] [--version] [--help] [command [initial-</span><br><span class="line">       arguments]]</span><br><span class="line"></span><br><span class="line">#DESCRIPTION</span><br><span class="line">       This  manual page documents the GNU version of xargs.  xargs reads items from the standard input, delimited by blanks (which can be protected with double or single quotes or a backslash) or newlines, and executes the command (default is</span><br><span class="line">       /bin/echo) one or more times with any initial-arguments followed by items read from standard input.  Blank lines on the standard input are ignored.</span><br><span class="line">       Because Unix filenames can contain blanks and newlines, this default behaviour is often problematic; filenames containing blanks and/or newlines are incorrectly processed by xargs.  In these situations it is better to use the -0 option,</span><br><span class="line">       which  prevents  such problems.   When using this option you will need to ensure that the program which produces the input for xargs also uses a null character as a separator.  If that program is GNU find for example, the -print0 option</span><br><span class="line">       does this for you.</span><br><span class="line">       If any invocation of the command exits with a status of 255, xargs will stop immediately without reading any further input.  An error message is issued on stderr when this happens.</span><br><span class="line"></span><br><span class="line">#OPTIONS（仅贴出主要使用参数进行翻译）</span><br><span class="line">       -0     由于 xargs 默认将空格作为分隔符，所以不太适合处理文件名，因为文件名可能包含空格。find 命令有一个特别的参数 -print0，指定输出的文件列表以 null 分隔。然后，xargs 命令的 -0 参数表示用 null 当作分隔符。</span><br><span class="line"></span><br><span class="line">       -d delim</span><br><span class="line">              为输入指定一个定制的分割符，默认情况下，xargs将换行符和空格作为分隔符，把标准输入分解成一个个命令行参数，-d 参数可以更改分隔符（echo &quot;wWwWw.WbWaWiWdWuW.WcWoWm&quot; |xargs -dW）</span><br><span class="line"></span><br><span class="line">       --help Print a summary of the options to xargs and exit.</span><br><span class="line"></span><br><span class="line">       -I replace-str</span><br><span class="line">              用string来代替传递的数据-n[数字] 设置每次传递几行数据</span><br><span class="line"></span><br><span class="line">       -i[replace-str]</span><br><span class="line">              用&#123;&#125;代替 传递的数据</span><br><span class="line"></span><br><span class="line">       -L max-lines</span><br><span class="line">              如果标准输入包含多行，-L 参数指定多少行作为一个命令行参数</span><br><span class="line"></span><br><span class="line">       -n max-args</span><br><span class="line">             -L 参数虽然解决了多行的问题，但是有时用户会在同一行输入多项，-n 参数指定每次将多少项作为命令行参数。</span><br><span class="line"></span><br><span class="line">       -p     使用 xargs 命令以后，由于存在转换参数过程，有时需要确认一下到底执行的是什么命令。-p 参数打印出要执行的命令，询问用户是否要执行 ‘y’ or ‘Y’.</span><br><span class="line"></span><br><span class="line">       -s max-chars</span><br><span class="line">             [大小] 设置传递参数的最大字节数(小于131072字节)</span><br><span class="line"></span><br><span class="line">       --verbose</span><br><span class="line">       -t     -t 参数则是打印出最终要执行的命令，然后直接执行，不需要用户确认。</span><br><span class="line"></span><br><span class="line">       --version</span><br><span class="line">              Print the version number of xargs and exit.</span><br><span class="line"></span><br><span class="line">       -P max-procs</span><br><span class="line">              xargs 默认只用一个进程执行命令。如果命令要执行多次，必须等上一次执行完，才能执行下一次。--max-procs 参数指定同时用多少个进程并行执行命令。--max-procs 2 表示同时最多使用两个进程，--max-procs 0 表示不限制进程数。</span><br><span class="line"></span><br><span class="line">#EXAMPLES（实列）</span><br><span class="line">       #假如你有一个文件包含了很多你希望下载的URL, 你能够使用xargs 下载所有链接</span><br><span class="line">       cat list.txt | xargs wget –c</span><br><span class="line"></span><br><span class="line">       #查找所有的jpg 文件，并且压缩它</span><br><span class="line">       find / -name *.jpg -type f -print | xargs tar -cvzf images.tar.gz</span><br><span class="line"></span><br><span class="line">       #删除该目录下面的普通文件</span><br><span class="line">       find ./ -type f -print0 | xargs -0 rm</span><br><span class="line">       find -name &apos;.svn&apos; |xargs rm -rf </span><br><span class="line"></span><br><span class="line">       #将当前目录下php文件,改名字</span><br><span class="line">       ls | grep .php | xargs -i mv &#123;&#125; &#123;&#125;.bak    </span><br><span class="line"></span><br><span class="line">       #与上例相同</span><br><span class="line">       ls | grep .php | xargs -I &#123;&#125; mv &#123;&#125; &#123;&#125;.bak  </span><br><span class="line"></span><br><span class="line">       #删除当前文件夹下的，tmp文件</span><br><span class="line">       find ./ -name &quot;*.tmp&quot; | xargs -i rm -rf &#123;&#125;  </span><br><span class="line"></span><br><span class="line">       #将包含mem的文件并把移到指定的目录里，用户需确认是否执行</span><br><span class="line">       ls *mem*  |xargs -i -p mv &#123;&#125; sky/</span><br><span class="line"></span><br><span class="line">       #批量拷贝文件夹到指定目录</span><br><span class="line">       for i in `find . -name *.html`;do j=$&#123;i%/*/*&#125;;cp -rfp $i $j;done</span><br><span class="line"></span><br><span class="line">       #批量将当前目录下属主为root的所有类型文件，修改用户信息为www:nfsnobody</span><br><span class="line">       find . -user root |  xargs -i chown www:nfsnobody &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2、命令参数详解"><a href="#2-2、命令参数详解" class="headerlink" title="2.2、命令参数详解"></a>2.2、命令参数详解</h3><ul>
+<li><p><code>-d</code> 参数与分隔符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#默认情况下，xargs将换行符和空格作为分隔符，把标准输入分解成一个个命令行参数，而-d 参数可以更改分隔符;</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@elk ~]# echo &quot;wWwWw.lWiWsWiWrWlWiWfWe.WcWoWm&quot; |xargs -dW</span><br><span class="line">w w w.l i s i r l i f e. c o m</span><br><span class="line"></span><br><span class="line">#EXAMPLES-2：</span><br><span class="line">[root@elk ~]# echo -e &quot;a\tb\tc&quot;</span><br><span class="line">a	b	c</span><br><span class="line">[root@elk ~]# echo -e &quot;a\tb\tc&quot; | xargs -d &quot;\t&quot; echo</span><br><span class="line">a b c</span><br><span class="line">#上面的命令指定制表符 \t 作为分隔符，所以 a\tb\tc 就转换成了三个命令行参数。echo 命令的 -e 参数表示解释转义字符;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-p</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#使用 xargs 命令以后，由于存在转换参数过程，有时需要确认一下到底执行的是什么命令;</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@elk ~]# echo &apos;one two three&apos; | xargs -p mkdir -pv</span><br><span class="line">mkdir -pv one two three ?...y</span><br><span class="line">mkdir: 已创建目录 &quot;one&quot;</span><br><span class="line">mkdir: 已创建目录 &quot;two&quot;</span><br><span class="line">mkdir: 已创建目录 &quot;three&quot;</span><br><span class="line">#上面的命令执行以后，会打印出最终要执行的命令，让用户确认输入`y or Y`。用户按下回车以后，才会真正执行</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-t</code>参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#-t 参数则是打印出最终要执行的命令，然后直接执行，不需要用户确认;</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@elk ~]# echo &apos;one two three&apos; | xargs -t rm -rf</span><br><span class="line">rm -rf one two three</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-0</code> 参数与 <code>find</code> 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#由于 xargs 默认将空格作为分隔符，所以不太适合处理文件名，因为文件名可能包含空格。find 命令有一个特别的参数 -print0，指定输出的文件列表以 null 分隔。然后，xargs 命令的 -0 参数表示用 null 当作分隔符。</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@localhost lisir]# ll</span><br><span class="line">总用量 0</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 1</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 10 10</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 2</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 3</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 4</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 5</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 6</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 7</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 8</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 9</span><br><span class="line">-rw-r--r-- 1 root root 0 9月  24 15:33 9 9</span><br><span class="line">[root@localhost lisir]# find . -type f -print0 | xargs -0 -t -p rm -rf</span><br><span class="line">rm -rf ./7 ./3 ./4 ./9 ./2 ./9 9 ./5 ./1 ./10 10 ./8 ./6 ?...</span><br><span class="line">#上面命令删除当前路径下的所有文件。由于分隔符是 null，所以处理包含空格的文件名，也不会报;。</span><br><span class="line"></span><br><span class="line">#EXAMPLES-2：</span><br><span class="line">[root@localhost lisir]# find /tmp/lisir/ -type f -mtime -1 -print0 | xargs -0 -t tar -cvzf test.tar.gz</span><br><span class="line">tar -cvzf test.tar.gz /tmp/lisir/7 /tmp/lisir/3 /tmp/lisir/4 /tmp/lisir/9 /tmp/lisir/2 /tmp/lisir/9 9 /tmp/lisir/5 /tmp/lisir/1 /tmp/lisir/10 10 /tmp/lisir/8 /tmp/lisir/6 </span><br><span class="line">[root@localhost lisir]# tar tvf test.tar.gz </span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/7</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/3</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/4</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/9</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/2</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/9 9</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/5</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/1</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/10 10</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/8</span><br><span class="line">-rw-r--r-- root/root         0 2019-09-24 15:33 tmp/lisir/6</span><br><span class="line">#拓展:还有一个原因，使得 xargs 特别适合 find 命令。有些命令（比如 rm）一旦参数过多会报错 &quot;参数列表过长&quot;，而无法执行，改用 xargs 就没有这个问题，因为它对每个参数执行一次命令;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-L</code> 指定行数传参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#如果标准输入包含多行，-L 参数指定多少行作为一个命令行参数;</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@localhost lisir]# echo -e &quot;a\nb\nc&quot; | xargs -L 1 echo</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">#上面代码指定每行运行一次 echo 命令，所以 echo 命令执行了三次，输出了三行;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-n</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#-L 参数虽然解决了多行的问题，但是有时用户会在同一行输入多项;</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@localhost lisir]# echo &#123;0..9&#125; | xargs -n 2 echo</span><br><span class="line">0 1</span><br><span class="line">2 3</span><br><span class="line">4 5</span><br><span class="line">6 7</span><br><span class="line">8 9</span><br><span class="line">#上面命令指定，每两个参数运行一次 echo 命令。所以，10 个阿拉伯数字运行了五次 echo 命令，输出了五行;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-I</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#如果 xargs 要将命令行参数传给多个命令，可以使用 -I 参数</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@localhost lisir]# ls | egrep &apos;1|2|3|4|5&apos; | xargs -t -I &#123;&#125; mv &#123;&#125; &#123;&#125;.bak  </span><br><span class="line">mv 1 1.bak </span><br><span class="line">mv 10 10 10 10.bak </span><br><span class="line">mv 2 2.bak </span><br><span class="line">mv 3 3.bak </span><br><span class="line">mv 4 4.bak </span><br><span class="line">mv 5 5.bak </span><br><span class="line"></span><br><span class="line">#EXAMPLES-2：</span><br><span class="line">[root@localhost lisir]# echo -e &quot;one\ntwo\nthree&quot; &gt; lisir.txt</span><br><span class="line">[root@localhost lisir]# cat lisir.txt </span><br><span class="line">one</span><br><span class="line">two</span><br><span class="line">three</span><br><span class="line">[root@localhost lisir]# cat lisir.txt | xargs -I file sh -c &apos;echo file; mkdir -pv file&apos;</span><br><span class="line">one</span><br><span class="line">mkdir: 已创建目录 &quot;one&quot;</span><br><span class="line">two</span><br><span class="line">mkdir: 已创建目录 &quot;two&quot;</span><br><span class="line">three</span><br><span class="line">mkdir: 已创建目录 &quot;three&quot;</span><br><span class="line">#上面代码中，lisir.txt 是一个三行的文本文件。我们希望对每一项命令行参数，执行两个命令（echo 和 mkdir），使用 -I file 表示 file 是命令行参数的替代字符串。执行命令时，具体的参数会替代掉 echo file; mkdir file 里面的两个 file</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-i</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#用 &#123;&#125; 代替 传递的数据</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@localhost lisir]# ls | egrep &apos;6|7|8|9&apos; | xargs -t -i mv &#123;&#125; &#123;&#125;.bak</span><br><span class="line">mv 6 6.bak </span><br><span class="line">mv 7 7.bak </span><br><span class="line">mv 8 8.bak </span><br><span class="line">mv 9 9.bak </span><br><span class="line">mv 9 9 9 9.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>--max-procs</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#xargs 默认只用一个进程执行命令。如果命令要执行多次，必须等上一次执行完，才能执行下一次。--max-procs 参数指定同时用多少个进程并行执行命令。--max-procs 2 表示同时最多使用两个进程，--max-procs 0 表示不限制进程数</span><br><span class="line">#EXAMPLES-1：</span><br><span class="line">[root@elk ~]# pgrep zabbix | xargs -n 1 --max-procs 0 kill</span><br><span class="line">#上面命令表示，同时关闭所有zabbix进程，运行速度会快很多</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/09/24/linux命令之-xargs超级管道/" title="linux命令之-xargs超级管道">2019/09/24/linux命令之-xargs超级管道/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux基础/" rel="tag"><i class="fa fa-tag"></i> Linux基础</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/24/linux命令之-find文件查找/" rel="next" title="linux命令之-find文件查找">
+                <i class="fa fa-chevron-left"></i> linux命令之-find文件查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/Nginx缓存模块详解-proxy-cache/" rel="prev" title="Nginx缓存模块详解-proxy-cache">
+                Nginx缓存模块详解-proxy-cache <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux命令之-xargs超级管道"><span class="nav-number">1.</span> <span class="nav-text">linux命令之-xargs超级管道</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、xagrs命令详解"><span class="nav-number">1.1.</span> <span class="nav-text">1、xagrs命令详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、命简单令介绍"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、命简单令介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2、命令应用场景"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2、命令应用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、xargs命令实战"><span class="nav-number">1.2.</span> <span class="nav-text">2、xargs命令实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、命令帮助手册"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、命令帮助手册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、命令参数详解"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、命令参数详解</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

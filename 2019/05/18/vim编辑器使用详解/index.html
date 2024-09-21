@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Linux基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="vim编辑器使用详解1、VIM简介 Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性。VIM是纯粹的自由软件。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自Emacs的不同变体。1999年Emacs被选为Linuxworld文本编辑分类的优胜者，Vim屈居第二。但在2000年2月Vim赢得了SlashdotBeanie的最佳开放源">
+<meta name="keywords" content="Linux基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim编辑器使用详解">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/05/18/vim编辑器使用详解/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="vim编辑器使用详解1、VIM简介 Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性。VIM是纯粹的自由软件。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自Emacs的不同变体。1999年Emacs被选为Linuxworld文本编辑分类的优胜者，Vim屈居第二。但在2000年2月Vim赢得了SlashdotBeanie的最佳开放源">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.411Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vim编辑器使用详解">
+<meta name="twitter:description" content="vim编辑器使用详解1、VIM简介 Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性。VIM是纯粹的自由软件。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自Emacs的不同变体。1999年Emacs被选为Linuxworld文本编辑分类的优胜者，Vim屈居第二。但在2000年2月Vim赢得了SlashdotBeanie的最佳开放源">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/05/18/vim编辑器使用详解/">
+
+
+
+
+
+  <title>vim编辑器使用详解 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/05/18/vim编辑器使用详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vim编辑器使用详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-18T23:13:00+08:00">
+                2019-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/18/vim编辑器使用详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/18/vim编辑器使用详解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="vim编辑器使用详解"><a href="#vim编辑器使用详解" class="headerlink" title="vim编辑器使用详解"></a>vim编辑器使用详解</h1><h2 id="1、VIM简介"><a href="#1、VIM简介" class="headerlink" title="1、VIM简介"></a>1、VIM简介</h2><ul>
+<li>Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性。VIM是纯粹的自由软件。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自Emacs的不同变体。1999年Emacs被选为Linuxworld文本编辑分类的优胜者，Vim屈居第二。但在2000年2月Vim赢得了SlashdotBeanie的最佳开放源代码文本编辑器大奖，又将Emacs推至二线，总的来看，Vim和Emacs同样都是非常优秀的文本编辑器。全屏幕的编辑器：VIM，又称，visual interface，是一款文本编辑器，vi, vi iMproved</li>
+</ul>
+<h2 id="2、打开文件"><a href="#2、打开文件" class="headerlink" title="2、打开文件"></a>2、打开文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim [options] [file ..]</span><br><span class="line"># vim</span><br><span class="line"># vim /PATH/TO/SOMEFILE    </span><br><span class="line">  +#：#为行号；</span><br><span class="line">  +：快速定位至最后一行</span><br><span class="line">  +/PATTERN：快速匹配到文档</span><br></pre></td></tr></table></figure>
+<h2 id="3、VIM模式"><a href="#3、VIM模式" class="headerlink" title="3、VIM模式"></a>3、VIM模式</h2><blockquote>
+<p>提示：默认为 编辑模式</p>
+</blockquote>
+<ul>
+<li>模式间转换</li>
+<li>编辑模式–&gt;输入模式：<br>  <code>i</code>：insert, 在当前光标所在处，转换为输入模式<br>  <code>I</code>：在当前光标所在行行首，转换为输入模式<br>  <code>a</code>: append, 在当前光标所在处字符后方，转换为输入模式<br>  <code>A</code>：在当前光标所在行行尾，转换为输入模式<br>  <code>o</code>: 在当前光标所在行的下方新建一个空白行，并转换为输入模式<br>  <code>O</code>：在当前光标所在行的上方新建一个空白行，并转换为输入模式</li>
+<li>输入模式–&gt;编辑模式：<br>  <code>ESC</code></li>
+<li>编辑模式–&gt;末行模式：<br>  <code>:</code></li>
+<li>末行模式–&gt;编辑模式：<br>  <code>ESC</code></li>
+</ul>
+<h2 id="4、关闭VIM"><a href="#4、关闭VIM" class="headerlink" title="4、关闭VIM"></a>4、关闭VIM</h2><ul>
+<li><p>末行模式：<br><code>:q!</code> 强制退出，不保存编辑的内容退出；<br><code>:wq</code> 保存退出<br><code>:x</code> 保存退出<br><code>:wq!</code>, <code>:x!</code> 强制保存退出</p>
+</li>
+<li><p>编辑模式：<br><code>ZZ</code>：保存退出</p>
+</li>
+</ul>
+<h2 id="5、编辑命令"><a href="#5、编辑命令" class="headerlink" title="5、编辑命令"></a>5、编辑命令</h2><h3 id="5-1、光标跳转"><a href="#5-1、光标跳转" class="headerlink" title="5.1、光标跳转"></a>5.1、光标跳转</h3><ul>
+<li><p>字符间移动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#&#123;h|j|k|l&#125;：一次移动#个字符间距</span><br><span class="line"> 	k</span><br><span class="line">h&lt;-- --&gt;l</span><br><span class="line"> 	j</span><br><span class="line"></span><br><span class="line">#&#123;w|e|b&#125;：</span><br><span class="line">单词间移动：</span><br><span class="line">w：下一个单词的词首</span><br><span class="line">e：当前或下一个单词的词尾</span><br><span class="line">b：当前或前一个单词的词首</span><br><span class="line"></span><br><span class="line">行首行尾间跳转：</span><br><span class="line">0: 跳转至绝对行首</span><br><span class="line">^: 行首的第一个非空白字符</span><br><span class="line">$: 跳转至绝对行尾</span><br><span class="line"></span><br><span class="line">#句子间跳转：</span><br><span class="line">)</span><br><span class="line">(</span><br><span class="line"></span><br><span class="line">#段落间跳转：</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">#行间快速移动：</span><br><span class="line">#G:</span><br><span class="line">	#: 目标行编号</span><br><span class="line">G: 文尾</span><br><span class="line">1G：文首</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>末行模式：<br>  <code>:#</code>  跳转至第#行</p>
+</li>
+</ul>
+<h3 id="5-2、编辑操作"><a href="#5-2、编辑操作" class="headerlink" title="5.2、编辑操作"></a>5.2、编辑操作</h3><ul>
+<li><p>x：删除光标所在处的字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#x: 删除光标所在处及向后的共#个字符</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>r: replace，替换光标所在处的字符</p>
+</li>
+<li><p>d: 删除命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dd: 删除光标所在行</span><br><span class="line">#dd: 删除光村所在行及下行的共#行；</span><br><span class="line">与跳转命令一同使用：</span><br><span class="line">	d$: 删除光标所在处至行尾的内容；同D命令</span><br><span class="line">	d^: 删除光标所在处至行首的内容；</span><br><span class="line"></span><br><span class="line">	dw</span><br><span class="line">	db</span><br><span class="line">	de</span><br><span class="line">		上述三个命令支持前面使用#来指明涵盖的单词的个数；</span><br><span class="line"> #COMMAND：#代表数字</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>p: 粘贴，put, paste</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">行级别：</span><br><span class="line">	p: 粘贴在光标所在当前行下方</span><br><span class="line">	P: 粘贴在光标所在当前行上方</span><br><span class="line">小于行级别：</span><br><span class="line">	p: 粘贴在光村所在处的后方</span><br><span class="line">	p: 粘贴在光村所在处的前方</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>y: yank，复制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yy: 复制光标所在行，相当于Y命令</span><br><span class="line">#yy: 复制光标所在行及下行的共#行；</span><br><span class="line">与跳转命令一同使用：</span><br><span class="line">	y$: 复制光标所在处至行尾的内容；</span><br><span class="line">	y^: 复制光标所在处至行首的内容；</span><br><span class="line"></span><br><span class="line">	yw</span><br><span class="line">	yb</span><br><span class="line">	ye</span><br><span class="line">		上述三个命令支持前面使用#来指明涵盖的单词的个数；</span><br><span class="line">#COMMAND：5yy（复制5行）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>c: change, 修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cc: 删除光标所在行整行内容，并立即转为输入模式</span><br><span class="line">#cc:</span><br><span class="line"></span><br><span class="line">c$, C：</span><br><span class="line">c^, c0</span><br><span class="line">cw, cb, ce</span><br><span class="line">#COMMAND：5cc（删除光标以下5行，并开启输入模式）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>撤消操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">u: undo</span><br><span class="line">	#u: 一次撤消最近的共#次编辑操作；</span><br><span class="line"></span><br><span class="line">撤消此前的撤消操作：</span><br><span class="line">	Ctrl+r</span><br><span class="line"></span><br><span class="line">重复前一条命令：</span><br><span class="line">	.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="6、VIM内建教程"><a href="#6、VIM内建教程" class="headerlink" title="6、VIM内建教程"></a>6、VIM内建教程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vimtutor</span><br></pre></td></tr></table></figure>
+<h2 id="7、VIM可视化模式"><a href="#7、VIM可视化模式" class="headerlink" title="7、VIM可视化模式"></a>7、VIM可视化模式</h2><p><code>v</code>: 字符可视化，选择光标所在行的光标左侧的内容<br><code>V</code>：行可视化，光标所在行整行都会被选定<br><code>ctrl+v</code>：进入的块可视化模式，可以选择一个矩形内的文本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#进入可视化模式后常用操作指令：</span><br><span class="line">d：删除选中文本</span><br><span class="line">c：修改选中文本，删除选中的文本，然后输入想要的内容</span><br><span class="line">r：替换选中文本，将选中的文本替换成单个字符</span><br><span class="line">I：在选中文本前插入</span><br><span class="line">A：在选中文本后插入</span><br><span class="line">gu：选中区域转为小写</span><br><span class="line">gU：选中区域转为大写</span><br><span class="line">g~：大小写互调</span><br><span class="line">&gt;：向右缩进一个单位</span><br><span class="line">&lt;：向左缩进一个单位</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：注意：操作完成之后，‘esc’结束操作或退出可视化</p>
+</blockquote>
+<ul>
+<li>三种模式之间可以输入相关命令切换，例如：<br>v(进入字符可视化) — v或esc(退出)<br>v(进入字符可视化) — V（进入行可视化）</li>
+</ul>
+<h2 id="8、编辑模式下的翻屏命令"><a href="#8、编辑模式下的翻屏命令" class="headerlink" title="8、编辑模式下的翻屏命令"></a>8、编辑模式下的翻屏命令</h2><p><code>Ctrl+f</code>: 向文件尾部翻一屏<br><code>Ctrl+b</code>：向文件首部翻一屏<br><code>Ctrl+d</code>: 向文件尾部翻半屏<br><code>Ctrl+u</code>: 向文件首部翻半屏</p>
+<h2 id="9、文本查找"><a href="#9、文本查找" class="headerlink" title="9、文本查找"></a>9、文本查找</h2><p><code>/PATTERN</code>：向尾部进行<br><code>?PATTERN</code>：向首部进行</p>
+<p><code>n</code>: 与命令同方向<br><code>N</code>：与命令反方向 </p>
+<h2 id="10、文本替换"><a href="#10、文本替换" class="headerlink" title="10、文本替换"></a>10、文本替换</h2><h3 id="10-1、末行模式：内置命令行接口，有命令历史记录功能"><a href="#10-1、末行模式：内置命令行接口，有命令历史记录功能" class="headerlink" title="10.1、末行模式：内置命令行接口，有命令历史记录功能"></a>10.1、末行模式：内置命令行接口，有命令历史记录功能</h3><ul>
+<li>有部分内置命令用于编辑操作，此时可使用地址定界法进行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#地址定界：</span><br><span class="line">	startline[,endline]:</span><br><span class="line">		#: 第#行</span><br><span class="line">		.: 当前行</span><br><span class="line">		$: 最后一行</span><br><span class="line">		%: 全文</span><br><span class="line"></span><br><span class="line">		#相对定界：</span><br><span class="line">			+#: 从指定位置向下#个行</span><br><span class="line">			-#：从指定位置向上#个行</span><br><span class="line">			</span><br><span class="line">        /pat1/：第一次被此模式所匹配到的行；</span><br><span class="line">        #,/pat1/</span><br><span class="line">        /pat1/,/pat2/</span><br><span class="line">        </span><br><span class="line">        #后可跟编辑命令：</span><br><span class="line">            d, y</span><br><span class="line">            w, r</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="10-2、文本替换命令：s"><a href="#10-2、文本替换命令：s" class="headerlink" title="10.2、文本替换命令：s"></a>10.2、文本替换命令：s</h3><ul>
+<li>s/要查找的内容/要替换为的内容/修饰符<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/: 分隔符，用于分隔“查找的内容”和“替换为的内容”；此分隔符可使用其它字符，如@，#等；</span><br><span class="line"></span><br><span class="line">要查找的内容：可使用正则表达式；此部分可以后面“替换为的内容”部分中使用“&amp;”全部引用；</span><br><span class="line"></span><br><span class="line">替换为的内容：不可使用正则表达式，一般为正常文本，但可以使用正则表达式中的\1, \2, ...保存的内容；</span><br><span class="line"></span><br><span class="line">修饰符：</span><br><span class="line">	i: 查找时不区分字符大小写</span><br><span class="line">	g: global，全局替换；</span><br><span class="line">	</span><br><span class="line">注意：引用</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="11、文本读取"><a href="#11、文本读取" class="headerlink" title="11、文本读取"></a>11、文本读取</h2><ul>
+<li>在vi中执行命令和导入文件</li>
+</ul>
+<blockquote>
+<p>提示：在末行模式下</p>
+</blockquote>
+<p>导入文件：  <code>:r FILENAME</code><br>执行命令：  <code>:！COMMAND</code><br>导入执行命令的结果：   <code>:r!COMMAND</code></p>
+<h2 id="11、多文件模式"><a href="#11、多文件模式" class="headerlink" title="11、多文件模式"></a>11、多文件模式</h2><ul>
+<li><p>打开文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim [OPTION]... [FILE]...</span><br><span class="line">	+#: 快速定位至第#行；</span><br><span class="line">	+/PATTERN: 快速定位至被模式第一次匹配至行；</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">vim FILE1 FILE2 FILE3 ...</span><br><span class="line"></span><br><span class="line">#末行模式：</span><br><span class="line">	:next 下一个</span><br><span class="line">	:prev 前一个</span><br><span class="line">	:first  第一个</span><br><span class="line">	:last   最后一个</span><br><span class="line"></span><br><span class="line">#退出所有文件</span><br><span class="line">	:wqall</span><br><span class="line">	:wall</span><br><span class="line">	:qall</span><br><span class="line"></span><br><span class="line">#多窗口：</span><br><span class="line">    -o: 水平分隔窗口</span><br><span class="line">    -O: 垂直分隔窗口</span><br><span class="line"></span><br><span class="line">#Ctrl+w, ARROW</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>注意：单个文件也可以分隔为多个窗口进行查看<br>Ctrl+w, s: 水平分隔<br>Ctrl+w, v: 垂直分隔</p>
+</blockquote>
+<h2 id="12、VIM界面显示特性"><a href="#12、VIM界面显示特性" class="headerlink" title="12、VIM界面显示特性"></a>12、VIM界面显示特性</h2><ul>
+<li><p>开户或关闭行号显示<br>:set number, <code>:set nu</code><br>:set nonumber, <code>:set nonu</code></p>
+</li>
+<li><p>语法高亮的开启和关闭<br><code>:syntax on</code><br><code>:syntax off</code></p>
+</li>
+<li><p>搜索高亮的开启和关闭<br><code>:set hlsearch</code><br><code>:set nohlsearch</code></p>
+</li>
+<li><p>自动缩进的开启和关闭<br>:set autoindent, <code>:set ai</code><br>:set noautoindent, <code>:set noai</code></p>
+</li>
+<li><p>区分字符大小写的开启和关闭<br>:set ignorecase, <code>:set ic</code><br>:set noignorecase, <code>:set noic</code></p>
+</li>
+<li><p>高亮显示匹配的符号对儿：<br>:set showmatch, <code>:set sm</code><br>:set noshowmatch, <code>:set nosm</code></p>
+</li>
+</ul>
+<h2 id="13、vim的配置文件"><a href="#13、vim的配置文件" class="headerlink" title="13、vim的配置文件"></a>13、vim的配置文件</h2><ul>
+<li>全局配置：<code>/etc/vimrc</code></li>
+<li>指定用户配置: <code>~/.vimrc</code></li>
+</ul>
+<h2 id="14、练习"><a href="#14、练习" class="headerlink" title="14、练习"></a>14、练习</h2><ul>
+<li><p>复制/etc/rc.d/rc.sysinit文件至/tmp目录，将/tmp/rc.sysinit文件中的以至少一个空白字符开头的行的行首加#；<br>答：<code>:%s@^[[:space:]]@#&amp;@</code></p>
+</li>
+<li><p>复制/boot/grub/grub.conf至/tmp目录中，删除/tmp/grub.conf文件中的行首的空白字符；<br>答：<code>:%s@^[[:space:]]\{1,\}@@</code></p>
+</li>
+<li><p>删除/tmp/rc.sysinit文件中的以#开头，且后面跟了至少一个空白字符的行行的#和空白字符<br>答：<code>:%s@^#[[:space:]]\+@@</code></p>
+</li>
+<li><p>为/tmp/grub.conf文件中前三行的行首加#号；<br>答：<code>:1,3s@^@#@</code></p>
+</li>
+<li><p>将/etc/yum.repos.d/CentOS-Media.repo文件中所有的enabled=0或gpgcheck=0的最后的0修改为1；<br>答：<code>:%s@\(gpgcheck\|enabled\)=0@\1=1@</code></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/05/18/vim编辑器使用详解/" title="vim编辑器使用详解">2019/05/18/vim编辑器使用详解/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux基础/" rel="tag"><i class="fa fa-tag"></i> Linux基础</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/11/RPM和YUM程序包的管理/" rel="next" title="RPM和YUM程序包的管理">
+                <i class="fa fa-chevron-left"></i> RPM和YUM程序包的管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/20/Nginx-rewrite模块详解与Location配置总结/" rel="prev" title="Nginx-rewrite模块详解与Location配置总结">
+                Nginx-rewrite模块详解与Location配置总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vim编辑器使用详解"><span class="nav-number">1.</span> <span class="nav-text">vim编辑器使用详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、VIM简介"><span class="nav-number">1.1.</span> <span class="nav-text">1、VIM简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、打开文件"><span class="nav-number">1.2.</span> <span class="nav-text">2、打开文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、VIM模式"><span class="nav-number">1.3.</span> <span class="nav-text">3、VIM模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、关闭VIM"><span class="nav-number">1.4.</span> <span class="nav-text">4、关闭VIM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、编辑命令"><span class="nav-number">1.5.</span> <span class="nav-text">5、编辑命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1、光标跳转"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1、光标跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2、编辑操作"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2、编辑操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、VIM内建教程"><span class="nav-number">1.6.</span> <span class="nav-text">6、VIM内建教程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7、VIM可视化模式"><span class="nav-number">1.7.</span> <span class="nav-text">7、VIM可视化模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8、编辑模式下的翻屏命令"><span class="nav-number">1.8.</span> <span class="nav-text">8、编辑模式下的翻屏命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9、文本查找"><span class="nav-number">1.9.</span> <span class="nav-text">9、文本查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10、文本替换"><span class="nav-number">1.10.</span> <span class="nav-text">10、文本替换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1、末行模式：内置命令行接口，有命令历史记录功能"><span class="nav-number">1.10.1.</span> <span class="nav-text">10.1、末行模式：内置命令行接口，有命令历史记录功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2、文本替换命令：s"><span class="nav-number">1.10.2.</span> <span class="nav-text">10.2、文本替换命令：s</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11、文本读取"><span class="nav-number">1.11.</span> <span class="nav-text">11、文本读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11、多文件模式"><span class="nav-number">1.12.</span> <span class="nav-text">11、多文件模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12、VIM界面显示特性"><span class="nav-number">1.13.</span> <span class="nav-text">12、VIM界面显示特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13、vim的配置文件"><span class="nav-number">1.14.</span> <span class="nav-text">13、vim的配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14、练习"><span class="nav-number">1.15.</span> <span class="nav-text">14、练习</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

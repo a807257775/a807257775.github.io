@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="NGINX代理,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Nginx直播系统rtmp&amp;amp;ffmpeg1、主流直播系统三大协议简介 HLS，是苹果公司实现的基于 HTTP 的流媒体传输协议，全称 HTTP Live Streaming，可支持流媒体的直播和点播，主要应用在 iOS 系统，为 iOS 设备（如 iPhone、iPad）提供音视频直播和点播方案；  RTMP，全称 Real Time Messaging Protocol，即实时消息传送协">
+<meta name="keywords" content="NGINX代理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx直播系统rtmp&amp;ffmpeg">
+<meta property="og:url" content="http://www.lisirlife.cn/2021/04/19/Nginx直播系统rtmp&ffmpeg/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Nginx直播系统rtmp&amp;amp;ffmpeg1、主流直播系统三大协议简介 HLS，是苹果公司实现的基于 HTTP 的流媒体传输协议，全称 HTTP Live Streaming，可支持流媒体的直播和点播，主要应用在 iOS 系统，为 iOS 设备（如 iPhone、iPad）提供音视频直播和点播方案；  RTMP，全称 Real Time Messaging Protocol，即实时消息传送协">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/j4001wstgr9q9jjixzuykmt7/image_1e5os8576150o18hl17vh4kr1ko816.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/4bevf4x04zqdw9yc1ocq5rkn/image_1e5oraqup16tp1ho89lllk7q8lp.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/t9o7ak1b0ug7tnbb7ermzqkw/nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%8Artmp%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.zip">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/hadbrptqmh5pna1adolutrem/image_1e5p2kddedkj1pd71b9i178ofvm1v.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/5v4uzx634e3uz0ijo5jstgiy/image_1e5p2s96ei9d50dfto1dkk1v8u2c.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/0e7g82h0g1y2pw5pp7e58hjk/image_1e5p3gt9p1hv51oq3thl1jdpojh43.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/0kxxfzenmnm6frf9mszb2a3h/image_1e5p3gg3l1ejf1vb94mm1odb18m3m.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/f7gy0j2vdb3f5abun4teozwg/image_1e5p3jaan1bld1nlncouq1aj0s4g.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/dv6p4so2jgm9zdn5amg89feh/image_1e5p3cl3a1ugvt5v1rqf1l3tvq2p.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.398Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx直播系统rtmp&amp;ffmpeg">
+<meta name="twitter:description" content="Nginx直播系统rtmp&amp;amp;ffmpeg1、主流直播系统三大协议简介 HLS，是苹果公司实现的基于 HTTP 的流媒体传输协议，全称 HTTP Live Streaming，可支持流媒体的直播和点播，主要应用在 iOS 系统，为 iOS 设备（如 iPhone、iPad）提供音视频直播和点播方案；  RTMP，全称 Real Time Messaging Protocol，即实时消息传送协">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/j4001wstgr9q9jjixzuykmt7/image_1e5os8576150o18hl17vh4kr1ko816.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2021/04/19/Nginx直播系统rtmp&ffmpeg/">
+
+
+
+
+
+  <title>Nginx直播系统rtmp&ffmpeg | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2021/04/19/Nginx直播系统rtmp&ffmpeg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx直播系统rtmp&ffmpeg</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-19T09:03:00+08:00">
+                2021-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NGINX文档/" itemprop="url" rel="index">
+                    <span itemprop="name">NGINX文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/19/Nginx直播系统rtmp&ffmpeg/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/04/19/Nginx直播系统rtmp&ffmpeg/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx直播系统rtmp-amp-ffmpeg"><a href="#Nginx直播系统rtmp-amp-ffmpeg" class="headerlink" title="Nginx直播系统rtmp&amp;ffmpeg"></a>Nginx直播系统rtmp&amp;ffmpeg</h1><h2 id="1、主流直播系统三大协议简介"><a href="#1、主流直播系统三大协议简介" class="headerlink" title="1、主流直播系统三大协议简介"></a>1、主流直播系统三大协议简介</h2><ul>
+<li><p><code>HLS</code>，是苹果公司实现的基于 HTTP 的流媒体传输协议，全称 HTTP Live Streaming，可支持流媒体的直播和点播，主要应用在 iOS 系统，为 iOS 设备（如 iPhone、iPad）提供音视频直播和点播方案；</p>
+</li>
+<li><p><code>RTMP</code>，全称 Real Time Messaging Protocol，即实时消息传送协议。Adobe 公司为 Flash播放器和服务器之间音视频数据传输开发的私有协议。工作在TCP之上的明文协议，默认使用端口1935。协议中的基本数据单元成为消息（Message），传输的过程中消息会被拆分为更小的消息块（Chunk）单元。最后将分割后的消息块通过 TCP 协议传输，接收端再反解接收的消息块恢复成流媒体数据；</p>
+</li>
+<li><p><code>HTTP-FLV</code>即，将流媒体数据封装成FLV格式，然后通过HTTP协议传输给客户端。HTTP-FLV依靠MIME的特性，根据协议中的Content-Type来选择相应的程序去处理相应的内容，使得流媒体可以通过HTTP传输。相较于RTMP协议，HTTP-FLV能够好的穿透防火墙，它是基于HTTP/80传输，有效避免被防火墙拦截。除此之外，它可以通过 HTTP 302 跳转灵活调度/负载均衡，支持使用 HTTPS 加密传输，也能够兼容支持 Android，iOS 的移动端；</p>
+</li>
+</ul>
+<p>图一：<img src="http://static.zybuluo.com/a807257775/j4001wstgr9q9jjixzuykmt7/image_1e5os8576150o18hl17vh4kr1ko816.png" alt="image_1e5os8576150o18hl17vh4kr1ko816.png-221.8kB"></p>
+<h2 id="2、基于Nginx构建直播系统"><a href="#2、基于Nginx构建直播系统" class="headerlink" title="2、基于Nginx构建直播系统"></a>2、基于Nginx构建直播系统</h2><blockquote>
+<p>如图二所示，利用nginx rtmp模块+ffmpeg工具，实现rtmp及hls协议分流+水印的直播系统，通过ffmpeg将直播流hls推送至阿里云、腾讯云，用户可通过本地地址或云端地址观看直播，有无水印取决ffmpeg推流配置；</p>
+</blockquote>
+<p>图二：<img src="http://static.zybuluo.com/a807257775/4bevf4x04zqdw9yc1ocq5rkn/image_1e5oraqup16tp1ho89lllk7q8lp.png" alt="image_1e5oraqup16tp1ho89lllk7q8lp.png-62.1kB"></p>
+<ul>
+<li>提示：<code>FFmpeg</code>是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案。它包含了非常先进的音频/视频编解码库libavcodec，为了保证高可移植性和编解码质量，libavcodec里很多code都是从头开发的；</li>
+</ul>
+<h2 id="3、环境及相关软件介绍"><a href="#3、环境及相关软件介绍" class="headerlink" title="3、环境及相关软件介绍"></a>3、环境及相关软件介绍</h2><h3 id="3-1、实验环境"><a href="#3-1、实验环境" class="headerlink" title="3.1、实验环境"></a>3.1、实验环境</h3><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>IP</th>
+<th>用途</th>
+<th>所需软件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS release 6.9 64Bit</td>
+<td>172.21.0.5</td>
+<td>拉端+水印处理+分流</td>
+<td>nginx-1.16.1.tar.gz</td>
+<td>x265_3.3.tar.gz</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>nginx-rtmp-module-1.2.1.zip </td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ffmpeg-4.2.1.tar.bz2 </td>
+</tr>
+<tr>
+<td>Windows 7</td>
+<td>192.168.1.106</td>
+<td>推端</td>
+<td>OBS+PotPlayer </td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>提示：安装ffmpeg的过程相对比较麻烦，如需要开启更多ffmpeg功能，则对应的依赖关系就复杂</p>
+</blockquote>
+<h2 id="4、安装及部署"><a href="#4、安装及部署" class="headerlink" title="4、安装及部署"></a>4、安装及部署</h2><blockquote>
+<p>提示：安装过程均基于oh my zsh的shell下进行</p>
+</blockquote>
+<h3 id="4-1、nginx及rtmp模块编译安装"><a href="#4-1、nginx及rtmp模块编译安装" class="headerlink" title="4.1、nginx及rtmp模块编译安装"></a>4.1、nginx及rtmp模块编译安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># root @ VM_0_5_centos in /soft [12:50:41]</span><br><span class="line">$ x nginx-1.16.1.tar.gz</span><br><span class="line">$ x nginx-rtmp-module-1.2.1.zip</span><br><span class="line">$ yum install vim telnet wget nethogs htop glances dstat traceroute lrzsz goaccess ntpdate dos2unix openssl-devel tcpdump lrzsz fio -y</span><br><span class="line">$ yum install pcre-devel zlib-devel libjpeg-devel libpng-devel freetype-devel openssl-devel curl curl-devel libxml2 libxml2-devel libjpeg libjpeg-devel libpng libpng-devel libmcrypt libmcrypt-devel openldap openldap-devel openssh-client -y</span><br><span class="line">$ useradd -s /sbin/nologin -M www</span><br><span class="line"># root @ VM_0_5_centos in /soft/nginx-1.16.1 [12:51:41]</span><br><span class="line">$ ./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_ssl_module --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module --add-module=/soft/nginx-rtmp-module-1.2.1/nginx-rtmp-module-1.2.1/</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line">$ cd /etc/init.d</span><br><span class="line"># root @ VM_0_5_centos in /etc/init.d [12:58:18]</span><br><span class="line">$ vim nginx</span><br><span class="line">$ chmod 777 nginx</span><br><span class="line">$ chkconfig nginx on</span><br></pre></td></tr></table></figure>
+<h3 id="4-2、nginx配置及rtmp运行参数"><a href="#4-2、nginx配置及rtmp运行参数" class="headerlink" title="4.2、nginx配置及rtmp运行参数"></a>4.2、nginx配置及rtmp运行参数</h3><p>附件：<img src="http://static.zybuluo.com/a807257775/t9o7ak1b0ug7tnbb7ermzqkw/nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%8Artmp%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.zip" alt="nginx配置文件及rtmp运行参数.zip-3.9kB"></p>
+<h3 id="4-2、ffmpeg编译安装"><a href="#4-2、ffmpeg编译安装" class="headerlink" title="4.2、ffmpeg编译安装"></a>4.2、ffmpeg编译安装</h3><blockquote>
+<p>提示：安装ffmpeg前需解决相关依赖问题，并安装相关开发依赖组件，详见通用模板机安装手册；</p>
+</blockquote>
+<h4 id="4-2-1、dk-aac-2-0-1-tar-gz"><a href="#4-2-1、dk-aac-2-0-1-tar-gz" class="headerlink" title="4.2.1、dk-aac-2.0.1.tar.gz"></a>4.2.1、dk-aac-2.0.1.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x fdk-aac-2.0.1.tar.gz</span><br><span class="line">cd fdk-aac-2.0.1</span><br><span class="line">autoreconf -fiv</span><br><span class="line">./configure --disable-shared</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-2、lame-3-100-tar-gz"><a href="#4-2-2、lame-3-100-tar-gz" class="headerlink" title="4.2.2、lame-3.100.tar.gz"></a>4.2.2、lame-3.100.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x lame-3.100.tar.gz</span><br><span class="line">cd /soft/lame-3.100</span><br><span class="line">./configure --disable-shared --enable-nasm</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-3、opus-1-3-1-tar-gz"><a href="#4-2-3、opus-1-3-1-tar-gz" class="headerlink" title="4.2.3、opus-1.3.1.tar.gz"></a>4.2.3、opus-1.3.1.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x opus-1.3.1.tar.gz</span><br><span class="line">cd /soft/opus-1.3.1</span><br><span class="line">./configure --disable-shared</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-3、libvpx-zip"><a href="#4-2-3、libvpx-zip" class="headerlink" title="4.2.3、libvpx.zip"></a>4.2.3、libvpx.zip</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://chromium.googlesource.com/webm/libvpx.git/+archive/7ec7a33a081aeeb53fed1a8d87e4cbd189152527.tar.gz</span><br><span class="line">x libvpx.zip</span><br><span class="line">./configure --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-4、llibvorbis-1-3-6-zip"><a href="#4-4-4、llibvorbis-1-3-6-zip" class="headerlink" title="4.4.4、llibvorbis-1.3.6.zip"></a>4.4.4、llibvorbis-1.3.6.zip</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.6.zip</span><br><span class="line">x libvorbis-1.3.6.zip</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-5、libogg-1-3-0-tar-gz"><a href="#4-4-5、libogg-1-3-0-tar-gz" class="headerlink" title="4.4.5、libogg-1.3.0.tar.gz"></a>4.4.5、libogg-1.3.0.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://downloads.xiph.org/releases/ogg/libogg-1.3.0.tar.gz</span><br><span class="line">x libogg-1.3.0.tar.gz</span><br><span class="line">cd libogg-1.3.0</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-6、SDL-1-2-15-tar-gz"><a href="#4-4-6、SDL-1-2-15-tar-gz" class="headerlink" title="4.4.6、SDL-1.2.15.tar.gz"></a>4.4.6、SDL-1.2.15.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.libsdl.org/release/SDL-1.2.15.tar.gz</span><br><span class="line">x SDL-1.2.15.tar.gz</span><br><span class="line">cd SDL-1.2.15</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-8、nasm-2-13-03-tar-xz"><a href="#4-4-8、nasm-2-13-03-tar-xz" class="headerlink" title="4.4.8、nasm-2.13.03.tar.xz"></a>4.4.8、nasm-2.13.03.tar.xz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.xz</span><br><span class="line">x nasm-2.13.03.tar.xz</span><br><span class="line">cd nasm-2.13.03</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-7、x264"><a href="#4-4-7、x264" class="headerlink" title="4.4.7、x264"></a>4.4.7、x264</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone --depth 1 https://code.videolan.org/videolan/x264.gi</span><br><span class="line">cd x264</span><br><span class="line">export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/</span><br><span class="line">./configure --enable-static</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-8、x265-3-3-tar-gz"><a href="#4-4-8、x265-3-3-tar-gz" class="headerlink" title="4.4.8、x265_3.3.tar.gz"></a>4.4.8、x265_3.3.tar.gz</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar xvf x265_3.3.tar.gz</span><br><span class="line">cd x265_3.3</span><br><span class="line">cd build/linux</span><br><span class="line">cmake -G &quot;Unix Makefiles&quot; -DENABLE_SHARED:bool=off ../../source</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h4 id="4-4-9、ffmpeg-4-2-1-tar-bz2"><a href="#4-4-9、ffmpeg-4-2-1-tar-bz2" class="headerlink" title="4.4.9、ffmpeg-4.2.1.tar.bz2"></a>4.4.9、ffmpeg-4.2.1.tar.bz2</h4><ul>
+<li><code>ffmpeg</code>下载地址：<a href="http://ffmpeg.org/download.html" target="_blank" rel="noopener">http://ffmpeg.org/download.html</a></li>
+<li><code>ffmpeg</code>官方安装手册：<a href="https://trac.ffmpeg.org/wiki/CompilationGuide/Centos" target="_blank" rel="noopener">https://trac.ffmpeg.org/wiki/CompilationGuide/Centos</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># root @ VM_0_5_centos in /soft/ffmpeg-4.2.1 [12:59:35]</span><br><span class="line">$ yum install librtmp librtmp-devel libtheora libtheora-devel libwebp libwebp-devel -y  </span><br><span class="line">$ yum install autoconf automake bzip2 cmake freetype-devel gcc gcc-c++ git libtool make mercurial pkgconfig zlib-devel x264-devel yasm -y</span><br><span class="line">$ cd /usr/local/lib</span><br><span class="line">$ cp -rfp lib* /lib64</span><br><span class="line">$ tar xvJf ffmpeg-4.2.2.tar.xz</span><br><span class="line">$ cd ffmpeg-4.2.2</span><br><span class="line">$ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/</span><br><span class="line">$ ./configure --prefix=/usr/local --pkg-config-flags=&quot;--static&quot; --extra-cflags=&quot;-I/usr/local/include&quot; --extra-ldflags=&quot;-L/usr/local/lib&quot; --enable-version3 --enable-gpl --enable-nonfree --enable-small --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libvpx --enable-libtheora --enable-libvorbis --enable-libopus --enable-libfdk-aac --enable-libass --enable-libwebp --enable-librtmp --enable-postproc --enable-avresample --enable-libfreetype --enable-openssl --disable-debug --disable-doc --disable-ffplay</span><br><span class="line">$ make &amp;&amp; make install</span><br><span class="line"># root @ VM_0_5_centos in ~ [14:03:21] </span><br><span class="line">$ ffmpeg  -version</span><br><span class="line">ffmpeg version 4.2.1 Copyright (c) 2000-2019 the FFmpeg developers</span><br><span class="line">built with gcc 4.4.7 (GCC) 20120313 (Red Hat 4.4.7-23)</span><br><span class="line">configuration: --prefix=/usr/local --pkg-config-flags=--static --extra-cflags=-I/usr/local/include --extra-ldflags=-L/usr/local/lib --enable-version3 --enable-gpl --enable-nonfree --enable-small --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libvpx --enable-libtheora --enable-libvorbis --enable-libopus --enable-libfdk-aac --enable-libass --enable-libwebp --enable-librtmp --enable-postproc --enable-avresample --enable-libfreetype --enable-openssl --disable-debug --disable-doc --disable-ffplay</span><br><span class="line">libavutil      56. 31.100 / 56. 31.100</span><br><span class="line">libavcodec     58. 54.100 / 58. 54.100</span><br><span class="line">libavformat    58. 29.100 / 58. 29.100</span><br><span class="line">libavdevice    58.  8.100 / 58.  8.100</span><br><span class="line">libavfilter     7. 57.100 /  7. 57.100</span><br><span class="line">libavresample   4.  0.  0 /  4.  0.  0</span><br><span class="line">libswscale      5.  5.100 /  5.  5.100</span><br><span class="line">libswresample   3.  5.100 /  3.  5.100</span><br><span class="line">libpostproc    55.  5.100 / 55.  5.100</span><br></pre></td></tr></table></figure>
+<h2 id="4、直播实战"><a href="#4、直播实战" class="headerlink" title="4、直播实战"></a>4、直播实战</h2><ul>
+<li>手机直播地址：<code>http://49.232.152.80/hls/ar640.m3u8</code>（不依赖flash任意浏览器均可播放）</li>
+<li>手机直播地址（有水印）：<code>http://49.232.152.80/hls/ar1280_wm.m3u8</code>（不依赖flash任意浏览器均可播放）</li>
+<li>PC客户端直播地址：<code>http://49.232.152.80:1935/stream/ar1280</code>（需下载播放器potplayer）</li>
+</ul>
+<h3 id="4-1、OBS推流软件配置"><a href="#4-1、OBS推流软件配置" class="headerlink" title="4.1、OBS推流软件配置"></a>4.1、OBS推流软件配置</h3><p><img src="http://static.zybuluo.com/a807257775/hadbrptqmh5pna1adolutrem/image_1e5p2kddedkj1pd71b9i178ofvm1v.png" alt="image_1e5p2kddedkj1pd71b9i178ofvm1v.png-34.2kB"><br><img src="http://static.zybuluo.com/a807257775/5v4uzx634e3uz0ijo5jstgiy/image_1e5p2s96ei9d50dfto1dkk1v8u2c.png" alt="image_1e5p2s96ei9d50dfto1dkk1v8u2c.png-117.3kB"></p>
+<h3 id="4-2、PC端-amp-手机端观看直播"><a href="#4-2、PC端-amp-手机端观看直播" class="headerlink" title="4.2、PC端&amp;手机端观看直播"></a>4.2、PC端&amp;手机端观看直播</h3><ul>
+<li>PC端使用PotPlayer播放rtmp流<br><img src="http://static.zybuluo.com/a807257775/0e7g82h0g1y2pw5pp7e58hjk/image_1e5p3gt9p1hv51oq3thl1jdpojh43.png" alt="image_1e5p3gt9p1hv51oq3thl1jdpojh43.png-42.6kB"><br><img src="http://static.zybuluo.com/a807257775/0kxxfzenmnm6frf9mszb2a3h/image_1e5p3gg3l1ejf1vb94mm1odb18m3m.png" alt="image_1e5p3gg3l1ejf1vb94mm1odb18m3m.png-56.6kB"></li>
+<li>手机端浏览器播放直播<br>有水印：<img src="http://static.zybuluo.com/a807257775/f7gy0j2vdb3f5abun4teozwg/image_1e5p3jaan1bld1nlncouq1aj0s4g.png" alt="image_1e5p3jaan1bld1nlncouq1aj0s4g.png-106.3kB"><br>无水印：<img src="http://static.zybuluo.com/a807257775/dv6p4so2jgm9zdn5amg89feh/image_1e5p3cl3a1ugvt5v1rqf1l3tvq2p.png" alt="image_1e5p3cl3a1ugvt5v1rqf1l3tvq2p.png-92.8kB"></li>
+</ul>
+<h3 id="4-3、扩展部分"><a href="#4-3、扩展部分" class="headerlink" title="4.3、扩展部分"></a>4.3、扩展部分</h3><blockquote>
+<p>提示：可构建h5页面，嵌套rtmp播放流，手机网页即可实现实时观看直播</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2021/04/19/Nginx直播系统rtmp&ffmpeg/" title="Nginx直播系统rtmp&ffmpeg">2021/04/19/Nginx直播系统rtmp&ffmpeg/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NGINX代理/" rel="tag"><i class="fa fa-tag"></i> NGINX代理</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/23/云原生存储系统Longhorn的部署与基本使用/" rel="next" title="云原生存储系统Longhorn的部署与基本使用">
+                <i class="fa fa-chevron-left"></i> 云原生存储系统Longhorn的部署与基本使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/17/Java诊断工具Arthas使用手册/" rel="prev" title="Java诊断工具Arthas使用手册">
+                Java诊断工具Arthas使用手册 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx直播系统rtmp-amp-ffmpeg"><span class="nav-number">1.</span> <span class="nav-text">Nginx直播系统rtmp&amp;ffmpeg</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、主流直播系统三大协议简介"><span class="nav-number">1.1.</span> <span class="nav-text">1、主流直播系统三大协议简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、基于Nginx构建直播系统"><span class="nav-number">1.2.</span> <span class="nav-text">2、基于Nginx构建直播系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、环境及相关软件介绍"><span class="nav-number">1.3.</span> <span class="nav-text">3、环境及相关软件介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、实验环境"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、实验环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、安装及部署"><span class="nav-number">1.4.</span> <span class="nav-text">4、安装及部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1、nginx及rtmp模块编译安装"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1、nginx及rtmp模块编译安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2、nginx配置及rtmp运行参数"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2、nginx配置及rtmp运行参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2、ffmpeg编译安装"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.2、ffmpeg编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1、dk-aac-2-0-1-tar-gz"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">4.2.1、dk-aac-2.0.1.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2、lame-3-100-tar-gz"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">4.2.2、lame-3.100.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3、opus-1-3-1-tar-gz"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">4.2.3、opus-1.3.1.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3、libvpx-zip"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">4.2.3、libvpx.zip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-4、llibvorbis-1-3-6-zip"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">4.4.4、llibvorbis-1.3.6.zip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-5、libogg-1-3-0-tar-gz"><span class="nav-number">1.4.3.6.</span> <span class="nav-text">4.4.5、libogg-1.3.0.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-6、SDL-1-2-15-tar-gz"><span class="nav-number">1.4.3.7.</span> <span class="nav-text">4.4.6、SDL-1.2.15.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-8、nasm-2-13-03-tar-xz"><span class="nav-number">1.4.3.8.</span> <span class="nav-text">4.4.8、nasm-2.13.03.tar.xz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-7、x264"><span class="nav-number">1.4.3.9.</span> <span class="nav-text">4.4.7、x264</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-8、x265-3-3-tar-gz"><span class="nav-number">1.4.3.10.</span> <span class="nav-text">4.4.8、x265_3.3.tar.gz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-9、ffmpeg-4-2-1-tar-bz2"><span class="nav-number">1.4.3.11.</span> <span class="nav-text">4.4.9、ffmpeg-4.2.1.tar.bz2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、直播实战"><span class="nav-number">1.5.</span> <span class="nav-text">4、直播实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1、OBS推流软件配置"><span class="nav-number">1.5.1.</span> <span class="nav-text">4.1、OBS推流软件配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2、PC端-amp-手机端观看直播"><span class="nav-number">1.5.2.</span> <span class="nav-text">4.2、PC端&amp;手机端观看直播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3、扩展部分"><span class="nav-number">1.5.3.</span> <span class="nav-text">4.3、扩展部分</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

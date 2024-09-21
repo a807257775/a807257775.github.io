@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="ELK文档,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="ELFK-实时抓取HAPROXY日志1、前言 本篇博客仅记录haproxy日志，通过logstash正则进行数据结构化，输出到elasticsearch中，最后通过kibaka进行展示的完整过程，EK的安装及配置方法，请参考：ELK-Stack简介及安装手册  1.1、Logstash简介 Logstash 能够动态地采集、转换和传输数据，不受格式或复杂度的影响。利用 Grok 从非结构化数据中派">
+<meta name="keywords" content="ELK文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ELFK-实时抓取HAPROXY日志">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/10/30/ELFK-实时抓取HAPROXY日志/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="ELFK-实时抓取HAPROXY日志1、前言 本篇博客仅记录haproxy日志，通过logstash正则进行数据结构化，输出到elasticsearch中，最后通过kibaka进行展示的完整过程，EK的安装及配置方法，请参考：ELK-Stack简介及安装手册  1.1、Logstash简介 Logstash 能够动态地采集、转换和传输数据，不受格式或复杂度的影响。利用 Grok 从非结构化数据中派">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/cgwm8hf3o9hkfvz5bj6a5sry/image_1dod7098hm0q1u501sr91lvhe7jp.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/nuvwbn8mnaxku2mdm0d7qw75/image_1dodc61ti1okj35u1avph7d16p5m.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/gpn41askuskw0hmqu04ku7zl/image_1dodcu1h61bfpmq31voksh0lir9.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/fdhjozgxsl5bt2q4tqfnnjp7/image_1dodd5v5r1gbe1e4gac5pvc10a1m.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ELFK-实时抓取HAPROXY日志">
+<meta name="twitter:description" content="ELFK-实时抓取HAPROXY日志1、前言 本篇博客仅记录haproxy日志，通过logstash正则进行数据结构化，输出到elasticsearch中，最后通过kibaka进行展示的完整过程，EK的安装及配置方法，请参考：ELK-Stack简介及安装手册  1.1、Logstash简介 Logstash 能够动态地采集、转换和传输数据，不受格式或复杂度的影响。利用 Grok 从非结构化数据中派">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/cgwm8hf3o9hkfvz5bj6a5sry/image_1dod7098hm0q1u501sr91lvhe7jp.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/10/30/ELFK-实时抓取HAPROXY日志/">
+
+
+
+
+
+  <title>ELFK-实时抓取HAPROXY日志 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/10/30/ELFK-实时抓取HAPROXY日志/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ELFK-实时抓取HAPROXY日志</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-30T13:00:00+08:00">
+                2019-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ELK文档/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/30/ELFK-实时抓取HAPROXY日志/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/30/ELFK-实时抓取HAPROXY日志/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ELFK-实时抓取HAPROXY日志"><a href="#ELFK-实时抓取HAPROXY日志" class="headerlink" title="ELFK-实时抓取HAPROXY日志"></a>ELFK-实时抓取HAPROXY日志</h1><h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><blockquote>
+<p>本篇博客仅记录haproxy日志，通过logstash正则进行数据结构化，输出到elasticsearch中，最后通过kibaka进行展示的完整过程，EK的安装及配置方法，请参考：<a href="https://www.lisirlife.com/2019/05/06/ELK-Stack%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85%E6%89%8B%E5%86%8C/" target="_blank" rel="noopener">ELK-Stack简介及安装手册</a></p>
+</blockquote>
+<h3 id="1-1、Logstash简介"><a href="#1-1、Logstash简介" class="headerlink" title="1.1、Logstash简介"></a>1.1、Logstash简介</h3><blockquote>
+<p>Logstash 能够动态地采集、转换和传输数据，不受格式或复杂度的影响。利用 Grok 从非结构化数据中派生出结构，从 IP 地址解码出地理坐标，匿名化或排除敏感字段，并简化整体处理过程。数据往往以各种各样的形式，或分散或集中地存在于很多系统中。 Logstash 支持 各种输入选择 ，可以在同一时间从众多常用来源捕捉事件。能够以连续的流式传输方式，轻松地从您的日志、指标、Web 应用、数据存储以及各种 AWS 服务采集数据。如下图：</p>
+</blockquote>
+<ul>
+<li>图一：<img src="http://static.zybuluo.com/a807257775/cgwm8hf3o9hkfvz5bj6a5sry/image_1dod7098hm0q1u501sr91lvhe7jp.png" alt="image_1dod7098hm0q1u501sr91lvhe7jp.png-41.8kB"></li>
+</ul>
+<h2 id="2、部署环境介绍"><a href="#2、部署环境介绍" class="headerlink" title="2、部署环境介绍"></a>2、部署环境介绍</h2><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>IP</th>
+<th>用途</th>
+<th>E版本</th>
+<th>L版本</th>
+<th>K版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS 6.7 64Bit</td>
+<td>192.168.1.241</td>
+<td>ES+Cerebro+Kibana</td>
+<td>6.7.0</td>
+<td></td>
+<td>6.7.0</td>
+</tr>
+<tr>
+<td>CentOS 6.7 64Bit</td>
+<td>192.168.1.43</td>
+<td>Logstash</td>
+<td></td>
+<td>6.7.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2、Logstash的安装与配置"><a href="#2、Logstash的安装与配置" class="headerlink" title="2、Logstash的安装与配置"></a>2、Logstash的安装与配置</h2><h3 id="2-1、配置EPEL源-K源（all-logstash）"><a href="#2-1、配置EPEL源-K源（all-logstash）" class="headerlink" title="2.1、配置EPEL源+K源（all_logstash）"></a>2.1、配置EPEL源+K源（all_logstash）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/Packages/e/epel-release-6-8.noarch.rpm</span><br><span class="line">[root@localhost ~]# yum install vim telnet wget nethogs htop glances dstat traceroute lrzsz goaccess ntpdate dos2unix openssl-devel tcpdump lrzsz fio nss curl -y</span><br><span class="line">[root@localhost ~]# yum groupinstall &quot;Development Tools&quot; -y</span><br><span class="line">[root@localhost ~]# vim /etc/yum.repos.d/logstash.repo</span><br><span class="line">[logstash-6.x]</span><br><span class="line">name=Elastic repository for 6.x packages</span><br><span class="line">baseurl=https://artifacts.elastic.co/packages/6.x/yum</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch</span><br><span class="line">enabled=1</span><br><span class="line">autorefresh=1</span><br><span class="line">type=rpm-md</span><br></pre></td></tr></table></figure>
+<h3 id="2-2、安装JDK及配置系统环境（all-logstash）"><a href="#2-2、安装JDK及配置系统环境（all-logstash）" class="headerlink" title="2.2、安装JDK及配置系统环境（all_logstash）"></a>2.2、安装JDK及配置系统环境（all_logstash）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@test1 ~]# echo &quot;* - nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">[root@test1 ~]# sed -i &quot;s/1024/65536/g&quot; /etc/security/limits.d/90-nproc.conf</span><br><span class="line">[root@test1 ~]# echo &quot;fs.file-max = 65536&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">[root@test1 ~]# wget http://192.168.1.231/soft/jdk-8u131-linux-x64.tar.gz</span><br><span class="line">[root@test1 ~]# mkdir -pv /usr/java/</span><br><span class="line">[root@test1 ~]# tar xzvf jdk-8u131-linux-x64.tar.gz -C /usr/java/</span><br><span class="line">[root@test1 ~]# ln -s /usr/java/jdk1.8.0_131/bin/java /usr/sbin/</span><br><span class="line">[root@test1 ~]# vim /etc/profile</span><br><span class="line">    JAVA_HOME=/usr/java/jdk1.8.0_131</span><br><span class="line">    export JAVA_HOME</span><br><span class="line">    CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">    export CLASSPATH</span><br><span class="line">    PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$JAVA_HOME/bin</span><br><span class="line">    export PATH</span><br><span class="line">    export LANG=zh_CN.UTF-8</span><br><span class="line">[root@test1 ~]# reboot</span><br></pre></td></tr></table></figure>
+<h3 id="2-3、Logstash安装（all-logstash）"><a href="#2-3、Logstash安装（all-logstash）" class="headerlink" title="2.3、Logstash安装（all_logstash）"></a>2.3、Logstash安装（all_logstash）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@test1 ~]# yum install logstash-6.7.0</span><br><span class="line">[root@test1 ~]# chkconfig logstash on</span><br><span class="line">[root@test1 ~]# rpm -ql logstash</span><br><span class="line">    #配置文件路径</span><br><span class="line">    /etc/logstash/conf.d</span><br><span class="line">    /etc/logstash/jvm.options</span><br><span class="line">    /etc/logstash/log4j2.properties</span><br><span class="line">    /etc/logstash/logstash-sample.conf</span><br><span class="line">    /etc/logstash/logstash.yml</span><br><span class="line">    /etc/logstash/pipelines.yml</span><br><span class="line">    /etc/logstash/startup.options</span><br><span class="line">    #缓存数据路径</span><br><span class="line">    /var/lib/logstash/</span><br><span class="line">    #主程序路径</span><br><span class="line">    /usr/share/logstash</span><br><span class="line">    #日志路径</span><br><span class="line">    /var/log/logstash</span><br></pre></td></tr></table></figure>
+<h3 id="2-4、导入haproxy-patterns规则库"><a href="#2-4、导入haproxy-patterns规则库" class="headerlink" title="2.4、导入haproxy_patterns规则库"></a>2.4、导入haproxy_patterns规则库</h3><blockquote>
+<p>此规则库来自官方GITHUB，详见：<a href="https://www.lisirlife.com/2019/05/06/ELK-GROK%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="noopener">ELK_GROK学习笔记</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@atmpos patterns]# pwd</span><br><span class="line">/usr/share/logstash/patterns</span><br><span class="line">[root@atmpos patterns]# cat haproxy_patterns </span><br><span class="line">HAPROXYTIME (?!&lt;[0-9])%&#123;HOUR:haproxy_hour&#125;:%&#123;MINUTE:haproxy_minute&#125;(?::%&#123;SECOND:haproxy_second&#125;)(?![0-9])</span><br><span class="line">HAPROXYDATE %&#123;MONTHDAY:haproxy_monthday&#125;/%&#123;MONTH:haproxy_month&#125;/%&#123;YEAR:haproxy_year&#125;:%&#123;HAPROXYTIME:haproxy_time&#125;.%&#123;INT:haproxy_milliseconds&#125;</span><br><span class="line"></span><br><span class="line">HAPROXYCAPTUREDREQUESTHEADERS %&#123;DATA:captured_request_headers&#125;</span><br><span class="line">HAPROXYCAPTUREDRESPONSEHEADERS %&#123;DATA:captured_response_headers&#125;</span><br><span class="line"></span><br><span class="line"># parse a haproxy &apos;httplog&apos; line</span><br><span class="line">HAPROXYHTTPBASE %&#123;IP:client_ip&#125;:%&#123;INT:client_port&#125; \[%&#123;HAPROXYDATE:accept_date&#125;\] %&#123;NOTSPACE:frontend_name&#125; %&#123;NOTSPACE:backend_name&#125;/%&#123;NOTSPACE:server_name&#125; %&#123;INT:time_request&#125;/%&#123;INT:time_queue&#125;/%&#123;INT:time_backend_connect&#125;/%&#123;INT:time_backend_response&#125;/%&#123;NOTSPACE:time_duration&#125; %&#123;INT:http_status_code&#125; %&#123;NOTSPACE:bytes_read&#125; %&#123;DATA:captured_request_cookie&#125; %&#123;DATA:captured_response_cookie&#125; %&#123;NOTSPACE:termination_state&#125; %&#123;INT:actconn&#125;/%&#123;INT:feconn&#125;/%&#123;INT:beconn&#125;/%&#123;INT:srvconn&#125;/%&#123;NOTSPACE:retries&#125; %&#123;INT:srv_queue&#125;/%&#123;INT:backend_queue&#125; (\&#123;%&#123;HAPROXYCAPTUREDREQUESTHEADERS&#125;\&#125;)?( )?(\&#123;%&#123;HAPROXYCAPTUREDRESPONSEHEADERS&#125;\&#125;)?( )?&quot;(&lt;BADREQ&gt;|(%&#123;WORD:http_verb&#125; (%&#123;URIPROTO:http_proto&#125;://)?(?:%&#123;USER:http_user&#125;(?::[^@]*)?@)?(?:%&#123;URIHOST:http_host&#125;)?(?:%&#123;URIPATHPARAM:http_request&#125;)?( HTTP/%&#123;NUMBER:http_version&#125;)?))?&quot;?</span><br><span class="line"></span><br><span class="line">HAPROXYHTTP (?:%&#123;SYSLOGTIMESTAMP:syslog_timestamp&#125;|%&#123;TIMESTAMP_ISO8601:timestamp8601&#125;) %&#123;IPORHOST:syslog_server&#125; %&#123;SYSLOGPROG&#125;: %&#123;HAPROXYHTTPBASE&#125;</span><br><span class="line"></span><br><span class="line"># parse a haproxy &apos;tcplog&apos; line</span><br><span class="line">HAPROXYTCP (?:%&#123;SYSLOGTIMESTAMP:syslog_timestamp&#125;|%&#123;TIMESTAMP_ISO8601:timestamp8601&#125;) %&#123;IPORHOST:syslog_server&#125; %&#123;SYSLOGPROG&#125;: %&#123;IP:client_ip&#125;:%&#123;INT:client_port&#125; \[%&#123;HAPROXYDATE:accept_date&#125;\] %&#123;NOTSPACE:frontend_name&#125; %&#123;NOTSPACE:backend_name&#125;/%&#123;NOTSPACE:server_name&#125; %&#123;INT:time_queue&#125;/%&#123;INT:time_backend_connect&#125;/%&#123;NOTSPACE:time_duration&#125; %&#123;NOTSPACE:bytes_read&#125; %&#123;NOTSPACE:termination_state&#125; %&#123;INT:actconn&#125;/%&#123;INT:feconn&#125;/%&#123;INT:beconn&#125;/%&#123;INT:srvconn&#125;/%&#123;NOTSPACE:retries&#125; %&#123;INT:srv_queue&#125;/%&#123;INT:backend_queue&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-5、导入haproxy-conf配置文件"><a href="#2-5、导入haproxy-conf配置文件" class="headerlink" title="2.5、导入haproxy.conf配置文件"></a>2.5、导入haproxy.conf配置文件</h3><blockquote>
+<p>提示：首先根据你HAPROXY的使用类型，来引用对应规则库，目前官方规则库支持httplog、tcplog日志格式</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@atmpos conf.d]# pwd</span><br><span class="line">/etc/logstash/conf.d</span><br><span class="line">[root@atmpos conf.d]# cat haproxy.conf </span><br><span class="line"># Sample Logstash configuration for creating a simple</span><br><span class="line"># Beats -&gt; Logstash -&gt; Elasticsearch pipeline.</span><br><span class="line">input &#123;</span><br><span class="line">  file &#123;</span><br><span class="line">    path =&gt; &quot;/var/log/haproxy.log&quot;</span><br><span class="line">    type =&gt; &quot;haproxy-access-log&quot;</span><br><span class="line">    exclude =&gt; &quot;*.gz&quot;</span><br><span class="line">      start_position =&gt; &quot;beginning&quot;</span><br><span class="line">      stat_interval =&gt; &quot;1&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  if [type] == &quot;haproxy-access-log&quot; &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; &quot;%&#123;HAPROXYTCP&#125;&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    date &#123;</span><br><span class="line">        match =&gt; [&quot;accept_date&quot;,&quot;dd/MMM/yyyy:HH:mm:ss.SSS&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123; </span><br><span class="line">        rename =&gt; &#123; &quot;host&quot; =&gt; &quot;host.name&quot; &#125;</span><br><span class="line">        remove_field =&gt;[&quot;message&quot;]</span><br><span class="line">        remove_field =&gt;[&quot;host.name&quot;]</span><br><span class="line">        add_field =&gt; &#123; &quot;server_ip&quot; =&gt; &quot;192.168.1.43&quot; &#125;</span><br><span class="line">        remove_field =&gt; [&quot;accept_date&quot;]</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  if [type] == &quot;haproxy-access-log&quot; &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [&quot;192.168.1.241:9200&quot;]</span><br><span class="line">    index =&gt; &quot;haproxy-43-log-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6、重启logstash"><a href="#2-6、重启logstash" class="headerlink" title="2.6、重启logstash"></a>2.6、重启logstash</h3><blockquote>
+<p>提示：日志如无ERROR级别的日志，表示数据已开始向ES导入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@atmpos logstash]# service logstash restart</span><br><span class="line">[root@atmpos logstash]# tail -f /var/log/logstash/logstash-plain.log</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="2-7、登录Cerebro查看ES索引及数据情况"><a href="#2-7、登录Cerebro查看ES索引及数据情况" class="headerlink" title="2.7、登录Cerebro查看ES索引及数据情况"></a>2.7、登录Cerebro查看ES索引及数据情况</h3><blockquote>
+<p>ES管理工具下载地址，需JDK1.8环境：<a href="https://github.com/lmenezes/cerebro" target="_blank" rel="noopener">https://github.com/lmenezes/cerebro</a></p>
+</blockquote>
+<p><img src="http://static.zybuluo.com/a807257775/nuvwbn8mnaxku2mdm0d7qw75/image_1dodc61ti1okj35u1avph7d16p5m.png" alt="image_1dodc61ti1okj35u1avph7d16p5m.png-47.3kB"><br><img src="http://static.zybuluo.com/a807257775/gpn41askuskw0hmqu04ku7zl/image_1dodcu1h61bfpmq31voksh0lir9.png" alt="image_1dodcu1h61bfpmq31voksh0lir9.png-104.1kB"></p>
+<h3 id="2-8、登录kibana查看ES索引及数据情况"><a href="#2-8、登录kibana查看ES索引及数据情况" class="headerlink" title="2.8、登录kibana查看ES索引及数据情况"></a>2.8、登录kibana查看ES索引及数据情况</h3><p><img src="http://static.zybuluo.com/a807257775/fdhjozgxsl5bt2q4tqfnnjp7/image_1dodd5v5r1gbe1e4gac5pvc10a1m.png" alt="image_1dodd5v5r1gbe1e4gac5pvc10a1m.png-118.5kB"></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/10/30/ELFK-实时抓取HAPROXY日志/" title="ELFK-实时抓取HAPROXY日志">2019/10/30/ELFK-实时抓取HAPROXY日志/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ELK文档/" rel="tag"><i class="fa fa-tag"></i> ELK文档</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/30/ELFK-实时抓取WAF硬件设备日志/" rel="next" title="ELFK-实时抓取WAF硬件设备日志">
+                <i class="fa fa-chevron-left"></i> ELFK-实时抓取WAF硬件设备日志
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/30/ELFK-实时抓取NGINX日志/" rel="prev" title="ELFK-实时抓取NGINX日志">
+                ELFK-实时抓取NGINX日志 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ELFK-实时抓取HAPROXY日志"><span class="nav-number">1.</span> <span class="nav-text">ELFK-实时抓取HAPROXY日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、前言"><span class="nav-number">1.1.</span> <span class="nav-text">1、前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、Logstash简介"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、Logstash简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、部署环境介绍"><span class="nav-number">1.2.</span> <span class="nav-text">2、部署环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、Logstash的安装与配置"><span class="nav-number">1.3.</span> <span class="nav-text">2、Logstash的安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、配置EPEL源-K源（all-logstash）"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.1、配置EPEL源+K源（all_logstash）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、安装JDK及配置系统环境（all-logstash）"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.2、安装JDK及配置系统环境（all_logstash）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、Logstash安装（all-logstash）"><span class="nav-number">1.3.3.</span> <span class="nav-text">2.3、Logstash安装（all_logstash）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、导入haproxy-patterns规则库"><span class="nav-number">1.3.4.</span> <span class="nav-text">2.4、导入haproxy_patterns规则库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、导入haproxy-conf配置文件"><span class="nav-number">1.3.5.</span> <span class="nav-text">2.5、导入haproxy.conf配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、重启logstash"><span class="nav-number">1.3.6.</span> <span class="nav-text">2.6、重启logstash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7、登录Cerebro查看ES索引及数据情况"><span class="nav-number">1.3.7.</span> <span class="nav-text">2.7、登录Cerebro查看ES索引及数据情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8、登录kibana查看ES索引及数据情况"><span class="nav-number">1.3.8.</span> <span class="nav-text">2.8、登录kibana查看ES索引及数据情况</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

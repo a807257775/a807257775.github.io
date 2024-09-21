@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="SkyWalking,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="使用SkyWalking监控Nginx链路信息1、前言本篇只记录如何安装及配置Nginx LUA Agent展开，详细的记录了nginx lua模块的安装过程及如配置Nginx LUA Agent，并全程使用docker+k8s进行部署，SkyWalking的服务端也采用k8s部署，数据存储使用7.10的es完成，ES连接方式为HTTPS，具体踩坑过程后续进行记录； 2、SkyWalking简介与">
+<meta name="keywords" content="SkyWalking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用SkyWalking监控Nginx链路信息">
+<meta property="og:url" content="http://www.lisirlife.cn/2021/03/02/使用SkyWalking监控Nginx链路信息/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="使用SkyWalking监控Nginx链路信息1、前言本篇只记录如何安装及配置Nginx LUA Agent展开，详细的记录了nginx lua模块的安装过程及如配置Nginx LUA Agent，并全程使用docker+k8s进行部署，SkyWalking的服务端也采用k8s部署，数据存储使用7.10的es完成，ES连接方式为HTTPS，具体踩坑过程后续进行记录； 2、SkyWalking简介与">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/3329kds64vfameocjdo9tb02/image_1evop0psr14426t59l814ub3es9.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/cycyxik980hvftuilinnb91b/image_1evop2dcg1eui14ki6j81s82q4dm.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/lvwcvx88jcs80i073g4xls3p/image_1evovi773c331r2v1nke1v3o1jpn16.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/9vh9vk708i3a6syu702m6is9/image_1evovvggs1ujt6vv1js1e7rpgf1j.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/zmu8syto8q0j0wjefyn9ckzq/image_1evp244544vnfr6re01efg1qdum.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/q3pgp06401jqvt26ll5l0b61/image_1evp3e9m4ism1fr6v8cvhtl8b13.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用SkyWalking监控Nginx链路信息">
+<meta name="twitter:description" content="使用SkyWalking监控Nginx链路信息1、前言本篇只记录如何安装及配置Nginx LUA Agent展开，详细的记录了nginx lua模块的安装过程及如配置Nginx LUA Agent，并全程使用docker+k8s进行部署，SkyWalking的服务端也采用k8s部署，数据存储使用7.10的es完成，ES连接方式为HTTPS，具体踩坑过程后续进行记录； 2、SkyWalking简介与">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/3329kds64vfameocjdo9tb02/image_1evop0psr14426t59l814ub3es9.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2021/03/02/使用SkyWalking监控Nginx链路信息/">
+
+
+
+
+
+  <title>使用SkyWalking监控Nginx链路信息 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2021/03/02/使用SkyWalking监控Nginx链路信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用SkyWalking监控Nginx链路信息</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-02T16:00:00+08:00">
+                2021-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SkyWalking/" itemprop="url" rel="index">
+                    <span itemprop="name">SkyWalking</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/03/02/使用SkyWalking监控Nginx链路信息/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/02/使用SkyWalking监控Nginx链路信息/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用SkyWalking监控Nginx链路信息"><a href="#使用SkyWalking监控Nginx链路信息" class="headerlink" title="使用SkyWalking监控Nginx链路信息"></a>使用SkyWalking监控Nginx链路信息</h1><h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><p>本篇只记录如何安装及配置Nginx LUA Agent展开，详细的记录了nginx lua模块的安装过程及如配置Nginx LUA Agent，并全程使用docker+k8s进行部署，SkyWalking的服务端也采用k8s部署，数据存储使用7.10的es完成，ES连接方式为HTTPS，具体踩坑过程后续进行记录；</p>
+<h2 id="2、SkyWalking简介与架构"><a href="#2、SkyWalking简介与架构" class="headerlink" title="2、SkyWalking简介与架构"></a>2、SkyWalking简介与架构</h2><blockquote>
+<p>官方手册：<a href="https://skywalking.apache.org/docs/main/latest/en/concepts-and-designs/overview/" target="_blank" rel="noopener">SkyWalking Overview</a></p>
+</blockquote>
+<ul>
+<li>SkyWalking：一个开放源代码的可观察性平台，用于收集，分析，聚合和可视化来自服务和云本机基础结构的数据。SkyWalking提供了一种简便的方法来维护您的分布式系统的清晰视图，即使在整个云中也是如此。它是一个现代的APM，专门为基于云的基于容器的分布式系统而设计，如下图：<br><img src="http://static.zybuluo.com/a807257775/3329kds64vfameocjdo9tb02/image_1evop0psr14426t59l814ub3es9.png" alt="image_1evop0psr14426t59l814ub3es9.png-242.1kB"></li>
+</ul>
+<blockquote>
+<p>从逻辑上讲，SkyWalking分为四个部分：探针，服务后端，存储和UI，如下图：</p>
+</blockquote>
+<ul>
+<li>探针：收集数据并重新格式化以符合SkyWalking的要求（不同的探针支持不同的来源）；</li>
+<li>服务后端：支持数据聚合，分析和流处理，涵盖跟踪，指标和日志；</li>
+<li>存储：支持ElasticSearch，H2，MySQL，TiDB，InfluxDB存储SkyWalking数据</li>
+<li>UI：是一个高度可定制的基于Web的界面，允许SkyWalking最终用户可视化和管理SkyWalking数据。<br><img src="http://static.zybuluo.com/a807257775/cycyxik980hvftuilinnb91b/image_1evop2dcg1eui14ki6j81s82q4dm.png" alt="image_1evop2dcg1eui14ki6j81s82q4dm.png-272.8kB"></li>
+</ul>
+<h2 id="3、为什么要使用SkyWalking？"><a href="#3、为什么要使用SkyWalking？" class="headerlink" title="3、为什么要使用SkyWalking？"></a>3、为什么要使用SkyWalking？</h2><ul>
+<li>SkyWalking提供了用于在许多不同情况下观察和监视分布式系统的解决方案。首先，与传统方法一样，SkyWalking为服务提供自动仪器代理，例如Java，C＃，Node.js，Go，PHP和Nginx LUA。在多语言，持续部署的环境中，云本机基础架构变得越来越强大，但也越来越复杂。SkyWalking的服务网格接收器使SkyWalking能够从Istio / Envoy和Linkerd等服务网格框架接收遥测数据，从而使用户能够了解整个分布式系统，</li>
+<li>SkyWalking使用服务名称，服务实例，端点提供可观察性功能，详细含义如下：<ul>
+<li>服务名称：表示一组工作负载，SkyWalking也可以使用您在Istio等平台中定义的名称；</li>
+<li>服务实例：服务组中的每个单独工作负载都称为实例，像pods在Kubernetes中的定义一样；</li>
+<li>端点：服务中用于传入请求的路径，例如HTTP URI路径或gRPC服务类+方法签名；</li>
+</ul>
+</li>
+</ul>
+<h2 id="4、部署环境介绍"><a href="#4、部署环境介绍" class="headerlink" title="4、部署环境介绍"></a>4、部署环境介绍</h2><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>IP</th>
+<th>NGINX版本</th>
+<th>Agent版本</th>
+<th>SkyWalking版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS Linux release 7.7.1908</td>
+<td>192.168.6.10</td>
+<td>1.12.1</td>
+<td>skywalking-nginx-lua-0.3.0</td>
+<td>8.1.0</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5、编译NGINX"><a href="#5、编译NGINX" class="headerlink" title="5、编译NGINX"></a>5、编译NGINX</h2><h3 id="5-1、安装luajit编译器"><a href="#5-1、安装luajit编译器" class="headerlink" title="5.1、安装luajit编译器"></a>5.1、安装luajit编译器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#下载luajit编译器</span><br><span class="line">wget http://luajit.org/download/LuaJIT-2.1.0-beta3.tar.gz</span><br><span class="line">#解压源码包</span><br><span class="line">tar xzvf LuaJIT-2.1.0-beta3.tar.gz</span><br><span class="line">cd LuaJIT-2.1.0-beta3</span><br><span class="line">#安装路径：/usr/local/luajit</span><br><span class="line">make PREFIX=/usr/local/luajit</span><br><span class="line">make install PREFIX=/usr/local/luajit</span><br><span class="line">#构建库文件软连接</span><br><span class="line">ln -s /usr/local/luajit/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2</span><br></pre></td></tr></table></figure>
+<h3 id="5-2、增加环境变量"><a href="#5-2、增加环境变量" class="headerlink" title="5.2、增加环境变量"></a>5.2、增加环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#增加LUAJIT环境变量</span><br><span class="line">echo &apos;export LUAJIT_LIB=/usr/local/luajit/lib&apos; &gt;&gt; /etc/profile</span><br><span class="line">echo &apos;export LUAJIT_INC=/usr/local/luajit/include/luajit-2.1&apos; &gt;&gt; /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<h3 id="5-3、安装nginx-lua模块"><a href="#5-3、安装nginx-lua模块" class="headerlink" title="5.3、安装nginx lua模块"></a>5.3、安装nginx lua模块</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz -O ngx_devel_kit-0.3.0.tar.gz</span><br><span class="line">wget https://github.com/openresty/lua-nginx-module/archive/v0.10.14.tar.gz -O lua-nginx-module-0.10.14.tar.gz</span><br><span class="line">tar xzvf ngx_devel_kit-0.3.0.tar.gz</span><br><span class="line">tar xzvf lua-nginx-module-0.10.14.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="5-4、Bulid-Nginx"><a href="#5-4、Bulid-Nginx" class="headerlink" title="5.4、Bulid Nginx"></a>5.4、Bulid Nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#nginx编译参数如下（这里包含了其他模块，具体各个模块的安装这里不记录）：</span><br><span class="line">./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_ssl_module --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module  --with-http_realip_module --add-module=/soft/naxsi-master/naxsi_src --add-module=/soft/nginx-limit-upstream-master --add-module=/soft/nginx-upstream-jvm-route-master --add-module=/soft/ngx_http_proxy_connect_module-0.0.2 --add-module=/soft/ngx_devel_kit-0.3.0 --add-module=/soft/lua-nginx-module-0.10.14 --with-http_v2_module &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="5-5、Test-Nginx-Lua"><a href="#5-5、Test-Nginx-Lua" class="headerlink" title="5.5、Test Nginx Lua"></a>5.5、Test Nginx Lua</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#在nginx.conf，server段中增加如下配置</span><br><span class="line">location /lua &#123;</span><br><span class="line">    default_type text/html;</span><br><span class="line">    content_by_lua_block &#123;</span><br><span class="line">        ngx.say(&quot;Hello Lua!&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">#重载nginx</span><br><span class="line">/usr/loca/nginx/sbin/nginx -s reload</span><br><span class="line">#访问测试</span><br><span class="line">curl http://127.0.0.1/lua</span><br><span class="line">#如下返回表示lua安装正常</span><br><span class="line">Hello Lua!</span><br></pre></td></tr></table></figure>
+<h3 id="5-5、下载skywalking-lua脚本"><a href="#5-5、下载skywalking-lua脚本" class="headerlink" title="5.5、下载skywalking lua脚本"></a>5.5、下载skywalking lua脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/apache/skywalking-nginx-lua/archive/v0.3.0.tar.gz</span><br><span class="line">tar xzvf v0.3.0.tar.gz -C /usr/local/</span><br></pre></td></tr></table></figure>
+<h3 id="5-6、修改nginx-conf配置文件"><a href="#5-6、修改nginx-conf配置文件" class="headerlink" title="5.6、修改nginx.conf配置文件"></a>5.6、修改nginx.conf配置文件</h3><blockquote>
+<p>提示：配置项（lua_package_path、metadata_buffer:set、startBackendTimer）要根据实际部署情况进行调整；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">#user  www;</span><br><span class="line">worker_processes  2;</span><br><span class="line">error_log  /usr/local/nginx/logs/error.log warn;</span><br><span class="line">pid        /var/run/nginx.pid;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    include       /usr/local/nginx/conf/mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                      &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                      &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line">    access_log  /usr/local/nginx/logs/access.log  main;</span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line">    #gzip  on;</span><br><span class="line">    include /usr/local/nginx/conf/conf.d/*.conf;</span><br><span class="line">    ############################################################################################</span><br><span class="line">    #LUA脚本存放路径</span><br><span class="line">    lua_package_path &quot;/usr/local/skywalking-nginx-lua-0.3.0/lib/?.lua;;&quot;;</span><br><span class="line">    lua_shared_dict tracing_buffer 100m;</span><br><span class="line">    init_worker_by_lua_block &#123;</span><br><span class="line">        local metadata_buffer = ngx.shared.tracing_buffer</span><br><span class="line">        #服务名称</span><br><span class="line">        metadata_buffer:set(&apos;serviceName&apos;, &apos;szzt_nginx112&apos;)</span><br><span class="line">        #实例名称</span><br><span class="line">        metadata_buffer:set(&apos;serviceInstanceName&apos;, &apos;centos2009-858f6fcf97-m69tp&apos;)</span><br><span class="line">        #skywalking后端地址</span><br><span class="line">        require(&quot;skywalking.client&quot;):startBackendTimer(&quot;http://10.244.1.19:12800&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 60000;</span><br><span class="line">        #lua_code_cache off;</span><br><span class="line">        location /ingress &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            rewrite_by_lua_block &#123;</span><br><span class="line">                require(&quot;skywalking.tracer&quot;):start(&quot;upstream service&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">            proxy_pass http://127.0.0.1:60000/tier2/lb;</span><br><span class="line">            body_filter_by_lua_block &#123;</span><br><span class="line">                if ngx.arg[2] then</span><br><span class="line">                    require(&quot;skywalking.tracer&quot;):finish()</span><br><span class="line">                end</span><br><span class="line">            &#125;</span><br><span class="line">            log_by_lua_block &#123;</span><br><span class="line">                require(&quot;skywalking.tracer&quot;):prepareForReport()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /tier2/lb &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line"></span><br><span class="line">            rewrite_by_lua_block &#123;</span><br><span class="line">                require(&quot;skywalking.tracer&quot;):start(&quot;backend service&quot;)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            proxy_pass http://127.0.0.1:60000/backend;</span><br><span class="line"></span><br><span class="line">            body_filter_by_lua_block &#123;</span><br><span class="line">                if ngx.arg[2] then</span><br><span class="line">                    require(&quot;skywalking.tracer&quot;):finish()</span><br><span class="line">                end</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            log_by_lua_block &#123;</span><br><span class="line">                require(&quot;skywalking.tracer&quot;):prepareForReport()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # ------------------------------------------------------</span><br><span class="line">        # -- Mock backend business service as the upsteeam</span><br><span class="line">        # ------------------------------------------------------</span><br><span class="line">        location /backend &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                ngx.say(&quot;&lt;p&gt;Backend service for testing only.&lt;/p&gt;&quot;)</span><br><span class="line">                ngx.say(&quot;&lt;p&gt;Backend sw8 received headers: &quot; .. ngx.req.get_headers()[&quot;sw8&quot;] .. &quot;&lt;/p&gt;&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        # ------------------------------------------------------</span><br><span class="line">        # -- Mock OAP server to provide register and trace collection</span><br><span class="line">        # ------------------------------------------------------</span><br><span class="line">        location /v3/management/reportProperties &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            lua_need_request_body on;</span><br><span class="line"></span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                local cjson = require(&apos;cjson&apos;)</span><br><span class="line"></span><br><span class="line">                ngx.log(ngx.DEBUG, &apos;Instance report request = &apos;, ngx.req.get_body_data())</span><br><span class="line"></span><br><span class="line">                local reportInfo = &#123;&#125;</span><br><span class="line">                ngx.say(cjson.encode(reportInfo))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /v3/management/keepAlive &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            lua_need_request_body on;</span><br><span class="line"></span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                local cjson = require(&apos;cjson&apos;)</span><br><span class="line">                ngx.log(ngx.DEBUG, &apos;KeepAlive request = &apos;, ngx.req.get_body_data())</span><br><span class="line"></span><br><span class="line">                local keepAliveInfo = &#123;&#125;</span><br><span class="line">                ngx.say(cjson.encode(keepAliveInfo))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /v3/segments &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line">            lua_need_request_body on;</span><br><span class="line"></span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                local cjson = require(&apos;cjson&apos;)</span><br><span class="line">                ngx.log(ngx.DEBUG, &apos;Received segment = &apos;, ngx.req.get_body_data())</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="5-7、重载配置文件"><a href="#5-7、重载配置文件" class="headerlink" title="5.7、重载配置文件"></a>5.7、重载配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#重载nginx</span><br><span class="line">/usr/loca/nginx/sbin/nginx -s reload</span><br><span class="line">#访问测试</span><br><span class="line">curl http://127.0.0.1:60000/ingress</span><br><span class="line">#如下返回表示后端服务部署正常，登录UI查看链路数据</span><br><span class="line">&lt;p&gt;Backend service for testing only.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;Backend sw8 received headers: 1-Y2JiMjk3YzAtMTRhOS00NmJjLWFkOTEtMWQwZWY5YjQyZGY5-NDY1YTc4YWQtOTNjYy00MzJlLWE4MzYtOTgyNGQ0OTUwNmQ2-1-c3p6dF9uZ2lueDExMg==-Y2VudG9zMjAwOS04NThmNmZjZjk3LW02OXRw-L3RpZXIyL2xi-YmFja2VuZCBzZXJ2aWNl&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="5-8、进行简单压测"><a href="#5-8、进行简单压测" class="headerlink" title="5.8、进行简单压测"></a>5.8、进行简单压测</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ab -c 100 -n 1000 http://127.0.0.1:60000/ingress</span><br><span class="line">    Server Software:        nginx/1.12.1</span><br><span class="line">    Server Hostname:        127.0.0.1</span><br><span class="line">    Server Port:            60000</span><br><span class="line">    </span><br><span class="line">    Document Path:          /ingress</span><br><span class="line">    Document Length:        272 bytes</span><br><span class="line">    </span><br><span class="line">    Concurrency Level:      100</span><br><span class="line">    Time taken for tests:   0.423 seconds</span><br><span class="line">    Complete requests:      1000</span><br><span class="line">    Failed requests:        0</span><br><span class="line">    Write errors:           0</span><br><span class="line">    Total transferred:      415000 bytes</span><br><span class="line">    HTML transferred:       272000 bytes</span><br><span class="line">    Requests per second:    2363.95 [#/sec] (mean)</span><br><span class="line">    Time per request:       42.302 [ms] (mean)</span><br><span class="line">    Time per request:       0.423 [ms] (mean, across all concurrent requests)</span><br><span class="line">    Transfer rate:          958.05 [Kbytes/sec] received</span><br></pre></td></tr></table></figure>
+<h3 id="5-7、登录skywalking-UI进行查看"><a href="#5-7、登录skywalking-UI进行查看" class="headerlink" title="5.7、登录skywalking UI进行查看"></a>5.7、登录skywalking UI进行查看</h3><blockquote>
+<p>提示：实例名可看做是一个容器，一台服务器，一个OS进程，但必须唯一，用于区分和标识，具体UI使用详解，请阅读官方手册：<a href="https://skywalking.apache.org/docs/main/latest/en/concepts-and-designs/ui-overview/" target="_blank" rel="noopener">Visualization</a></p>
+</blockquote>
+<p><img src="http://static.zybuluo.com/a807257775/lvwcvx88jcs80i073g4xls3p/image_1evovi773c331r2v1nke1v3o1jpn16.png" alt="image_1evovi773c331r2v1nke1v3o1jpn16.png-136kB"></p>
+<h2 id="6、使用K8S部署NGINX"><a href="#6、使用K8S部署NGINX" class="headerlink" title="6、使用K8S部署NGINX"></a>6、使用K8S部署NGINX</h2><blockquote>
+<p>提示：使用k8s部署基于skywalking的nginx，存在如下几个关键点，1、必须保证服务实例唯一，服务名称根据项目来定 2、skywalking的地址使用coredns的域名出现无法识别，必须填写clusterIP 3、nginx.conf配置文件是不支持容器变量传递，则放弃使用configmap进行存储和挂载，使用envsubst实现</p>
+</blockquote>
+<h3 id="6-1、准备构建Docker镜像的所需资源文件"><a href="#6-1、准备构建Docker镜像的所需资源文件" class="headerlink" title="6.1、准备构建Docker镜像的所需资源文件"></a>6.1、准备构建Docker镜像的所需资源文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[root@centos2009-858f6fcf97-m69tp nginx112]# ll</span><br><span class="line">total 5820</span><br><span class="line">-rw-r--r-- 1 root root     152 Mar  2 10:13 docker-entrypoint.sh -- 容器入口文件</span><br><span class="line">-rw-r--r-- 1 root root     642 Mar  2 10:13 Dockerfile  -- 镜像构建文件</span><br><span class="line">-rw-r--r-- 1 root root  885212 Mar  2 09:55 luajit2.1.0.tar.gz -- 将编译好的luajit打包</span><br><span class="line">-rw-r--r-- 1 root root 5012833 Mar  2 09:51 nginx112_skywalking.tar.gz -- 将编译并配置好的nginx打包</span><br><span class="line">-rw-r--r-- 1 root root   45535 Mar  2 09:52 skywalking-nginx-lua-0.3.0.tar.gz -- skywalking lua脚本打包</span><br><span class="line">#镜像构建文件内容</span><br><span class="line">[root@centos2009-858f6fcf97-m69tp nginx112]# cat Dockerfile </span><br><span class="line"># Version 0.0.1</span><br><span class="line">FROM 192.168.6.10/szzt_production/centos:centos7.9.2009</span><br><span class="line">MAINTAINER lisir </span><br><span class="line">ENV LUAJIT_LIB /usr/local/luajit/lib</span><br><span class="line">ENV LUAJIT_INC /usr/local/luajit/include/luajit-2.1</span><br><span class="line">ENV PATH /usr/local/nginx/sbin:$PATH</span><br><span class="line">ADD ./nginx112_skywalking.tar.gz /usr/local/</span><br><span class="line">ADD ./luajit2.1.0.tar.gz /usr/local/</span><br><span class="line">ADD ./skywalking-nginx-lua-0.3.0.tar.gz /usr/local/</span><br><span class="line">COPY ./docker-entrypoint.sh /</span><br><span class="line">RUN useradd -s /sbin/nologin -M www &amp;&amp; ln -sf /dev/stdout /usr/local/nginx/logs/access.log &amp;&amp; ln -sf /dev/stderr /usr/local/nginx/logs/error.log &amp;&amp; chmod 777 /docker-entrypoint.sh</span><br><span class="line">ENTRYPOINT [&quot;/docker-entrypoint.sh&quot;]</span><br><span class="line">WORKDIR /usr/local/nginx</span><br><span class="line">EXPOSE 80</span><br><span class="line">CMD [&quot;nginx&quot;,&quot;-g&quot;,&quot;daemon off;&quot;]</span><br><span class="line">#重要：为保证实例名唯一，需提前制作好使nginx.conf.template文件，用envsubst将nginx.conf.template中的内容覆盖nginx.conf文件内容，实现读取环境变量</span><br><span class="line">[root@centos2009-858f6fcf97-m69tp nginx112]# cat docker-entrypoint.sh </span><br><span class="line">#!/usr/bin/env sh</span><br><span class="line">set -eu</span><br><span class="line">envsubst &apos;$&#123;SVC_NAME&#125; $&#123;HOSTNAME&#125;&apos; &lt; /usr/local/nginx/conf/nginx.conf.template &gt; /usr/local/nginx/conf/nginx.conf</span><br><span class="line">exec &quot;$@&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2、构建基于skywalking的nginx生产镜像"><a href="#6-2、构建基于skywalking的nginx生产镜像" class="headerlink" title="6.2、构建基于skywalking的nginx生产镜像"></a>6.2、构建基于skywalking的nginx生产镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#构建过程直接-t打上标签</span><br><span class="line">docker image build -t 192.168.6.33/szzt_production/nginx112:latest .</span><br><span class="line">#上传至私有仓库</span><br><span class="line">docker push 192.168.6.33/szzt_production/nginx112:latest</span><br></pre></td></tr></table></figure>
+<h3 id="6-3、部署一个nginx容器进行测试"><a href="#6-3、部署一个nginx容器进行测试" class="headerlink" title="6.3、部署一个nginx容器进行测试"></a>6.3、部署一个nginx容器进行测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#用制作好的镜像，create的一个容器</span><br><span class="line">docker container run -d --name nginx-lisir -p 83:60000 -e SVC_NAME=szzt-lisir-nginx -e SW_ADDR=http://10.244.1.19:12800 --restart always 192.168.6.33/szzt_production/nginx112:latest</span><br><span class="line">#访问测试</span><br><span class="line">curl http://127.0.0.1:83/ingress</span><br><span class="line">&lt;p&gt;Backend service for testing only.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;Backend sw8 received headers: 1-Y2JiMjk3YzAtMTRhOS00NmJjLWFkOTEtMWQwZWY5YjQyZGY5-Y2JiMjk3YzAtMTRhOS00NmJjLWFkOTEtMWQwZWY5YjQyZGY5-1-c3p6dC1saXNpci1uZ2lueA==-MGUyMTRlOTI3MGU0-L3RpZXIyL2xi-YmFja2VuZCBzZXJ2aWNl&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="6-4、使用k8s部署"><a href="#6-4、使用k8s部署" class="headerlink" title="6.4、使用k8s部署"></a>6.4、使用k8s部署</h3><blockquote>
+<p>提示：k8s配置文件篇幅过长这里不展示，按照如下指令操作，可完成PVC存储、configmap配置中心、集群暴露端口svc及pod相关等资源的创建；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#按照文件数据顺序，依次使用Kubectl apply -f xxx.yml，即可完成nginx集群部署，重点对6号文件进行调整，里面需增加SVC_NAME、SW_ADDR的ENV，用于配置文件变量替换</span><br><span class="line">[root@DEVOPSSRV01 nginx_deployment]# ll</span><br><span class="line">total 28</span><br><span class="line">-rw-r--r-- 1 root root  292 Jan  7 14:44 1.nginx_pv.yml</span><br><span class="line">-rw-r--r-- 1 root root  217 Jan  7 14:44 2.nginx_pvc_web1.yml</span><br><span class="line">-rw-r--r-- 1 root root 4653 Mar  2 11:04 3.nginx-config.yml</span><br><span class="line">-rw-r--r-- 1 root root  519 Mar  2 11:04 4.www-config.yml</span><br><span class="line">-rw-r--r-- 1 root root  354 Mar  2 11:39 5.nginx_svc.yml</span><br><span class="line">-rw-r--r-- 1 root root 1386 Mar  2 11:13 6.nginx_deployment_v3.yml</span><br><span class="line">#使用命令查看创建后的资源运行状态</span><br><span class="line">[root@DEVOPSSRV01 nginx_deployment]# kubectl get pod,svc -n nginx-production -o wide</span><br><span class="line">NAME                            READY   STATUS    RESTARTS   AGE     IP             NODE                NOMINATED NODE   READINESS GATES</span><br><span class="line">pod/nginx112-59fcbcbccc-5d7ms   1/1     Running   0          5h32m   10.244.1.24    tssrv02.novalocal   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/nginx112-59fcbcbccc-mfglm   1/1     Running   0          5h32m   10.244.2.195   dbsrv01.novalocal   &lt;none&gt;           &lt;none&gt;</span><br><span class="line"></span><br><span class="line">NAME                TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)                        AGE     SELECTOR</span><br><span class="line">service/nginx-svc   NodePort   10.98.3.73   &lt;none&gt;        60000:30002/TCP,80:30006/TCP   5h36m   app=web_server</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="6-5、登录k8s-dashboard查看资源情况"><a href="#6-5、登录k8s-dashboard查看资源情况" class="headerlink" title="6.5、登录k8s dashboard查看资源情况"></a>6.5、登录k8s dashboard查看资源情况</h3><ul>
+<li>pods资源<br><img src="http://static.zybuluo.com/a807257775/9vh9vk708i3a6syu702m6is9/image_1evovvggs1ujt6vv1js1e7rpgf1j.png" alt="image_1evovvggs1ujt6vv1js1e7rpgf1j.png-138.9kB"></li>
+<li>configmaps资源<br><img src="http://static.zybuluo.com/a807257775/zmu8syto8q0j0wjefyn9ckzq/image_1evp244544vnfr6re01efg1qdum.png" alt="image_1evp244544vnfr6re01efg1qdum.png-126.5kB"></li>
+</ul>
+<h3 id="6-6、登录skywalking-UI查看资源情况"><a href="#6-6、登录skywalking-UI查看资源情况" class="headerlink" title="6.6、登录skywalking UI查看资源情况"></a>6.6、登录skywalking UI查看资源情况</h3><ul>
+<li>可用简单的压测命令进行测试后，在登录查看，在k8s上创建了几个POD，这里应当看到对应的几个实例<br><img src="http://static.zybuluo.com/a807257775/q3pgp06401jqvt26ll5l0b61/image_1evp3e9m4ism1fr6v8cvhtl8b13.png" alt="image_1evp3e9m4ism1fr6v8cvhtl8b13.png-137.4kB"></li>
+</ul>
+<h2 id="7、打完收工"><a href="#7、打完收工" class="headerlink" title="7、打完收工"></a>7、打完收工</h2>
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2021/03/02/使用SkyWalking监控Nginx链路信息/" title="使用SkyWalking监控Nginx链路信息">2021/03/02/使用SkyWalking监控Nginx链路信息/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SkyWalking/" rel="tag"><i class="fa fa-tag"></i> SkyWalking</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/02/26/ECK-从Kafka实时抓取JAVA日志/" rel="next" title="ECK-从Kafka实时抓取JAVA日志">
+                <i class="fa fa-chevron-left"></i> ECK-从Kafka实时抓取JAVA日志
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/03/21/ES集群索引管理工具-cerebro的部署/" rel="prev" title="ES集群索引管理工具-cerebro的部署">
+                ES集群索引管理工具-cerebro的部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用SkyWalking监控Nginx链路信息"><span class="nav-number">1.</span> <span class="nav-text">使用SkyWalking监控Nginx链路信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、前言"><span class="nav-number">1.1.</span> <span class="nav-text">1、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、SkyWalking简介与架构"><span class="nav-number">1.2.</span> <span class="nav-text">2、SkyWalking简介与架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、为什么要使用SkyWalking？"><span class="nav-number">1.3.</span> <span class="nav-text">3、为什么要使用SkyWalking？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、部署环境介绍"><span class="nav-number">1.4.</span> <span class="nav-text">4、部署环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、编译NGINX"><span class="nav-number">1.5.</span> <span class="nav-text">5、编译NGINX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1、安装luajit编译器"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1、安装luajit编译器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2、增加环境变量"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2、增加环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3、安装nginx-lua模块"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3、安装nginx lua模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4、Bulid-Nginx"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4、Bulid Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5、Test-Nginx-Lua"><span class="nav-number">1.5.5.</span> <span class="nav-text">5.5、Test Nginx Lua</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5、下载skywalking-lua脚本"><span class="nav-number">1.5.6.</span> <span class="nav-text">5.5、下载skywalking lua脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6、修改nginx-conf配置文件"><span class="nav-number">1.5.7.</span> <span class="nav-text">5.6、修改nginx.conf配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7、重载配置文件"><span class="nav-number">1.5.8.</span> <span class="nav-text">5.7、重载配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-8、进行简单压测"><span class="nav-number">1.5.9.</span> <span class="nav-text">5.8、进行简单压测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7、登录skywalking-UI进行查看"><span class="nav-number">1.5.10.</span> <span class="nav-text">5.7、登录skywalking UI进行查看</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、使用K8S部署NGINX"><span class="nav-number">1.6.</span> <span class="nav-text">6、使用K8S部署NGINX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1、准备构建Docker镜像的所需资源文件"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1、准备构建Docker镜像的所需资源文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2、构建基于skywalking的nginx生产镜像"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2、构建基于skywalking的nginx生产镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3、部署一个nginx容器进行测试"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.3、部署一个nginx容器进行测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4、使用k8s部署"><span class="nav-number">1.6.4.</span> <span class="nav-text">6.4、使用k8s部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5、登录k8s-dashboard查看资源情况"><span class="nav-number">1.6.5.</span> <span class="nav-text">6.5、登录k8s dashboard查看资源情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6、登录skywalking-UI查看资源情况"><span class="nav-number">1.6.6.</span> <span class="nav-text">6.6、登录skywalking UI查看资源情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7、打完收工"><span class="nav-number">1.7.</span> <span class="nav-text">7、打完收工</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

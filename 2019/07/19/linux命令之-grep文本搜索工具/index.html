@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Linux基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="linux命令之-grep文本搜索工具1、grep命令详解1.1、命令介绍 Global search REgular expression and Print out the line. 文本搜索工具，根据用户指定的文本模式（正则表达元字符以及正常字符组合而成）对目标文件进行逐行搜索，显示能匹配到的行；linux使用GNU版本的grep。它功能更强，可以通过-G、-E、-F命令行选项来使用egr">
+<meta name="keywords" content="Linux基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux命令之-grep文本搜索工具">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/07/19/linux命令之-grep文本搜索工具/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="linux命令之-grep文本搜索工具1、grep命令详解1.1、命令介绍 Global search REgular expression and Print out the line. 文本搜索工具，根据用户指定的文本模式（正则表达元字符以及正常字符组合而成）对目标文件进行逐行搜索，显示能匹配到的行；linux使用GNU版本的grep。它功能更强，可以通过-G、-E、-F命令行选项来使用egr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/ums9snvvn050cpw6iubaxvlj/image_1dlhnaq1rrkrom49l66k0rd29.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.405Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux命令之-grep文本搜索工具">
+<meta name="twitter:description" content="linux命令之-grep文本搜索工具1、grep命令详解1.1、命令介绍 Global search REgular expression and Print out the line. 文本搜索工具，根据用户指定的文本模式（正则表达元字符以及正常字符组合而成）对目标文件进行逐行搜索，显示能匹配到的行；linux使用GNU版本的grep。它功能更强，可以通过-G、-E、-F命令行选项来使用egr">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/ums9snvvn050cpw6iubaxvlj/image_1dlhnaq1rrkrom49l66k0rd29.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/07/19/linux命令之-grep文本搜索工具/">
+
+
+
+
+
+  <title>linux命令之-grep文本搜索工具 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/07/19/linux命令之-grep文本搜索工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux命令之-grep文本搜索工具</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-19T18:01:00+08:00">
+                2019-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/19/linux命令之-grep文本搜索工具/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/19/linux命令之-grep文本搜索工具/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="linux命令之-grep文本搜索工具"><a href="#linux命令之-grep文本搜索工具" class="headerlink" title="linux命令之-grep文本搜索工具"></a>linux命令之-grep文本搜索工具</h1><h2 id="1、grep命令详解"><a href="#1、grep命令详解" class="headerlink" title="1、grep命令详解"></a>1、grep命令详解</h2><h3 id="1-1、命令介绍"><a href="#1-1、命令介绍" class="headerlink" title="1.1、命令介绍"></a>1.1、命令介绍</h3><ul>
+<li>Global search REgular expression and Print out the line. 文本搜索工具，根据用户指定的文本模式（正则表达元字符以及正常字符组合而成）对目标文件进行逐行搜索，显示能匹配到的行；linux使用GNU版本的grep。它功能更强，可以通过-G、-E、-F命令行选项来使用egrep和fgrep的功能。<br><img src="http://static.zybuluo.com/a807257775/ums9snvvn050cpw6iubaxvlj/image_1dlhnaq1rrkrom49l66k0rd29.png" alt="image_1dlhnaq1rrkrom49l66k0rd29.png-713.2kB"></li>
+</ul>
+<h3 id="1-2、正则表达式：REGular-EXPression-REGEXP"><a href="#1-2、正则表达式：REGular-EXPression-REGEXP" class="headerlink" title="1.2、正则表达式：REGular EXPression REGEXP"></a>1.2、正则表达式：REGular EXPression REGEXP</h3><ul>
+<li>是由元字符及正常字符所书写的模式，其中的元字符不表示字符本身的意义，而是用于表达控制或通配等功能；</li>
+<li>基本正则表达式命令: grep<blockquote>
+<p>提示：fgrep: fast, 不支持使用正则表达式</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="1-2-1、基本正则表达式元字符"><a href="#1-2-1、基本正则表达式元字符" class="headerlink" title="1.2.1、基本正则表达式元字符"></a>1.2.1、基本正则表达式元字符</h4><blockquote>
+<p>提示：匹配数字别忘了中括号外面还有一个中括号。</p>
+</blockquote>
+<ul>
+<li><p><strong>字符匹配：</strong><br><code>.</code>  :匹配任意单个字符<br><code>[]</code>: 匹配指定范围内的任意单个字符<br><code>[^]</code>: 匹配指定范围外的任意单个字符<br><code>[0-9]</code>, <code>[[:digit:]]</code>, <code>[^0-9]</code>, <code>[^[:digit:]]</code><br><code>[a-z]</code>, <code>[[:lower:]]</code><br><code>[A-Z]</code>, <code>[[:upper:]]</code><br><code>[[:space:]]</code><br><code>[[:punct:]]</code><br><code>[0-9a-zA-Z]</code>, <code>[[:alnum:]]</code><br><code>[a-zA-Z]</code>, <code>[[:alpha:]]</code><br><code>[:alnum:]</code> 字母数字 <code>[a-z A-Z 0-9]</code><br><code>[:alpha:]</code> 字母 <code>[a-z A-Z]</code><br><code>[:blank:]</code> 空格或制表键<br><code>[:cntrl:]</code> 任何控制字符<br><code>[:digit:]</code> 数字 <code>[0-9]</code><br><code>[:graph:]</code> 任何可视字符（无空格）<br><code>[:lower:]</code> 小写 <code>[a-z]</code><br><code>[:print:]</code> 非控制字符<br><code>[:punct:]</code> 标点字符<br><code>[:space:]</code> 空格<br><code>[:upper:]</code> 大写 <code>[A-Z]</code><br><code>[:xdigit:]</code> 十六进制数字 <code>[0-9 a-f A-F]</code></p>
+</li>
+<li><p><strong>次数匹配：在期望匹配字符后面提供一个控制符，用于表达匹配其前面字符指定的次数</strong><br>  <code>*</code>  : 任意长度，表示0次、1次或多次；</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：&quot;ab*c&quot;</span><br><span class="line">    abbc, ac</span><br><span class="line">    abb,</span><br></pre></td></tr></table></figure>
+<p>  <code>.*</code>: 任意长度的任意字符</p>
+<blockquote>
+<p>提示：工作于贪婪模式</p>
+</blockquote>
+<p>  <code>\?</code>：0次或1次；表示其左侧字符可有可无</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：&quot;ab\?c&quot;</span><br><span class="line">	abbc,</span><br><span class="line">	ac, abc</span><br></pre></td></tr></table></figure>
+<p>  <code>\+</code>: 1次或多次；表示其左侧字符至少出现1次；</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：&quot;ab\+c&quot;</span><br><span class="line">	ac,</span><br><span class="line">	abc, abbbbc</span><br></pre></td></tr></table></figure>
+<p>  <code>\{m\}</code>：m次；表示其左侧字符精确出现m次；</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：ab\&#123;2\&#125;c</span><br><span class="line">	ac, abc, abbbc</span><br><span class="line">	abbc</span><br></pre></td></tr></table></figure>
+<p>  <code>\{m,n\}</code>：至少m次，至多n次；</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：ab\&#123;0,3\&#125;c</span><br><span class="line">	ac, abbbc,</span><br><span class="line">	abbbbbc</span><br></pre></td></tr></table></figure>
+<p>  <code>\{0,n\}</code>：至多n次；<br>  <code>\{m,\}</code>：至少m次；</p>
+</li>
+<li><p><strong>位置锚定：</strong><br>  <code>^</code>：锚定行首</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例子:^PATTERN</span><br></pre></td></tr></table></figure>
+<p>  <code>$</code>：锚定行尾</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列子:PATTERN$</span><br></pre></td></tr></table></figure>
+<p>  <code>^PATTERN$</code>：用模式来匹配整行；</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列子：grep &quot;^[[:space:]]*$&quot; /etc/rc.d/rc.sysinit</span><br></pre></td></tr></table></figure>
+<p>  <code>^$</code>：匹配空白行；</p>
+</li>
+<li><p><strong>单词锚定：由非特殊字符组成的连续的字符串</strong><br>  <code>\&lt;</code> :锚定词首，也可用<code>\b</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\&lt;PATTERN, 或\bPATTERN</span><br><span class="line">grep &quot;\&lt;sh&quot; /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>  <code>\&gt;</code> ：锚定词尾，也可以用<code>\b</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATTERN\&gt;, 或PATTERN\b</span><br></pre></td></tr></table></figure>
+<p>  <code>\&lt;PATTERN\&gt;</code>：匹配PATTERN能匹配到的整个单词</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig | grep &quot;\&lt;[0-9]\&#123;2\&#125;\&gt;&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>分组：</strong></p>
+<blockquote>
+<p>注意：分组中的模式，在某次的具体匹配过程中所匹配到的字符，可以被grep记忆（保存于内置的变量中，这些变量是\1, \2, …），因此，还可以被引用；<br>\1: 引用，模式中自左而右，由第一个左括号以及与之对应的右括号中的模式所匹配到的内容；<br>\1: 引用 ，模式中自左右，由第二个左括号以及与之对应的右括号中的模式所匹配到的内容</p>
+</blockquote>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">例子：</span><br><span class="line">	“\(a.b\).*\1&quot;</span><br><span class="line">		amb hello anb</span><br><span class="line">		</span><br><span class="line">    &quot;\(l..e\).*\1&quot;</span><br><span class="line">    	He like his lover.</span><br><span class="line">    	He like his liker.</span><br><span class="line">    	She love her lover.</span><br><span class="line">    	She love her liker.</span><br><span class="line"></span><br><span class="line">    \(.*\)\.mp3.*\1\.wvm</span><br><span class="line">    	play.php?a.mp3?search?a.wmv</span><br><span class="line">    	play.php?where.mp3?hello?when.wmv</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="1-3、扩展的正则表达式"><a href="#1-3、扩展的正则表达式" class="headerlink" title="1.3、扩展的正则表达式"></a>1.3、扩展的正则表达式</h3><ul>
+<li>扩展正则表达式: grep -E, egrep</li>
+</ul>
+<h4 id="1-3-1、扩展正则表达式元字符"><a href="#1-3-1、扩展正则表达式元字符" class="headerlink" title="1.3.1、扩展正则表达式元字符"></a>1.3.1、扩展正则表达式元字符</h4><ul>
+<li><p><strong>字符匹配：</strong><br><code>.</code>  :匹配任意单个字符<br><code>[]</code>: 匹配指定范围内的任意单个字符<br><code>[^]</code>: 匹配指定范围外的任意单个字符<br><code>[0-9]</code>, <code>[[:digit:]]</code>, <code>[^0-9]</code>, <code>[^[:digit:]]</code><br><code>[a-z]</code>, <code>[[:lower:]]</code><br><code>[A-Z]</code>, <code>[[:upper:]]</code><br><code>[[:space:]]</code><br><code>[[:punct:]]</code><br><code>[0-9a-zA-Z]</code>, <code>[[:alnum:]]</code><br><code>[a-zA-Z]</code>, <code>[[:alpha:]]</code><br><code>[:alnum:]</code> 字母数字 <code>[a-z A-Z 0-9]</code><br><code>[:alpha:]</code> 字母 <code>[a-z A-Z]</code><br><code>[:blank:]</code> 空格或制表键<br><code>[:cntrl:]</code> 任何控制字符<br><code>[:digit:]</code> 数字 <code>[0-9]</code><br><code>[:graph:]</code> 任何可视字符（无空格）<br><code>[:lower:]</code> 小写 <code>[a-z]</code><br><code>[:print:]</code> 非控制字符<br><code>[:punct:]</code> 标点字符<br><code>[:space:]</code> 空格<br><code>[:upper:]</code> 大写 <code>[A-Z]</code><br><code>[:xdigit:]</code> 十六进制数字 <code>[0-9 a-f A-F]</code></p>
+</li>
+<li><p><strong>次数匹配：</strong><br><code>*</code>: 任意次<br><code>?</code>：0或1次<br><code>+</code>: 至少1次<br><code>{m}</code>：精确匹配m次；<br><code>{m,n}</code>：至少m次，至多次；<br><code>{m,}</code>：至少m次；<br><code>{0,n}</code>：至多次；</p>
+</li>
+<li><p><strong>位置锚定：</strong><br>  <code>^</code><br>  <code>$</code><br>  <code>\&lt;</code>, <code>\b</code><br>  <code>\&gt;</code>, <code>\b</code></p>
+</li>
+<li><p><strong>分组：</strong><br>  <code>()</code><br>  引用：\1,\2,...</p>
+</li>
+<li><p><strong>或者：</strong><br>  a<code>|</code>b：a或者b</p>
+<pre><code>或者两侧的所有内容；
+</code></pre></li>
+<li><p><strong>命令：</strong><br> <code>grep -E PATTERN FILE...</code><br>  <code>egrep PATTERN FILE...</code></p>
+</li>
+</ul>
+<h2 id="2、grep命令常用语法"><a href="#2、grep命令常用语法" class="headerlink" title="2、grep命令常用语法"></a>2、grep命令常用语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">grep命令：</span><br><span class="line"> grep [OPTIONS] PATTERN [FILE...]</span><br><span class="line">     --color[=WHEN], --colour[=WHEN]</span><br><span class="line">     	auto</span><br><span class="line">     	always</span><br><span class="line">     	never</span><br><span class="line">     		例子：grep --color=auto &quot;root&quot; /etc/passwd</span><br><span class="line">    </span><br><span class="line">     -o: 只显示被模式匹配到的内容</span><br><span class="line">     -i: ignore case，不区分字符大小写</span><br><span class="line">     -v: 显示不能够被模式匹配到的行</span><br><span class="line">     -E：使用扩展的正则表达式</span><br><span class="line">     -l：匹配多个文件时，显示匹配的文件名</span><br><span class="line">     -L：匹配多个文件时，显示不匹配的文件名</span><br><span class="line">     -a：匹配二进制的文件</span><br><span class="line">     -I：不匹配二进制的文件			 	</span><br><span class="line">     -A #：后几行</span><br><span class="line">     -B #：前几行</span><br><span class="line">     -C #：前后几行</span><br></pre></td></tr></table></figure>
+<h2 id="3、grep命令练习"><a href="#3、grep命令练习" class="headerlink" title="3、grep命令练习"></a>3、grep命令练习</h2><h3 id="3-1、普通正则表达式练习"><a href="#3-1、普通正则表达式练习" class="headerlink" title="3.1、普通正则表达式练习"></a>3.1、普通正则表达式练习</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1、显示/proc/meminfo文件中以大写或小写S开头的行；用两种方式；</span><br><span class="line"># grep &quot;^[sS]&quot; /proc/meminfo</span><br><span class="line"></span><br><span class="line">2、显示/etc/passwd文件中其默认shell为非/sbin/nologin的用户；</span><br><span class="line"># grep -v &quot;/sbin/nologin$&quot; /etc/passwd | cut -d: -f1</span><br><span class="line"></span><br><span class="line">3、显示/etc/passwd文件中其默认shell为/bin/bash的用户；</span><br><span class="line"># grep &quot;/bin/bash$&quot; /etc/passwd | cut -d: -f1</span><br><span class="line"></span><br><span class="line">4、找出/etc/passwd文件中的一位数或两位数；</span><br><span class="line"># grep &quot;\&lt;[0-9]\&#123;1,2\&#125;\&gt;&quot; /etc/passwd</span><br><span class="line"></span><br><span class="line">5、显示/boot/grub/grub.conf中以至少一个空白字符开头的行；</span><br><span class="line"># grep &quot;^[[:space:]]\+&quot; /boot/grub/grub.conf</span><br><span class="line"></span><br><span class="line">6、显示/etc/rc.d/rc.sysinit文件中以#开头，后面跟至少一个空白字符，而后又有至少一个非空白字符的行；</span><br><span class="line"># grep &quot;^#[[:space:]]\+[^[:space:]]\+&quot; /etc/rc.d/rc.sysinit</span><br><span class="line"></span><br><span class="line">7、打出netstat -tan命令执行结果中以‘LISTEN’，后或跟空白字符结尾的行；</span><br><span class="line"># netstat -tan | grep &quot;LISTEN[[:space:]]*$&quot;</span><br><span class="line"></span><br><span class="line">8、添加用户bash, testbash, basher, nologin (此一个用户的shell为/sbin/nologin)，而后找出当前系统上其用户名和默认shell相同的用户的信息；</span><br><span class="line"># grep &quot;^\([[:alnum:]]\+\&gt;\).*\1$&quot; /etc/passwd</span><br></pre></td></tr></table></figure>
+<h3 id="3-1、扩展正则表达式练习"><a href="#3-1、扩展正则表达式练习" class="headerlink" title="3.1、扩展正则表达式练习"></a>3.1、扩展正则表达式练习</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1、显示/proc/meminfo文件中以大写或小写S开头的行；用三种方式；</span><br><span class="line"># grep -E &quot;^[sS]&quot; /proc/meminfo</span><br><span class="line"># grep -E &quot;^(s|S)&quot; /proc/meminfo</span><br><span class="line"># egrep -i &quot;^s&quot; /proc/meminfo</span><br><span class="line"></span><br><span class="line">2、显示/etc/passwd文件中其默认shell为非/sbin/nologin的用户；</span><br><span class="line"># egrep -v &quot;/sbin/nologin$&quot; /etc/passwd | cut -d: -f1</span><br><span class="line"></span><br><span class="line">3、显示/etc/passwd文件中其默认shell为/bin/bash的用户；</span><br><span class="line"># egrep &quot;/bin/bash$&quot; /etc/passwd | cut -d: -f1</span><br><span class="line"></span><br><span class="line">4、找出/etc/passwd文件中的一位数或两位数；			</span><br><span class="line"># egrep --color=auto &quot;\&lt;[0-9]&#123;1,2&#125;\&gt;&quot; /etc/passwd</span><br><span class="line"></span><br><span class="line">5、显示/boot/grub/grub.conf中以至少一个空白字符开头的行；</span><br><span class="line"># egrep &quot;^[[:space:]]+&quot; /boot/grub/grub.conf</span><br><span class="line"></span><br><span class="line">6、显示/etc/rc.d/rc.sysinit文件中以#开头，后面跟至少一个空白字符，而后又有至少一个非空白字符的行；</span><br><span class="line"># egrep &quot;^#[[:space:]]+[^[:space:]]+&quot; /etc/rc.d/rc.sysinit</span><br><span class="line"></span><br><span class="line">7、打出netstat -tan命令执行结果中以‘LISTEN’，后或跟空白字符结尾的行；</span><br><span class="line"># netstat -tan | egrep &quot;LISTEN[[:space:]]*$&quot;</span><br><span class="line"></span><br><span class="line">8、添加用户bash, testbash, basher, nologin (此一个用户的shell为/sbin/nologin)，而后找出当前系统上其用户名和默认shell相同的用户的信息；</span><br><span class="line"># egrep &quot;^([[:alnum:]]+\&gt;).*\1$&quot; /etc/passwd</span><br><span class="line"></span><br><span class="line">9、显示当前系统上root、fedora或user1用户的默认shell；</span><br><span class="line"># grep -E &quot;^(root|fedora|user1)\&gt;&quot; /etc/passwd | cut -d: -f7</span><br><span class="line"></span><br><span class="line">10、找出/etc/rc.d/init.d/functions文件中某单词后面跟一组小括号的行，形如：hello()；</span><br><span class="line"># grep -o -E &quot;\&lt;[[:alnum:]]+\&gt;\(\)&quot; /etc/rc.d/init.d/functions</span><br><span class="line"></span><br><span class="line">11、使用echo命令输出一个绝对路径，使用grep取出其基名；</span><br><span class="line">扩展：取出其路径名</span><br><span class="line"># echo /etc/rc.d/init.d/functions | grep -o -E &quot;[[:alnum:]]+/?$&quot; | cut -d/ -f1</span><br><span class="line"></span><br><span class="line">12、找出ifconfig命令结果中的1-255之间数字；</span><br><span class="line"># ifconfig | grep -E &quot;\&lt;([1-9]|[1-9][0-9]|1[0-9]&#123;2&#125;|2[0-4][0-9]|25[0-5])\&gt;&quot;</span><br><span class="line"></span><br><span class="line">13、挑战题：写一个模式，能匹配合理的IP地址；</span><br><span class="line">	1.0.0.1 -- 239.255.255.255</span><br><span class="line"></span><br><span class="line">14、挑战题：写一个模式，能匹配出所有的邮件地址；</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/07/19/linux命令之-grep文本搜索工具/" title="linux命令之-grep文本搜索工具">2019/07/19/linux命令之-grep文本搜索工具/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux基础/" rel="tag"><i class="fa fa-tag"></i> Linux基础</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/19/mysqldumpslow 慢查询分析工具使用手册/" rel="next" title="mysqldumpslow 慢查询分析工具使用手册">
+                <i class="fa fa-chevron-left"></i> mysqldumpslow 慢查询分析工具使用手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/15/linux命令之-htop强大的linux任务管理器/" rel="prev" title="linux命令之-htop强大的linux任务管理器">
+                linux命令之-htop强大的linux任务管理器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux命令之-grep文本搜索工具"><span class="nav-number">1.</span> <span class="nav-text">linux命令之-grep文本搜索工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、grep命令详解"><span class="nav-number">1.1.</span> <span class="nav-text">1、grep命令详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、命令介绍"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、命令介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2、正则表达式：REGular-EXPression-REGEXP"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2、正则表达式：REGular EXPression REGEXP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1、基本正则表达式元字符"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.2.1、基本正则表达式元字符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3、扩展的正则表达式"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、扩展的正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1、扩展正则表达式元字符"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.3.1、扩展正则表达式元字符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、grep命令常用语法"><span class="nav-number">1.2.</span> <span class="nav-text">2、grep命令常用语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、grep命令练习"><span class="nav-number">1.3.</span> <span class="nav-text">3、grep命令练习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、普通正则表达式练习"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、普通正则表达式练习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、扩展正则表达式练习"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.1、扩展正则表达式练习</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="NGINX代理,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Nginx正向代理模块详解-http-proxy-connect1、模块简介 官方REDEME：This module provides support for the CONNECT method request. This method is mainly used to tunnel SSL requests through proxy servers.   该模块为CONNECT方法请求提">
+<meta name="keywords" content="NGINX代理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx正向代理模块详解-http-proxy-connect">
+<meta property="og:url" content="http://www.lisirlife.cn/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Nginx正向代理模块详解-http-proxy-connect1、模块简介 官方REDEME：This module provides support for the CONNECT method request. This method is mainly used to tunnel SSL requests through proxy servers.   该模块为CONNECT方法请求提">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/dnzsb5nh86gmo5h1zeam33e6/image_1do81jb5s1t8g61qfv13001bmd19.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.397Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx正向代理模块详解-http-proxy-connect">
+<meta name="twitter:description" content="Nginx正向代理模块详解-http-proxy-connect1、模块简介 官方REDEME：This module provides support for the CONNECT method request. This method is mainly used to tunnel SSL requests through proxy servers.   该模块为CONNECT方法请求提">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/dnzsb5nh86gmo5h1zeam33e6/image_1do81jb5s1t8g61qfv13001bmd19.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/">
+
+
+
+
+
+  <title>Nginx正向代理模块详解-http-proxy-connect | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx正向代理模块详解-http-proxy-connect</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-28T11:30:00+08:00">
+                2019-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NGINX文档/" itemprop="url" rel="index">
+                    <span itemprop="name">NGINX文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.5k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Nginx正向代理模块详解-http-proxy-connect"><a href="#Nginx正向代理模块详解-http-proxy-connect" class="headerlink" title="Nginx正向代理模块详解-http-proxy-connect"></a>Nginx正向代理模块详解-http-proxy-connect</h1><h2 id="1、模块简介"><a href="#1、模块简介" class="headerlink" title="1、模块简介"></a>1、模块简介</h2><ul>
+<li>官方REDEME：This module provides support for the CONNECT method request. This method is mainly used to tunnel SSL requests through proxy servers.</li>
+</ul>
+<blockquote>
+<p>该模块为CONNECT方法请求提供支持。 此方法主要用于通过代理服务器转发SSL请求。</p>
+</blockquote>
+<h3 id="1-1、模块下载地址"><a href="#1-1、模块下载地址" class="headerlink" title="1.1、模块下载地址"></a>1.1、模块下载地址</h3><blockquote>
+<p><a href="https://github.com/chobits/ngx_http_proxy_connect_module" target="_blank" rel="noopener">https://github.com/chobits/ngx_http_proxy_connect_module</a></p>
+</blockquote>
+<ul>
+<li>目前支持版本支持如下（请前往如上地址实时查看）：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">nginx version</th>
+<th style="text-align:left">enable REWRITE phase</th>
+<th style="text-align:left">patch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1.4.x ~ 1.12.x</td>
+<td style="text-align:left">NO</td>
+<td style="text-align:left"><a href="patch/proxy_connect.patch">proxy_connect.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.4.x ~ 1.12.x</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite.patch">proxy_connect_rewrite.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.13.x ~ 1.14.x</td>
+<td style="text-align:left">NO</td>
+<td style="text-align:left"><a href="patch/proxy_connect_1014.patch">proxy_connect_1014.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.13.x ~ 1.14.x</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_1014.patch">proxy_connect_rewrite_1014.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.15.2</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_1015.patch">proxy_connect_rewrite_1015.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.15.4 ~ 1.16.x</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_101504.patch">proxy_connect_rewrite_101504.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.17.x</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_101504.patch">proxy_connect_rewrite_101504.patch</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">OpenResty version</th>
+<th style="text-align:left">enable REWRITE phase</th>
+<th style="text-align:left">patch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1.13.6</td>
+<td style="text-align:left">NO</td>
+<td style="text-align:left"><a href="patch/proxy_connect_1014.patch">proxy_connect_1014.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.13.6</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_1014.patch">proxy_connect_rewrite_1014.patch</a></td>
+</tr>
+<tr>
+<td style="text-align:left">1.15.8</td>
+<td style="text-align:left">YES</td>
+<td style="text-align:left"><a href="patch/proxy_connect_rewrite_101504.patch">proxy_connect_rewrite_101504.patch</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2、安装环境介绍"><a href="#2、安装环境介绍" class="headerlink" title="2、安装环境介绍"></a>2、安装环境介绍</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">平台</th>
+<th style="text-align:left">IP</th>
+<th style="text-align:left">NGINX版本</th>
+<th style="text-align:left">安装模块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CentOS 6.7 64Bit</td>
+<td style="text-align:left">192.168.1.219</td>
+<td style="text-align:left">NGINX-1.10.3</td>
+<td style="text-align:left">ngx_http_proxy_connect_module</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3、模块安装"><a href="#3、模块安装" class="headerlink" title="3、模块安装"></a>3、模块安装</h2><h3 id="3-1、Build-nginx"><a href="#3-1、Build-nginx" class="headerlink" title="3.1、Build nginx"></a>3.1、Build nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@test0002 soft]# tar xzvf nginx-1.10.3.tar.gz </span><br><span class="line">[root@test0002 soft]# tar xzvf nginx-sticky-module-ng-1.2.6.tar.gz</span><br><span class="line">[root@test0002 soft]# tar xzvf ngx_http_proxy_connect_module-0.0.1.tar.gz</span><br><span class="line">[root@test0002 nginx-1.10.3]# patch -p1 &lt; /soft/ngx_http_proxy_connect_module-0.0.1/patch/proxy_connect.patch </span><br><span class="line">[root@test0002 nginx-1.10.3]# useradd -s /sbin/nologin -M www</span><br><span class="line">[root@test0002 nginx-1.10.3]# ./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_ssl_module --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module --add-module=/soft/ngx_http_proxy_connect_module-0.0.1/</span><br><span class="line">[root@test0002 nginx-1.10.3]# make &amp;&amp; make install</span><br><span class="line">[root@test0002 nginx-1.10.3]# chmod a+x /etc/init.d/nginx</span><br><span class="line">[root@test0002 nginx-1.10.3]# chkconfig --add nginx</span><br><span class="line">[root@test0002 nginx-1.10.3]# chkconfig nginx on</span><br><span class="line">[root@test0002 sbin]# ./nginx -V</span><br><span class="line">nginx version: nginx/1.10.3</span><br><span class="line">built by gcc 4.4.7 20120313 (Red Hat 4.4.7-23) (GCC) </span><br><span class="line">built with OpenSSL 1.0.1e-fips 11 Feb 2013</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_ssl_module --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module --add-module=/soft/ngx_http_proxy_connect_module-0.0.1/</span><br></pre></td></tr></table></figure>
+<h3 id="3-2、Config-nginx"><a href="#3-2、Config-nginx" class="headerlink" title="3.2、Config nginx"></a>3.2、Config nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@test0002 vhost_conf]# vim proxy_9999.conf</span><br><span class="line"> server &#123;</span><br><span class="line">     listen                         3128;</span><br><span class="line"></span><br><span class="line">     # dns resolver used by forward proxying</span><br><span class="line">     resolver                       8.8.8.8;</span><br><span class="line"></span><br><span class="line">     # forward proxy for CONNECT request</span><br><span class="line">     proxy_connect;</span><br><span class="line">     proxy_connect_allow            443 563;</span><br><span class="line">     proxy_connect_connect_timeout  10s;</span><br><span class="line">     proxy_connect_read_timeout     10s;</span><br><span class="line">     proxy_connect_send_timeout     10s;</span><br><span class="line"></span><br><span class="line">     # forward proxy for non-CONNECT request</span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_pass http://$host;</span><br><span class="line">         proxy_set_header Host $host;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3、Error-Log"><a href="#3-3、Error-Log" class="headerlink" title="3.3、Error Log"></a>3.3、Error Log</h3><ul>
+<li>This module logs its own error message beginning with <code>&quot;proxy_connect:&quot;</code> string.<br>Some typical error logs are shown as following：The proxy_connect module tries to establish tunnel connection with backend server, but the TCP connection timeout occurs.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2019/08/07 17:27:20 [error] 19257#0: *1 proxy_connect: upstream connect timed out (peer:216.58.200.4:443) while connecting to upstream, client: 127.0.0.1, server: , request: &quot;CONNECT www.google.com:443 HTTP/1.1&quot;, host: &quot;www.google.com:443&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="3-4、Directive"><a href="#3-4、Directive" class="headerlink" title="3.4、Directive"></a>3.4、Directive</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect</span><br><span class="line">- Syntax: proxy_connect </span><br><span class="line">- Default: `none`  </span><br><span class="line">- Context: `server`  </span><br><span class="line">Enable &quot;CONNECT&quot; HTTP method support.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect_allow</span><br><span class="line">- Syntax: proxy_connect_allow `all | [port ...] | [port-range ...]`</span><br><span class="line">- Default: `443 563`</span><br><span class="line">- Context: `server`</span><br><span class="line">The value `all` will allow all ports to proxy.</span><br><span class="line">The value `port` will allow specified port to proxy.</span><br><span class="line">The value `port-range` will allow specified range of port to proxy, for example:</span><br><span class="line">proxy_connect_allow 1000-2000 3000-4000; # allow range of port from 1000 to 2000, from 3000 to 4000.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect_connect_timeout</span><br><span class="line">- Syntax: proxy_connect_connect_timeout `time`</span><br><span class="line">- Default: `none`  </span><br><span class="line">- Context: `server`  </span><br><span class="line">Defines a timeout for establishing a connection with a proxied server.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect_read_timeout</span><br><span class="line">- Syntax: proxy_connect_read_timeout `time`</span><br><span class="line">- Default: `60s`  </span><br><span class="line">- Context: `server`  </span><br><span class="line">Defines a timeout for reading a response from the proxied server.  </span><br><span class="line">The timeout is set only between two successive read operations, not for the transmission of the whole response.  </span><br><span class="line">If the proxied server does not transmit anything within this time, the connection is closed.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect_send_timeout</span><br><span class="line">- Syntax: proxy_connect_send_timeout `time`</span><br><span class="line">- Default: `60s`  </span><br><span class="line">- Context: `server`  </span><br><span class="line"></span><br><span class="line">Sets a timeout for transmitting a request to the proxied server.  </span><br><span class="line">The timeout is set only between two successive write operations, not for the transmission of the whole request.  </span><br><span class="line">If the proxied server does not receive anything within this time, the connection is closed.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">proxy_connect_address</span><br><span class="line">- Syntax: proxy_connect_address `address | off`</span><br><span class="line">- Default: `none`  </span><br><span class="line">- Context: `server`  </span><br><span class="line">Specifiy an IP address of the proxied server. The address can contain variables.  </span><br><span class="line">The special value off is equal to none, which uses the IP address resolved from host name of CONNECT request line.  </span><br><span class="line"></span><br><span class="line">NOTE: If using `set $&lt;nginx variable&gt;` and `proxy_connect_address $&lt;nginx variable&gt;` together, you should use `proxy_connect_rewrite.patch` instead, see [Install](#install) for more details.</span><br></pre></td></tr></table></figure>
+<h3 id="3-5、Variables"><a href="#3-5、Variables" class="headerlink" title="3.5、Variables"></a>3.5、Variables</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$connect_host</span><br><span class="line">- host name from CONNECT request line.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$connect_port</span><br><span class="line">- port from CONNECT request line.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$connect_addr</span><br><span class="line">- IP address and port of the remote host, e.g. &quot;192.168.1.5:12345&quot;.</span><br><span class="line">- IP address is resolved from host name of CONNECT request line.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$proxy_connect_connect_timeout</span><br><span class="line">- Get or set timeout of [`proxy_connect_connect_timeout` directive](#proxy_connect_connect_timeout).</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#For example:</span><br><span class="line"># Set default value</span><br><span class="line"></span><br><span class="line">proxy_connect_connect_timeout   10s;</span><br><span class="line">proxy_connect_read_timeout      10s;</span><br><span class="line">proxy_connect_send_timeout      10s;</span><br><span class="line"></span><br><span class="line"># Overlap default value</span><br><span class="line"></span><br><span class="line">if ($host = &quot;test.com&quot;) &#123;</span><br><span class="line">    set $proxy_connect_connect_timeout  &quot;10ms&quot;;</span><br><span class="line">    set $proxy_connect_read_timeout     &quot;10ms&quot;;</span><br><span class="line">    set $proxy_connect_send_timeout     &quot;10ms&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$proxy_connect_read_timeout</span><br><span class="line">- Get or set a timeout of [`proxy_connect_read_timeout` directive](#proxy_connect_read_timeout).</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$proxy_connect_send_timeout</span><br><span class="line">- Get or set a timeout of [`proxy_connect_send_timeout` directive](#proxy_connect_send_timeout).</span><br></pre></td></tr></table></figure>
+<h2 id="4、正向代理访问测试"><a href="#4、正向代理访问测试" class="headerlink" title="4、正向代理访问测试"></a>4、正向代理访问测试</h2><h3 id="4-1、Example-for-curl"><a href="#4-1、Example-for-curl" class="headerlink" title="4.1、Example for curl"></a>4.1、Example for curl</h3><ul>
+<li>With above configuration, you can get any https website via HTTP CONNECT tunnel. A simple test with command curl is as following:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[root@test0002 vhost_conf]# curl https://www.baidu.com/ -v -x 127.0.0.1:9999</span><br><span class="line">* About to connect() to proxy 127.0.0.1 port 9999 (#0)</span><br><span class="line">*   Trying 127.0.0.1... connected</span><br><span class="line">* Connected to 127.0.0.1 (127.0.0.1) port 9999 (#0)</span><br><span class="line">* Establish HTTP proxy tunnel to www.baidu.com:443</span><br><span class="line">&gt; CONNECT www.baidu.com:443 HTTP/1.1</span><br><span class="line">&gt; Host: www.baidu.com:443</span><br><span class="line">&gt; User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.27.1 zlib/1.2.3 libidn/1.18 libssh2/1.4.2</span><br><span class="line">&gt; Proxy-Connection: Keep-Alive</span><br><span class="line">&gt; </span><br><span class="line">&lt; HTTP/1.1 200 Connection Established</span><br><span class="line">&lt; Proxy-agent: nginx</span><br><span class="line">&lt; </span><br><span class="line">* Proxy replied OK to CONNECT request</span><br><span class="line">* Initializing NSS with certpath: sql:/etc/pki/nssdb</span><br><span class="line">*   CAfile: /etc/pki/tls/certs/ca-bundle.crt</span><br><span class="line">  CApath: none</span><br><span class="line">* Server certificate:</span><br><span class="line">* 	subject: CN=baidu.com,O=&quot;Beijing Baidu Netcom Science Technology Co., Ltd&quot;,OU=service operation department,L=beijing,ST=beijing,C=CN</span><br><span class="line">* 	start date: 5月 09 01:22:02 2019 GMT</span><br><span class="line">* 	expire date: 6月 25 05:31:02 2020 GMT</span><br><span class="line">* 	common name: baidu.com</span><br><span class="line">* 	issuer: CN=GlobalSign Organization Validation CA - SHA256 - G2,O=GlobalSign nv-sa,C=BE</span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.27.1 zlib/1.2.3 libidn/1.18 libssh2/1.4.2</span><br><span class="line">&gt; Host: www.baidu.com</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt; </span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt; Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">&lt; Connection: Keep-Alive</span><br><span class="line">&lt; Content-Length: 2443</span><br><span class="line">&lt; Content-Type: text/html</span><br><span class="line">&lt; Date: Mon, 28 Oct 2019 01:57:28 GMT</span><br><span class="line">&lt; Etag: &quot;58860401-98b&quot;</span><br><span class="line">&lt; Last-Modified: Mon, 23 Jan 2017 13:24:17 GMT</span><br><span class="line">&lt; Pragma: no-cache</span><br><span class="line">&lt; Server: bfe/1.0.8.18</span><br><span class="line">&lt; Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/</span><br></pre></td></tr></table></figure>
+<h3 id="4-2、Example-for-browser"><a href="#4-2、Example-for-browser" class="headerlink" title="4.2、Example for browser"></a>4.2、Example for browser</h3><ul>
+<li>You can configure your browser to use this nginx as PROXY server.</li>
+</ul>
+<p><img src="http://static.zybuluo.com/a807257775/dnzsb5nh86gmo5h1zeam33e6/image_1do81jb5s1t8g61qfv13001bmd19.png" alt="image_1do81jb5s1t8g61qfv13001bmd19.png-108.1kB"></p>
+<h3 id="4-3、linux客户端测试"><a href="#4-3、linux客户端测试" class="headerlink" title="4.3、linux客户端测试"></a>4.3、linux客户端测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@test0002 ~]# vim /etc/profile</span><br><span class="line">http_proxy=http://192.168.1.220:9999/</span><br><span class="line">https_proxy=http://192.168.1.220:9999/</span><br><span class="line">[root@test0002 ~]# export http_proxy https_proxy</span><br><span class="line">[root@test0002 ~]# source /etc/profile</span><br><span class="line">[root@test0002 ~]# echo $http_proxy $https_proxy</span><br><span class="line">http://192.168.1.220:9999/ http://192.168.1.220:9999/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@test0002 ~]# curl -v https://www.baidu.com/</span><br><span class="line">* About to connect() to proxy 192.168.1.220 port 9999 (#0)</span><br><span class="line">*   Trying 192.168.1.220... connected</span><br><span class="line">* Connected to 192.168.1.220 (192.168.1.220) port 9999 (#0)</span><br><span class="line">* Establish HTTP proxy tunnel to www.baidu.com:443</span><br><span class="line">&gt; CONNECT www.baidu.com:443 HTTP/1.1</span><br><span class="line">&gt; Host: www.baidu.com:443</span><br><span class="line">&gt; User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.27.1 zlib/1.2.3 libidn/1.18 libssh2/1.4.2</span><br><span class="line">&gt; Proxy-Connection: Keep-Alive</span><br><span class="line">&gt; </span><br><span class="line">&lt; HTTP/1.1 200 Connection Established</span><br><span class="line">&lt; Proxy-agent: nginx</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2019/10/28/Nginx正向代理模块详解-http-proxy-connect/" title="Nginx正向代理模块详解-http-proxy-connect">2019/10/28/Nginx正向代理模块详解-http-proxy-connect/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NGINX代理/" rel="tag"><i class="fa fa-tag"></i> NGINX代理</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/28/Nginx会话保持模块详解-sticky/" rel="next" title="Nginx会话保持模块详解-sticky">
+                <i class="fa fa-chevron-left"></i> Nginx会话保持模块详解-sticky
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/30/ELFK-实时抓取JAVA日志/" rel="prev" title="ELFK-实时抓取JAVA日志">
+                ELFK-实时抓取JAVA日志 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx正向代理模块详解-http-proxy-connect"><span class="nav-number">1.</span> <span class="nav-text">Nginx正向代理模块详解-http-proxy-connect</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、模块简介"><span class="nav-number">1.1.</span> <span class="nav-text">1、模块简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、模块下载地址"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、模块下载地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、安装环境介绍"><span class="nav-number">1.2.</span> <span class="nav-text">2、安装环境介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、模块安装"><span class="nav-number">1.3.</span> <span class="nav-text">3、模块安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、Build-nginx"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、Build nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、Config-nginx"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、Config nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3、Error-Log"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3、Error Log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4、Directive"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4、Directive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5、Variables"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5、Variables</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、正向代理访问测试"><span class="nav-number">1.4.</span> <span class="nav-text">4、正向代理访问测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1、Example-for-curl"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1、Example for curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2、Example-for-browser"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2、Example for browser</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3、linux客户端测试"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3、linux客户端测试</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

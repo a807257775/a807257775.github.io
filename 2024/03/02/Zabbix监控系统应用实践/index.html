@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="SkyWalking,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Zabbix监控系统应用实践1、zabbix简介1.1、zabbix介绍 Zabbix 是一种企业级的分布式开源监控解决方案。Zabbix 是集报警框架、数据收集、监控模板、集中式web展示的一款完整性监控平台，能够监控众多网络参数、服务器的健康度、应用软件的性能、服务可用性等。Zabbix有非常 灵活的通知机制，通过不同的动作和分组，可以将指定消息推送给指定用户，并且支持邮件、微信、钉钉、短信等">
+<meta name="keywords" content="SkyWalking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zabbix监控系统应用实践">
+<meta property="og:url" content="http://www.lisirlife.cn/2024/03/02/Zabbix监控系统应用实践/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Zabbix监控系统应用实践1、zabbix简介1.1、zabbix介绍 Zabbix 是一种企业级的分布式开源监控解决方案。Zabbix 是集报警框架、数据收集、监控模板、集中式web展示的一款完整性监控平台，能够监控众多网络参数、服务器的健康度、应用软件的性能、服务可用性等。Zabbix有非常 灵活的通知机制，通过不同的动作和分组，可以将指定消息推送给指定用户，并且支持邮件、微信、钉钉、短信等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/wmkbtftifarc2annmuy7l4uq/20191127212159172.jpg">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/3yl9eecnch8ixt9xlrklfxg0/image_1gdadvi6o13quu41hrihrlbsil.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/y8bkh0hrdtvjpi16buelmb4x/image_1gdi135qetfd1noa1u9a3um15k19.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/fje92s7l6mdkkj6ud2efbuto/image_1gdi13lif17o56091tct1h3v1ckhm.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/b0oikip38kfqrcsd49n0dmlm/image_1gdi13qqiq681kile7pqv1ats13.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.404Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zabbix监控系统应用实践">
+<meta name="twitter:description" content="Zabbix监控系统应用实践1、zabbix简介1.1、zabbix介绍 Zabbix 是一种企业级的分布式开源监控解决方案。Zabbix 是集报警框架、数据收集、监控模板、集中式web展示的一款完整性监控平台，能够监控众多网络参数、服务器的健康度、应用软件的性能、服务可用性等。Zabbix有非常 灵活的通知机制，通过不同的动作和分组，可以将指定消息推送给指定用户，并且支持邮件、微信、钉钉、短信等">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/wmkbtftifarc2annmuy7l4uq/20191127212159172.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2024/03/02/Zabbix监控系统应用实践/">
+
+
+
+
+
+  <title>Zabbix监控系统应用实践 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2024/03/02/Zabbix监控系统应用实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Zabbix监控系统应用实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-03-02T16:00:00+08:00">
+                2024-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SkyWalking/" itemprop="url" rel="index">
+                    <span itemprop="name">SkyWalking</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2024/03/02/Zabbix监控系统应用实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2024/03/02/Zabbix监控系统应用实践/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Zabbix监控系统应用实践"><a href="#Zabbix监控系统应用实践" class="headerlink" title="Zabbix监控系统应用实践"></a>Zabbix监控系统应用实践</h1><h2 id="1、zabbix简介"><a href="#1、zabbix简介" class="headerlink" title="1、zabbix简介"></a>1、zabbix简介</h2><h3 id="1-1、zabbix介绍"><a href="#1-1、zabbix介绍" class="headerlink" title="1.1、zabbix介绍"></a>1.1、zabbix介绍</h3><blockquote>
+<p>Zabbix 是一种企业级的分布式开源监控解决方案。<br>Zabbix 是集报警框架、数据收集、监控模板、集中式web展示的一款完整性监控平台，能够监控众多网络参数、服务器的健康度、应用软件的性能、服务可用性等。Zabbix有非常 灵活的通知机制，通过不同的动作和分组，可以将指定消息推送给指定用户，并且支持邮件、微信、钉钉、短信等事件通知。并且Zabbix 基于存储的数据提供出色的报告和数据可视化。所有的 Zabbix 报告、统计信息和配置参数都可以通过基于 Web 的前端页面进行访问。<br>Zabbix 是免费开源的</p>
+</blockquote>
+<ul>
+<li>Zabbix分布式监控系统的优点如下：<ul>
+<li style="list-style: none"><input type="checkbox" checked> 支持自动发现服务器和网络设备；</li>
+<li style="list-style: none"><input type="checkbox" checked> 分布式的监控体系和集中式的WEB管理；</li>
+<li style="list-style: none"><input type="checkbox" checked> 支持主动监控和被动监控模式；</li>
+<li style="list-style: none"><input type="checkbox" checked> 服务器端支持多种操作系统：Linux, Solaris, HP-UX, AIX, FreeBSD, OpenBSD, MAC等；</li>
+<li style="list-style: none"><input type="checkbox" checked> Agent客户端支持多种操作系统：Linux, Solaris, HP-UX, AIX, FreeBSD,Windows等；</li>
+<li style="list-style: none"><input type="checkbox" checked> 基于SNMP、IPMI接口方式、Agent方式、Simple Check方式；</li>
+<li style="list-style: none"><input type="checkbox" checked> 安全的用户认证及权限配置；</li>
+<li style="list-style: none"><input type="checkbox" checked> 基于WEB的管理方法，支持自由的自定义事件和邮件、短信、微信、钉钉等通知；</li>
+<li style="list-style: none"><input type="checkbox" checked> 支持日志审计，资产管理等功能；</li>
+<li style="list-style: none"><input type="checkbox" checked> 提供200+的API接口，配合CMDB实现自动化运维整合。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2、zabbix概述"><a href="#1-2、zabbix概述" class="headerlink" title="1.2、zabbix概述"></a>1.2、zabbix概述</h3><blockquote>
+<p>Zabbix 由几个主要的功能组件组成，其职责如下所示。</p>
+</blockquote>
+<ul>
+<li><p>Server</p>
+<ul>
+<li><code>Zabbix server</code> 是 <code>Zabbix agent</code> 向其报告可用性、系统完整性信息和统计信息的核心组件。是存储所有配置信息、统计信息和操作信息的核心存储库。</li>
+</ul>
+</li>
+<li><p>数据库</p>
+<ul>
+<li>所有配置信息以及 Zabbix 采集到的数据都被存储在数据库中。zabbix支持的数据库有MySQL, PGSQL(postgreSQL)、Oracle、DB2、SQLite；</li>
+</ul>
+</li>
+<li><p>Web 界面</p>
+<ul>
+<li>zabbix的GUI接口，使用PHP语言编写，在分布式环境中，不需要和server端部署在同一节点；</li>
+</ul>
+</li>
+<li><p>Proxy</p>
+<ul>
+<li><code>Zabbix proxy</code> 可以替 <code>Zabbix server</code> 收集性能和可用性数据。<code>Zabbix proxy</code> 是 <code>Zabbix</code> 环境部署的可选部分；一般用于多分布式环境，监控多数据库中心的方案中所使用的组件。</li>
+</ul>
+</li>
+<li><p>Agent</p>
+<ul>
+<li>agentd需要安装到被监控的主机上，它负责定期收集各项数据，并发送到zabbix server端，zabbix server将数据存储到数据库中，zabbix web根据数据在前端进行展现和绘图。这里agentd收集数据分为主动和被动两种模式：</li>
+<li>主动：agent请求server获取主动的监控项列表，并主动将监控项内需要检测的数据提交给server/proxy</li>
+<li>被动：server向agent请求获取监控项的数据，agent返回数据。</li>
+</ul>
+</li>
+<li><p>监控数据流</p>
+<ul>
+<li>首先，为了创建一个采集数据的监控项，你就必须先创建主机。其次，必须有一个监控项来创建触发器。最后，你必须有一个触发器来创建一个动作，这几个点构成了一个完整的数据流。因此，如果你想要收到 <code>CPU load it too high on Server X</code> 的告警，你必须首先为 <code>Server X</code> 创建一个主机条目，其次创建一个用于监视其 CPU 的监控项，最后创建一个触发器，用来触发 <code>CPU is too high</code> 这个动作，并将其发送到指定的邮箱里。虽然这些步骤看起来很繁琐，但是使用模板的话，其实并不复杂。也正是由于这种设计，使得 Zabbix 的配置变得更加灵活易用。</li>
+</ul>
+</li>
+<li><p>架构图<br><img src="http://static.zybuluo.com/a807257775/wmkbtftifarc2annmuy7l4uq/20191127212159172.jpg" alt="20191127212159172.jpg-563.7kB"> </p>
+</li>
+</ul>
+<h3 id="1-3、zabbix特点"><a href="#1-3、zabbix特点" class="headerlink" title="1.3、zabbix特点"></a>1.3、zabbix特点</h3><ul>
+<li><p>Zabbix在2022年的多款监控软件排名第一<br><img src="http://static.zybuluo.com/a807257775/3yl9eecnch8ixt9xlrklfxg0/image_1gdadvi6o13quu41hrihrlbsil.png" alt="image_1gdadvi6o13quu41hrihrlbsil.png-126.7kB"></p>
+</li>
+<li><p>简单易用</p>
+<ul>
+<li>开箱部署，如使用docker与容器编排工具，可实现分钟级的快速部署；</li>
+<li>社区资源丰富，软件及手册已全面支持中文；</li>
+</ul>
+</li>
+<li>开源且免费</li>
+<li>适合中小企业使用的全栈监控平台<ul>
+<li>可用性监控（服务、端口、链路、联机状态等）</li>
+<li>性能监控（CPU、内存、网络带宽、磁盘IO等）</li>
+<li>日志监控（安全日志、系统日志、应用日志、审计日志等）</li>
+<li>自定义监控（Scripts脚本）</li>
+<li>WEB监控（WEB接口性能、返回状态码）</li>
+<li>应用中间件监控（NGX、ES、REDIS、MYSQL、RABITMQ、KAFKA、ZK等）</li>
+</ul>
+</li>
+<li>兼具监控的广度和深度<ul>
+<li>系统异构性（少则几种，多则几十种，比如需要监控硬件、存储、操作系统、中间件、数据库及应用等）</li>
+<li>平台多样性（比如我们有华为、戴尔、惠普、IBM 的硬件服务器或者交换机，同时也会有 Windows、Linux、Aix、ESXi等多种操作系统）</li>
+<li>运维复杂性（日常监控指标的精细化、平台架构的日常运维，包括系统异构性和平台的多样性均构成了运维的复杂性）</li>
+<li>综上，一个理想的监控平台理应支持基于各类系统，覆盖各类厂商和平台的监控，而经过这么多年的功能演变及用户口碑来看，zabbix在非容器环境下不管是监控深度和广度是目前最合适的监控平台。这也弥补了金融云在监控层面对于中间件、自定义指标、WEB监控相关功能的缺失；</li>
+</ul>
+</li>
+</ul>
+<h2 id="2、zabbix功能"><a href="#2、zabbix功能" class="headerlink" title="2、zabbix功能"></a>2、zabbix功能</h2><h3 id="2-1、数据采集"><a href="#2-1、数据采集" class="headerlink" title="2.1、数据采集"></a>2.1、数据采集</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 可用性和性能指标的数据采集；</li>
+<li style="list-style: none"><input type="checkbox" checked> 支持 SNMP（包括主动轮询和被动捕获）、IPMI、JMX、VMware 监控、Kubernets监控；</li>
+<li style="list-style: none"><input type="checkbox" checked> 自定义检查；</li>
+<li style="list-style: none"><input type="checkbox" checked> 按照自定义的时间间隔采集需要的数据；</li>
+<li style="list-style: none"><input type="checkbox" checked> 通过 Server/Proxy 和 Agents 来执行数据采集。</li>
+</ul>
+<h3 id="2-2、灵活的阈值定义"><a href="#2-2、灵活的阈值定义" class="headerlink" title="2.2、灵活的阈值定义"></a>2.2、灵活的阈值定义</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 将告警阈值称之为触发器，触发器从后端数据库获得参考值。</li>
+</ul>
+<h3 id="2-3、高度可配置化的告警"><a href="#2-3、高度可配置化的告警" class="headerlink" title="2.3、高度可配置化的告警"></a>2.3、高度可配置化的告警</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 可以根据递增计划、接收者、媒介类型自定义发送告警通知；</li>
+<li style="list-style: none"><input type="checkbox" checked> 使用宏变量可以使告警通知变得更加高效有益；</li>
+<li style="list-style: none"><input type="checkbox" checked> 自动动作包含远程命令。</li>
+</ul>
+<h3 id="2-4、实时图形"><a href="#2-4、实时图形" class="headerlink" title="2.4、实时图形"></a>2.4、实时图形</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 使用内置图形功能可实以将监控项绘制成图形。</li>
+</ul>
+<h3 id="2-5、Web-监控功能"><a href="#2-5、Web-监控功能" class="headerlink" title="2.5、Web 监控功能"></a>2.5、Web 监控功能</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> Zabbix 可以追踪模拟鼠标在 Web 网站上的点击操作，来检查 Web 网站的功能和响应时间。</li>
+</ul>
+<h3 id="2-6、丰富的可视化选项"><a href="#2-6、丰富的可视化选项" class="headerlink" title="2.6、丰富的可视化选项"></a>2.6、丰富的可视化选项</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 能够创建可以将多个监控项组合到单个视图中的自定义图形；</li>
+<li style="list-style: none"><input type="checkbox" checked> 网络拓扑图；</li>
+<li style="list-style: none"><input type="checkbox" checked> 以仪表盘样式展示自定义聚合图形和幻灯片演示；</li>
+<li style="list-style: none"><input type="checkbox" checked> 报表；</li>
+<li style="list-style: none"><input type="checkbox" checked> 监控资源的高层次（业务）视图。</li>
+</ul>
+<h3 id="2-7、配置简单"><a href="#2-7、配置简单" class="headerlink" title="2.7、配置简单"></a>2.7、配置简单</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 将被监控设备添加为主机；</li>
+<li style="list-style: none"><input type="checkbox" checked> 主机一旦添加到数据库中，就会采集主机数据用于监控；</li>
+<li style="list-style: none"><input type="checkbox" checked> 将模板用于监控设备。</li>
+</ul>
+<h3 id="2-8、套用模板"><a href="#2-8、套用模板" class="headerlink" title="2.8、套用模板"></a>2.8、套用模板</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 在模板中分组检查；</li>
+<li style="list-style: none"><input type="checkbox" checked> 模板可以关联其他模板，获得继承。</li>
+</ul>
+<h3 id="2-9、网络发现"><a href="#2-9、网络发现" class="headerlink" title="2.9、网络发现"></a>2.9、网络发现</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 自动发现网络设备；</li>
+<li style="list-style: none"><input type="checkbox" checked> Zabbix Agent 发现设备后自动注册；</li>
+<li style="list-style: none"><input type="checkbox" checked> 自动发现文件系统、网络接口和 SNMP OIDs 值。</li>
+</ul>
+<h3 id="2-10、Zabbix-API"><a href="#2-10、Zabbix-API" class="headerlink" title="2.10、Zabbix API"></a>2.10、Zabbix API</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> Zabbix API 为 Zabbix 提供可编程接口，用于批量操作、第三方软件集成的用途。</li>
+</ul>
+<h3 id="2-11、权限管理系统"><a href="#2-11、权限管理系统" class="headerlink" title="2.11、权限管理系统"></a>2.11、权限管理系统</h3><ul>
+<li style="list-style: none"><input type="checkbox" checked> 安全的用户身份验证；</li>
+<li style="list-style: none"><input type="checkbox" checked> 将特定用户限制于访问特定的视图。</li>
+</ul>
+<h2 id="3、zabbix实践应用"><a href="#3、zabbix实践应用" class="headerlink" title="3、zabbix实践应用"></a>3、zabbix实践应用</h2><h3 id="3-1、支付组"><a href="#3-1、支付组" class="headerlink" title="3.1、支付组"></a>3.1、支付组</h3><ul>
+<li>所实现的监控项<ul>
+<li>代付失败笔数监控</li>
+<li>有缺陷的成功笔数监控</li>
+<li>代付成功率监控</li>
+<li>支付下单笔数监控</li>
+<li>支付成功率监控</li>
+<li>代付下单笔数监控</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2、运维组"><a href="#3-2、运维组" class="headerlink" title="3.2、运维组"></a>3.2、运维组</h3><ul>
+<li>所实现的监控项<ul>
+<li>中间件的性能监控</li>
+<li>服务可用性监控</li>
+<li>数据库监控</li>
+<li>第三方网络性能监控</li>
+<li>进程掉线监控</li>
+<li>服务端口监控</li>
+<li>TCP连接数监控</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3、应用组"><a href="#3-3、应用组" class="headerlink" title="3.3、应用组"></a>3.3、应用组</h3><ul>
+<li>所实现的监控项<ul>
+<li>web接口监控</li>
+</ul>
+</li>
+</ul>
+<h2 id="4、WEB拓展"><a href="#4、WEB拓展" class="headerlink" title="4、WEB拓展"></a>4、WEB拓展</h2><h3 id="4-1、使用grafana进行web展示"><a href="#4-1、使用grafana进行web展示" class="headerlink" title="4.1、使用grafana进行web展示"></a>4.1、使用grafana进行web展示</h3><ul>
+<li>zabbix的UI个人觉得并不是太好看，网上也有很多人吐槽，如果我们用来做7*24小时的监控大屏，不太能满足需求，所以我们运维组这边又添加了一个开源的web展示工具。叫做grafana，目前正在将部分看板往这个工具迁移中。</li>
+<li>支付看板<br><img src="http://static.zybuluo.com/a807257775/y8bkh0hrdtvjpi16buelmb4x/image_1gdi135qetfd1noa1u9a3um15k19.png" alt="image_1gdi135qetfd1noa1u9a3um15k19.png-137.2kB"></li>
+<li>主机资源看板<br><img src="http://static.zybuluo.com/a807257775/fje92s7l6mdkkj6ud2efbuto/image_1gdi13lif17o56091tct1h3v1ckhm.png" alt="image_1gdi13lif17o56091tct1h3v1ckhm.png-504.6kB"></li>
+<li>主机组异常看板<br><img src="http://static.zybuluo.com/a807257775/b0oikip38kfqrcsd49n0dmlm/image_1gdi13qqiq681kile7pqv1ats13.png" alt="image_1gdi13qqiq681kile7pqv1ats13.png-196.7kB"></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2024/03/02/Zabbix监控系统应用实践/" title="Zabbix监控系统应用实践">2024/03/02/Zabbix监控系统应用实践/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SkyWalking/" rel="tag"><i class="fa fa-tag"></i> SkyWalking</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/11/30/ES7.14未经授权漏洞整改手册/" rel="next" title="ES7.14未经授权漏洞整改手册">
+                <i class="fa fa-chevron-left"></i> ES7.14未经授权漏洞整改手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2024/05/21/CICD自动化运维实践/" rel="prev" title="CI/CD自动化运维实践">
+                CI/CD自动化运维实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Zabbix监控系统应用实践"><span class="nav-number">1.</span> <span class="nav-text">Zabbix监控系统应用实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、zabbix简介"><span class="nav-number">1.1.</span> <span class="nav-text">1、zabbix简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、zabbix介绍"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、zabbix介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2、zabbix概述"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2、zabbix概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3、zabbix特点"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、zabbix特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、zabbix功能"><span class="nav-number">1.2.</span> <span class="nav-text">2、zabbix功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、数据采集"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、数据采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、灵活的阈值定义"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、灵活的阈值定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3、高度可配置化的告警"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、高度可配置化的告警</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4、实时图形"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4、实时图形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5、Web-监控功能"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.5、Web 监控功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6、丰富的可视化选项"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.6、丰富的可视化选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7、配置简单"><span class="nav-number">1.2.7.</span> <span class="nav-text">2.7、配置简单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8、套用模板"><span class="nav-number">1.2.8.</span> <span class="nav-text">2.8、套用模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9、网络发现"><span class="nav-number">1.2.9.</span> <span class="nav-text">2.9、网络发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10、Zabbix-API"><span class="nav-number">1.2.10.</span> <span class="nav-text">2.10、Zabbix API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11、权限管理系统"><span class="nav-number">1.2.11.</span> <span class="nav-text">2.11、权限管理系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、zabbix实践应用"><span class="nav-number">1.3.</span> <span class="nav-text">3、zabbix实践应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、支付组"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、支付组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、运维组"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、运维组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3、应用组"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3、应用组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、WEB拓展"><span class="nav-number">1.4.</span> <span class="nav-text">4、WEB拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1、使用grafana进行web展示"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1、使用grafana进行web展示</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

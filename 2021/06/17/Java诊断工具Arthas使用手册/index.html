@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Arthas,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Java诊断工具Arthas使用手册1、Arthas可以解决什么问题？ Arthas 是Alibaba开源的Java诊断工具，深受开发者喜爱。当你遇到以下类似问题而束手无策时，Arthas可以帮助你解决：  这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？ 我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？ 遇到问题无法在线上 debug，难道只能通过加">
+<meta name="keywords" content="Arthas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java诊断工具Arthas使用手册">
+<meta property="og:url" content="http://www.lisirlife.cn/2021/06/17/Java诊断工具Arthas使用手册/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Java诊断工具Arthas使用手册1、Arthas可以解决什么问题？ Arthas 是Alibaba开源的Java诊断工具，深受开发者喜爱。当你遇到以下类似问题而束手无策时，Arthas可以帮助你解决：  这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？ 我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？ 遇到问题无法在线上 debug，难道只能通过加">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/4y4fc03pk8mcnjsne7svh926/image_1f8bsjea11leu1p4mtq91f5e3g3p.png">
+<meta property="og:image" content="http://static.zybuluo.com/a807257775/tit0wjcvg0wfhckel1ifu1ka/image_1f8btis4v18kqljsfg41lc218ap16.png">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.389Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java诊断工具Arthas使用手册">
+<meta name="twitter:description" content="Java诊断工具Arthas使用手册1、Arthas可以解决什么问题？ Arthas 是Alibaba开源的Java诊断工具，深受开发者喜爱。当你遇到以下类似问题而束手无策时，Arthas可以帮助你解决：  这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？ 我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？ 遇到问题无法在线上 debug，难道只能通过加">
+<meta name="twitter:image" content="http://static.zybuluo.com/a807257775/4y4fc03pk8mcnjsne7svh926/image_1f8bsjea11leu1p4mtq91f5e3g3p.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2021/06/17/Java诊断工具Arthas使用手册/">
+
+
+
+
+
+  <title>Java诊断工具Arthas使用手册 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2021/06/17/Java诊断工具Arthas使用手册/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java诊断工具Arthas使用手册</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-17T15:15:00+08:00">
+                2021-06-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Arthas/" itemprop="url" rel="index">
+                    <span itemprop="name">Arthas</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/06/17/Java诊断工具Arthas使用手册/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/06/17/Java诊断工具Arthas使用手册/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Java诊断工具Arthas使用手册"><a href="#Java诊断工具Arthas使用手册" class="headerlink" title="Java诊断工具Arthas使用手册"></a>Java诊断工具Arthas使用手册</h1><h2 id="1、Arthas可以解决什么问题？"><a href="#1、Arthas可以解决什么问题？" class="headerlink" title="1、Arthas可以解决什么问题？"></a>1、Arthas可以解决什么问题？</h2><ul>
+<li><p>Arthas 是Alibaba开源的Java诊断工具，深受开发者喜爱。<br>当你遇到以下类似问题而束手无策时，Arthas可以帮助你解决：</p>
+<ol>
+<li>这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？</li>
+<li>我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？</li>
+<li>遇到问题无法在线上 debug，难道只能通过加日志再重新发布吗？</li>
+<li>线上遇到某个用户的数据处理有问题，但线上同样无法 debug，线下无法重现！</li>
+<li>是否有一个全局视角来查看系统的运行状况？</li>
+<li>有什么办法可以监控到JVM的实时运行状态？</li>
+<li>怎么快速定位应用的热点，生成火焰图？</li>
+<li>怎样直接从JVM内查找某个类的实例？</li>
+</ol>
+</li>
+<li><p><code>Arthas</code> 是阿里开源的 Java 诊断工具，深受开发者喜爱。在线排查问题，无需重启；动态跟踪 Java 代码；实时监控 JVM 状态。Arthas 支持 JDK 6+，支持 Linux/Mac/Windows，采用命令行交互模式，同时提供丰富的 Tab 自动补全功能，进一步方便进行问题的定位和诊断</p>
+</li>
+</ul>
+<h2 id="2、下载与安装Arthas"><a href="#2、下载与安装Arthas" class="headerlink" title="2、下载与安装Arthas"></a>2、下载与安装Arthas</h2><blockquote>
+<p>考虑后续生产是非互联网环境，所以采用全量包安装方法。本次使用arthas-bin.zip（3.5.1）版本进行部署实验，可前往Maven仓库或Github Releases下载，下载地址：<a href="https://github.com/alibaba/arthas/releases" target="_blank" rel="noopener">https://github.com/alibaba/arthas/releases</a></p>
+</blockquote>
+<h3 id="2-1、上传Arthas全量安装包至服务器"><a href="#2-1、上传Arthas全量安装包至服务器" class="headerlink" title="2.1、上传Arthas全量安装包至服务器"></a>2.1、上传Arthas全量安装包至服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#安装JDK1.8，添加当前用户的java环境变量</span><br><span class="line">[ccb-yth@APPSRV01 tools]$ cat ~/.bash_profile </span><br><span class="line">PATH=$PATH:$HOME/.local/bin:$HOME/bin</span><br><span class="line">JAVA_HOME=/home/ap/ccb-yth/java/jdk1.8.0_291</span><br><span class="line">export JAVA_HOME</span><br><span class="line">CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export CLASSPATH</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$JAVA_HOME/bin</span><br><span class="line">export PATH</span><br><span class="line"></span><br><span class="line">#验证JDK环境是否正常</span><br><span class="line">[ccb-yth@APPSRV01 tools]$ java -version</span><br><span class="line">java version &quot;1.8.0_291&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_291-b10)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.291-b10, mixed mode)</span><br><span class="line"></span><br><span class="line">#将arthas-bin.zip（3.5.1）解压到此目录</span><br><span class="line">[ccb-yth@APPSRV01 tools]$ pwd</span><br><span class="line">/home/ap/ccb-yth/tools</span><br><span class="line"></span><br><span class="line">#arthas-boot.jar为启动的监听jar包</span><br><span class="line">[ccb-yth@APPSRV01 tools]$ ll</span><br><span class="line">total 13492</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth     8470 Sep 27  2020 arthas-agent.jar</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth   141721 Sep 27  2020 arthas-boot.jar</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth   431033 Sep 27  2020 arthas-client.jar</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth 13143726 Sep 27  2020 arthas-core.jar</span><br><span class="line">drwxrwxr-x 2 ccb-yth ccb-yth        6 Jun 16 18:40 arthas-output</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth      403 Sep 27  2020 arthas.properties</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth     8988 Sep 27  2020 arthas-spy.jar</span><br><span class="line">-rwxrwxr-x 1 ccb-yth ccb-yth     3113 Sep 27  2020 as.bat</span><br><span class="line">-rwxrwxr-x 1 ccb-yth ccb-yth     7744 Sep 27  2020 as-service.bat</span><br><span class="line">-rwxr-xr-x 1 ccb-yth ccb-yth    32781 Sep 27  2020 as.sh</span><br><span class="line">drwxr-xr-x 2 ccb-yth ccb-yth      156 Sep 27  2020 async-profiler</span><br><span class="line">-rwxr-xr-x 1 ccb-yth ccb-yth      635 Sep 27  2020 install-local.sh</span><br><span class="line">drwxr-xr-x 2 ccb-yth ccb-yth      112 Sep 27  2020 lib</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth     2020 Sep 27  2020 logback.xml</span><br><span class="line">-rw-rw-r-- 1 ccb-yth ccb-yth     4506 Sep 27  2020 math-game.jar</span><br></pre></td></tr></table></figure>
+<h3 id="2-2、启动Arthas"><a href="#2-2、启动Arthas" class="headerlink" title="2.2、启动Arthas"></a>2.2、启动Arthas</h3><blockquote>
+<p>提示：根据官网建议，我们使用arthas-boot的方式进行启动，来监听java进程，启动arhas首先保证本机有一个正在运行的java进程，如果有多个，arthas会通过命令行交互的方式，让你来选择监听某个java进程；</p>
+</blockquote>
+<ul>
+<li><p>使用java -jar的方式启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打印帮助信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar arthas-boot.jar -h</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3、Arthas的基本使用方法"><a href="#3、Arthas的基本使用方法" class="headerlink" title="3、Arthas的基本使用方法"></a>3、Arthas的基本使用方法</h2><h3 id="3-1、启动测试程序math-game"><a href="#3-1、启动测试程序math-game" class="headerlink" title="3.1、启动测试程序math-game"></a>3.1、启动测试程序math-game</h3><blockquote>
+<p>math-game是一个简单的程序，每隔一秒生成一个随机数，再执行质因数分解，并打印出分解结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[ccb-yth@APPSRV01 tools]$ java -jar math-game.jar</span><br><span class="line">204915=3*5*19*719</span><br><span class="line">illegalArgumentCount:  1, number is: -121796, need &gt;= 2</span><br><span class="line">illegalArgumentCount:  2, number is: -166805, need &gt;= 2</span><br><span class="line">18271=11*11*151</span><br><span class="line">illegalArgumentCount:  3, number is: -126135, need &gt;= 2</span><br><span class="line">illegalArgumentCount:  4, number is: -85911, need &gt;= 2</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-2、启动arthas，attach到java进程"><a href="#3-2、启动arthas，attach到java进程" class="headerlink" title="3.2、启动arthas，attach到java进程"></a>3.2、启动arthas，attach到java进程</h3><ul>
+<li>在命令行下面执行<code>java -jar arthas-boot.jar</code>（使用和目标进程一致的用户启动，否则可能attach失败）</li>
+<li>如果<code>attach</code>不上目标进程，可以查看<code>~/logs/arthas/</code> 目录下的日志。</li>
+<li><p><code>java -jar arthas-boot.jar -h</code> 打印更多参数信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ccb-yth@APPSRV01 tools]$ java -jar arthas-boot.jar</span><br><span class="line">[INFO] arthas-boot version: 3.5.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择监听的java进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Found existing java process, please choose one and input the serial number of the process, eg : 1. Then hit ENTER.</span><br><span class="line">* [1]: 9462 math-game.jar</span><br><span class="line">  [2]: 10344 /home/ap/ccb-yth/apps/data-collector/data-collector.jar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>math-game进程是第1个，则输入1，再敲回车。Arthas会attach到目标进程上，并输出日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">[INFO] arthas home: /home/ap/ccb-yth/tools</span><br><span class="line">[INFO] Try to attach process 9462</span><br><span class="line">[INFO] Attach process 9462 success.</span><br><span class="line">[INFO] arthas-client connect 127.0.0.1 3658</span><br><span class="line">  ,---.  ,------. ,--------.,--.  ,--.  ,---.   ,---.                           </span><br><span class="line"> /  O  \ |  .--. &apos;&apos;--.  .--&apos;|  &apos;--&apos;  | /  O  \ &apos;   .-&apos;                          </span><br><span class="line">|  .-.  ||  &apos;--&apos;.&apos;   |  |   |  .--.  ||  .-.  |`.  `-.                          </span><br><span class="line">|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-&apos;    |                         </span><br><span class="line">`--&apos; `--&apos;`--&apos; &apos;--&apos;   `--&apos;   `--&apos;  `--&apos;`--&apos; `--&apos;`-----&apos;                          </span><br><span class="line">                                                                                </span><br><span class="line"></span><br><span class="line">wiki       https://arthas.aliyun.com/doc                                        </span><br><span class="line">tutorials  https://arthas.aliyun.com/doc/arthas-tutorials.html                  </span><br><span class="line">version    3.5.1                                                                </span><br><span class="line">main_class                                                                      </span><br><span class="line">pid        9462                                                                 </span><br><span class="line">time       2021-06-17 10:22:09  </span><br><span class="line">[arthas@9462]$</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-3、查看dashboard"><a href="#3-3、查看dashboard" class="headerlink" title="3.3、查看dashboard"></a>3.3、查看dashboard</h3><blockquote>
+<p>提示：命令行输入dashboard，按回车，会展示当前进程的信息，按ctrl+c可以中断执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#当arthas附加到进程后，命令行提示符会变为[arthas@xxx]$，表明附加成功</span><br><span class="line">[arthas@9462]$ dashboard</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="http://static.zybuluo.com/a807257775/4y4fc03pk8mcnjsne7svh926/image_1f8bsjea11leu1p4mtq91f5e3g3p.png" alt="image_1f8bsjea11leu1p4mtq91f5e3g3p.png-128.3kB"></p>
+<h3 id="3-4、通过thread命令来获取到math-game进程的Main-Class"><a href="#3-4、通过thread命令来获取到math-game进程的Main-Class" class="headerlink" title="3.4、通过thread命令来获取到math-game进程的Main Class"></a>3.4、通过thread命令来获取到math-game进程的Main Class</h3><blockquote>
+<p>thread 1会打印线程ID 1的栈，通常是main函数的线程。一目了然的了解系统的状态，哪些线程比较占cpu？他们到底在做什么？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[arthas@9462]$ thread 1 | grep &apos;main(&apos;</span><br><span class="line">    at demo.MathGame.main(MathGame.java:17)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="3-5、通过jad来反编译Main-Class"><a href="#3-5、通过jad来反编译Main-Class" class="headerlink" title="3.5、通过jad来反编译Main Class"></a>3.5、通过jad来反编译Main Class</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">[arthas@9462]$ jad demo.MathGame</span><br><span class="line"></span><br><span class="line">ClassLoader:                                                                                                                                                      </span><br><span class="line">+-sun.misc.Launcher$AppClassLoader@70dea4e                                                                                                                        </span><br><span class="line">  +-sun.misc.Launcher$ExtClassLoader@68833bb2                                                                                                                     </span><br><span class="line"></span><br><span class="line">Location:                                                                                                                                                         </span><br><span class="line">/home/ap/ccb-yth/tools/math-game.jar                                                                                                                              </span><br><span class="line"></span><br><span class="line">       /*</span><br><span class="line">        * Decompiled with CFR.</span><br><span class="line">        */</span><br><span class="line">       package demo;</span><br><span class="line">       </span><br><span class="line">       import java.util.ArrayList;</span><br><span class="line">       import java.util.List;</span><br><span class="line">       import java.util.Random;</span><br><span class="line">       import java.util.concurrent.TimeUnit;</span><br><span class="line">       </span><br><span class="line">       public class MathGame &#123;</span><br><span class="line">           private static Random random = new Random();</span><br><span class="line">           private int illegalArgumentCount = 0;</span><br><span class="line">       </span><br><span class="line">           public List&lt;Integer&gt; primeFactors(int number) &#123;</span><br><span class="line">/*44*/         if (number &lt; 2) &#123;</span><br><span class="line">/*45*/             ++this.illegalArgumentCount;</span><br><span class="line">                   throw new IllegalArgumentException(&quot;number is: &quot; + number + &quot;, need &gt;= 2&quot;);</span><br><span class="line">               &#125;</span><br><span class="line">               ArrayList&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();</span><br><span class="line">/*50*/         int i = 2;</span><br><span class="line">/*51*/         while (i &lt;= number) &#123;</span><br><span class="line">/*52*/             if (number % i == 0) &#123;</span><br><span class="line">/*53*/                 result.add(i);</span><br><span class="line">/*54*/                 number /= i;</span><br><span class="line">/*55*/                 i = 2;</span><br><span class="line">                       continue;</span><br><span class="line">                   &#125;</span><br><span class="line">/*57*/             ++i;</span><br><span class="line">               &#125;</span><br><span class="line">/*61*/         return result;</span><br><span class="line">           &#125;</span><br><span class="line">       </span><br><span class="line">           public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">               MathGame game = new MathGame();</span><br><span class="line">               while (true) &#123;</span><br><span class="line">/*16*/             game.run();</span><br><span class="line">/*17*/             TimeUnit.SECONDS.sleep(1L);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       </span><br><span class="line">           public void run() throws InterruptedException &#123;</span><br><span class="line">               try &#123;</span><br><span class="line">/*23*/             int number = random.nextInt() / 10000;</span><br><span class="line">/*24*/             List&lt;Integer&gt; primeFactors = this.primeFactors(number);</span><br><span class="line">/*25*/             MathGame.print(number, primeFactors);</span><br><span class="line">               &#125;</span><br><span class="line">               catch (Exception e) &#123;</span><br><span class="line">/*28*/             System.out.println(String.format(&quot;illegalArgumentCount:%3d, &quot;, this.illegalArgumentCount) + e.getMessage());</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       </span><br><span class="line">           public static void print(int number, List&lt;Integer&gt; primeFactors) &#123;</span><br><span class="line">               StringBuffer sb = new StringBuffer(number + &quot;=&quot;);</span><br><span class="line">/*34*/         for (int factor : primeFactors) &#123;</span><br><span class="line">/*35*/             sb.append(factor).append(&apos;*&apos;);</span><br><span class="line">               &#125;</span><br><span class="line">/*37*/         if (sb.charAt(sb.length() - 1) == &apos;*&apos;) &#123;</span><br><span class="line">/*38*/             sb.deleteCharAt(sb.length() - 1);</span><br><span class="line">               &#125;</span><br><span class="line">/*40*/         System.out.println(sb);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">Affect(row-cnt:1) cost in 745 ms.</span><br></pre></td></tr></table></figure>
+<h3 id="3-6、watch指令"><a href="#3-6、watch指令" class="headerlink" title="3.6、watch指令"></a>3.6、watch指令</h3><blockquote>
+<p>通过watch命令来查看demo.MathGame#primeFactors函数的返回值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[arthas@9462]$ watch demo.MathGame primeFactors returnObj</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 1 , method count: 1) cost in 111 ms, listenerId: 1</span><br><span class="line">method=demo.MathGame.primeFactors location=AtExit</span><br><span class="line">ts=2021-06-17 10:29:00; [cost=2.068011ms] result=@ArrayList[</span><br><span class="line">    @Integer[2],</span><br><span class="line">    @Integer[2],</span><br><span class="line">    @Integer[3],</span><br><span class="line">    @Integer[37],</span><br><span class="line">    @Integer[101],</span><br><span class="line">]</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<h3 id="3-7、生成进程火焰图"><a href="#3-7、生成进程火焰图" class="headerlink" title="3.7、生成进程火焰图"></a>3.7、生成进程火焰图</h3><blockquote>
+<p><code>profiler</code> 命令支持生成应用热点的火焰图。本质上是通过不断的采样，然后把收集到的采样结果生成火焰图。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[arthas@10344]$ profiler start</span><br><span class="line">Started [cpu] profiling</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[arthas@10344]$ profiler stop</span><br><span class="line">OK</span><br><span class="line">profiler output file: /home/ap/ccb-yth/apps/data-collector/arthas-output/20210617-103942.svg</span><br><span class="line">[arthas@10344]$ exit</span><br><span class="line">[ccb-yth@APPSRV01 tools]$ sz /home/ap/ccb-yth/apps/data-collector/arthas-output/20210617-103942.svg</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/a807257775/tit0wjcvg0wfhckel1ifu1ka/image_1f8btis4v18kqljsfg41lc218ap16.png" alt="image_1f8btis4v18kqljsfg41lc218ap16.png-111.4kB"></p>
+<h3 id="3-8、退出arthas"><a href="#3-8、退出arthas" class="headerlink" title="3.8、退出arthas"></a>3.8、退出arthas</h3><ul>
+<li><p>如果只是退出当前的连接，可以用quit或者exit命令。Attach到目标进程上的arthas还会继续运行，端口会保持开放，下次连接时可以直接连接上。</p>
+</li>
+<li><p>如果想完全退出arthas，可以执行stop命令。</p>
+</li>
+</ul>
+<h2 id="4、进阶使用"><a href="#4、进阶使用" class="headerlink" title="4、进阶使用"></a>4、进阶使用</h2><ul>
+<li><a href="https://arthas.aliyun.com/doc/advanced-use.html" target="_blank" rel="noopener">官方进阶使用手册</a></li>
+</ul>
+<h2 id="5、官方手册与下载地址"><a href="#5、官方手册与下载地址" class="headerlink" title="5、官方手册与下载地址"></a>5、官方手册与下载地址</h2><ul>
+<li><a href="https://github.com/alibaba/arthas/releases" target="_blank" rel="noopener">Arthas Github下载地址</a></li>
+<li><a href="https://arthas.aliyun.com/doc/" target="_blank" rel="noopener">官方Arthas 中文用户文档</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2021/06/17/Java诊断工具Arthas使用手册/" title="Java诊断工具Arthas使用手册">2021/06/17/Java诊断工具Arthas使用手册/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Arthas/" rel="tag"><i class="fa fa-tag"></i> Arthas</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/19/Nginx直播系统rtmp&ffmpeg/" rel="next" title="Nginx直播系统rtmp&ffmpeg">
+                <i class="fa fa-chevron-left"></i> Nginx直播系统rtmp&ffmpeg
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/01/05/基于openresty实现nginx+lua鉴权功能/" rel="prev" title="基于openresty实现nginx+lua鉴权功能">
+                基于openresty实现nginx+lua鉴权功能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java诊断工具Arthas使用手册"><span class="nav-number">1.</span> <span class="nav-text">Java诊断工具Arthas使用手册</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、Arthas可以解决什么问题？"><span class="nav-number">1.1.</span> <span class="nav-text">1、Arthas可以解决什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、下载与安装Arthas"><span class="nav-number">1.2.</span> <span class="nav-text">2、下载与安装Arthas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、上传Arthas全量安装包至服务器"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、上传Arthas全量安装包至服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2、启动Arthas"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、启动Arthas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、Arthas的基本使用方法"><span class="nav-number">1.3.</span> <span class="nav-text">3、Arthas的基本使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1、启动测试程序math-game"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、启动测试程序math-game</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2、启动arthas，attach到java进程"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、启动arthas，attach到java进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3、查看dashboard"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3、查看dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4、通过thread命令来获取到math-game进程的Main-Class"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4、通过thread命令来获取到math-game进程的Main Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5、通过jad来反编译Main-Class"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5、通过jad来反编译Main Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6、watch指令"><span class="nav-number">1.3.6.</span> <span class="nav-text">3.6、watch指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7、生成进程火焰图"><span class="nav-number">1.3.7.</span> <span class="nav-text">3.7、生成进程火焰图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8、退出arthas"><span class="nav-number">1.3.8.</span> <span class="nav-text">3.8、退出arthas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、进阶使用"><span class="nav-number">1.4.</span> <span class="nav-text">4、进阶使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、官方手册与下载地址"><span class="nav-number">1.5.</span> <span class="nav-text">5、官方手册与下载地址</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

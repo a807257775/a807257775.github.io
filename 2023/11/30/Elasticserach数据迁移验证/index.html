@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "60b9087d"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+
+  <meta name="keywords" content="ELK文档,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lisir's Blog" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Elasticserach数据迁移验证1、前置条件梳理 SAG网络已提前打通，宇信金融云的ES机器可以与阿里的ES机器互访  1.1、本地ES信息整理    ES版本 测试环境IP 待同步索引 主分片 副本分片 存储大小      elasticsearch-7.3.2 192.168.36.59/60/61 traderecord 5 1 3.6gb      ES配置文件：elasticsea">
+<meta name="keywords" content="ELK文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticserach数据迁移验证">
+<meta property="og:url" content="http://www.lisirlife.cn/2023/11/30/Elasticserach数据迁移验证/index.html">
+<meta property="og:site_name" content="Lisir&#39;s Blog">
+<meta property="og:description" content="Elasticserach数据迁移验证1、前置条件梳理 SAG网络已提前打通，宇信金融云的ES机器可以与阿里的ES机器互访  1.1、本地ES信息整理    ES版本 测试环境IP 待同步索引 主分片 副本分片 存储大小      elasticsearch-7.3.2 192.168.36.59/60/61 traderecord 5 1 3.6gb      ES配置文件：elasticsea">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-09-21T09:02:52.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticserach数据迁移验证">
+<meta name="twitter:description" content="Elasticserach数据迁移验证1、前置条件梳理 SAG网络已提前打通，宇信金融云的ES机器可以与阿里的ES机器互访  1.1、本地ES信息整理    ES版本 测试环境IP 待同步索引 主分片 副本分片 存储大小      elasticsearch-7.3.2 192.168.36.59/60/61 traderecord 5 1 3.6gb      ES配置文件：elasticsea">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.lisirlife.cn/2023/11/30/Elasticserach数据迁移验证/">
+
+
+
+
+
+  <title>Elasticserach数据迁移验证 | Lisir's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca5723821a737504f4e7cdf328dcfa66";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+<a href="https://github.com/a807257775/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lisir's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Do what you want to do！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.lisirlife.cn/2023/11/30/Elasticserach数据迁移验证/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LiGuanCheng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lisir's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Elasticserach数据迁移验证</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-11-30T12:30:00+08:00">
+                2023-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ELK文档/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2023/11/30/Elasticserach数据迁移验证/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2023/11/30/Elasticserach数据迁移验证/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Elasticserach数据迁移验证"><a href="#Elasticserach数据迁移验证" class="headerlink" title="Elasticserach数据迁移验证"></a>Elasticserach数据迁移验证</h1><h2 id="1、前置条件梳理"><a href="#1、前置条件梳理" class="headerlink" title="1、前置条件梳理"></a>1、前置条件梳理</h2><blockquote>
+<p>SAG网络已提前打通，宇信金融云的ES机器可以与阿里的ES机器互访</p>
+</blockquote>
+<h3 id="1-1、本地ES信息整理"><a href="#1-1、本地ES信息整理" class="headerlink" title="1.1、本地ES信息整理"></a>1.1、本地ES信息整理</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>ES版本</th>
+<th>测试环境IP</th>
+<th>待同步索引</th>
+<th>主分片</th>
+<th>副本分片</th>
+<th>存储大小 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elasticsearch-7.3.2</td>
+<td>192.168.36.59/60/61</td>
+<td>traderecord</td>
+<td>5</td>
+<td>1</td>
+<td>3.6gb </td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ES配置文件：elasticsearch.yml（node-1/2/3）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">network.host: 0.0.0.0</span><br><span class="line">http.port: 9200</span><br><span class="line">bootstrap.memory_lock: false</span><br><span class="line">bootstrap.system_call_filter: false</span><br><span class="line">path.data: /opt/test/data</span><br><span class="line">path.logs: /opt/test/logs</span><br><span class="line">node.max_local_storage_nodes: 1</span><br><span class="line">#discovery.zen.ping.unicast.hosts: [&quot;127.0.0.1&quot;]</span><br><span class="line">cluster.initial_master_nodes: [&quot;node-1&quot;]</span><br><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br><span class="line">cluster.name: yusys-test</span><br><span class="line">node.name: node-1</span><br><span class="line">node.master: true</span><br><span class="line">node.data: true</span><br><span class="line">discovery.zen.ping.unicast.hosts: [&quot;192.168.36.59&quot;, &quot;192.168.36.60&quot;, &quot;192.168.36.61&quot;]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="1-2、阿里云ES信息整理"><a href="#1-2、阿里云ES信息整理" class="headerlink" title="1.2、阿里云ES信息整理"></a>1.2、阿里云ES信息整理</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>ES版本</th>
+<th>测试环境IP</th>
+<th>待同步索引</th>
+<th>主分片</th>
+<th>副本分片</th>
+<th>存储大小 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>elasticsearch-7.3.2</td>
+<td>10.60.2.31(外)</td>
+<td>traderecord</td>
+<td>5</td>
+<td>1</td>
+<td>3.6gb </td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-3、logstash的配置与使用"><a href="#1-3、logstash的配置与使用" class="headerlink" title="1.3、logstash的配置与使用"></a>1.3、logstash的配置与使用</h3><blockquote>
+<p>logstash会占用部分资源，建议在阿里云环境上部署logstash服务；</p>
+</blockquote>
+<h4 id="1-3-1、安装并创建所需目录"><a href="#1-3-1、安装并创建所需目录" class="headerlink" title="1.3.1、安装并创建所需目录"></a>1.3.1、安装并创建所需目录</h4><ul>
+<li>下载logstash，需根据es版本下载对应的logstash<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su - sspusr</span><br><span class="line">wget https://artifacts.elastic.co/downloads/logstash/logstash-7.3.2.tar.gz</span><br><span class="line">tar xzvf logstash-7.3.2.tar.gz</span><br><span class="line">cd /home/sspusr/logstash-7.3.2</span><br><span class="line">mkdir -pv &#123;logs,data&#125; config/conf.d</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="1-3-3、创建piplines文件"><a href="#1-3-3、创建piplines文件" class="headerlink" title="1.3.3、创建piplines文件"></a>1.3.3、创建piplines文件</h4><ul>
+<li>vim /home/sspusr/logstash-7.3.2/config/conf.d/inyusyses_outalies.conf <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">input&#123;</span><br><span class="line">    elasticsearch&#123;</span><br><span class="line">        # 源端ES地址。</span><br><span class="line">        hosts =&gt;  [&quot;http://192.168.36.59:9200&quot;]</span><br><span class="line">        # 安全集群配置登录用户名密码。</span><br><span class="line">        #user =&gt; &quot;xxxxxx&quot;</span><br><span class="line">        #password =&gt; &quot;xxxxxx&quot;</span><br><span class="line">        # 需要迁移的索引列表，多个索引以英文以逗号（,）分隔。</span><br><span class="line">        index =&gt; &quot;traderecord_202203&quot;</span><br><span class="line">        # 以下三项保持默认即可，包含线程数和迁移数据大小和Logstash JVM配置相关。</span><br><span class="line">        #docinfo=&gt;true</span><br><span class="line">        #slices =&gt; 5</span><br><span class="line">        #size =&gt; 5000</span><br><span class="line">        # 定时任务，以下配置表示每分钟执行一次</span><br><span class="line">        schedule =&gt; &quot;* * * * *&quot;</span><br><span class="line">        scroll =&gt; &quot;5m&quot;</span><br><span class="line">        docinfo=&gt;true</span><br><span class="line">        size =&gt; 5000</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  # 去掉一些Logstash自己加的字段。</span><br><span class="line">  mutate &#123;</span><br><span class="line">    remove_field =&gt; [&quot;@timestamp&quot;, &quot;@version&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output&#123;</span><br><span class="line">    elasticsearch&#123;</span><br><span class="line">        # 目标端ES地址，可在阿里云Elasticsearch实例的基本信息页面获取。</span><br><span class="line">        hosts =&gt; [&quot;http://10.60.2.31:9200&quot;]</span><br><span class="line">        # 安全集群配置登录用户名密码。</span><br><span class="line">        #user =&gt; &quot;elastic&quot;</span><br><span class="line">        #password =&gt; &quot;xxxxxx&quot;</span><br><span class="line">        # 目标端索引名称，以下配置表示索引与源端保持一致。</span><br><span class="line">        index =&gt; &quot;%&#123;[@metadata][_index]&#125;&quot;</span><br><span class="line">        # 目标端索引type，以下配置表示索引类型与源端保持一致。</span><br><span class="line">        document_type =&gt; &quot;%&#123;[@metadata][_type]&#125;&quot;</span><br><span class="line">        # 目标端数据的id，如果不需要保留原id，可以删除以下这行，删除后性能会更好。</span><br><span class="line">        document_id =&gt; &quot;%&#123;[@metadata][_id]&#125;&quot;</span><br><span class="line">        ilm_enabled =&gt; false</span><br><span class="line">        manage_template =&gt; false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="1-3-4、修改logstash-yml配置文件"><a href="#1-3-4、修改logstash-yml配置文件" class="headerlink" title="1.3.4、修改logstash.yml配置文件"></a>1.3.4、修改logstash.yml配置文件</h4><ul>
+<li>vim /home/sspusr/logstash-7.3.2/config/logstash.yml<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path.data: /home/sspusr/logstash-7.3.2/data</span><br><span class="line">path.logs: /home/sspusr/logstash-7.3.2/logs</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="1-4、迁移索引元数据（设置和映射）"><a href="#1-4、迁移索引元数据（设置和映射）" class="headerlink" title="1.4、迁移索引元数据（设置和映射）"></a>1.4、迁移索引元数据（设置和映射）</h3><ul>
+<li>在进行数据迁移时，Logstash会帮助您自动创建索引，但是自动创建的索引可能与您待迁移的索引存在差异，导致迁移前后数据的格式不一致。</li>
+</ul>
+<h4 id="1-4-1、创建indiceCreate-py迁移脚本"><a href="#1-4-1、创建indiceCreate-py迁移脚本" class="headerlink" title="1.4.1、创建indiceCreate.py迁移脚本"></a>1.4.1、创建indiceCreate.py迁移脚本</h4><blockquote>
+<p>提示：脚本默认是将源ES的所有索引进行迁移，如迁移指定索引需改造脚本</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## 分片数默认和源集群索引保持一致，可根据生产实际节点数修改数值。</span><br><span class="line">#number_of_shards = 6</span><br><span class="line">number_of_shards = settingsDict[index][&quot;settings&quot;][&quot;index&quot;][&quot;number_of_shards&quot;]</span><br><span class="line"></span><br><span class="line">## 副本数默认为0，可根据生产实际节点数修改数值。</span><br><span class="line">#number_of_replicas = 1</span><br><span class="line">number_of_replicas = DEFAULT_REPLICAS</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">vim indiceCreate.py</span><br><span class="line">#!/usr/bin/python</span><br><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line"># 文件名：indiceCreate.py</span><br><span class="line">import sys</span><br><span class="line">import base64</span><br><span class="line">import time</span><br><span class="line">import httplib</span><br><span class="line">import json</span><br><span class="line">## 源集群host。</span><br><span class="line">oldClusterHost = &quot;192.168.36.59:9200&quot;</span><br><span class="line">## 源集群用户名，可为空。</span><br><span class="line">oldClusterUserName = &quot;&quot;</span><br><span class="line">## 源集群密码，可为空。</span><br><span class="line">oldClusterPassword = &quot;&quot;</span><br><span class="line">## 目标集群host，可在阿里云Elasticsearch实例的基本信息页面获取。</span><br><span class="line">newClusterHost = &quot;10.60.2.31:9200&quot;</span><br><span class="line">## 目标集群用户名。</span><br><span class="line">newClusterUser = &quot;&quot;</span><br><span class="line">## 目标集群密码。</span><br><span class="line">newClusterPassword = &quot;&quot;</span><br><span class="line">DEFAULT_REPLICAS = 0</span><br><span class="line">def httpRequest(method, host, endpoint, params=&quot;&quot;, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    conn = httplib.HTTPConnection(host)</span><br><span class="line">    headers = &#123;&#125;</span><br><span class="line">    if (username != &quot;&quot;) :</span><br><span class="line">        &apos;Hello &#123;name&#125;, your age is &#123;age&#125; !&apos;.format(name = &apos;Tom&apos;, age = &apos;20&apos;)</span><br><span class="line">        base64string = base64.encodestring(&apos;&#123;username&#125;:&#123;password&#125;&apos;.format(username = username, password = password)).replace(&apos;\n&apos;, &apos;&apos;)</span><br><span class="line">        headers[&quot;Authorization&quot;] = &quot;Basic %s&quot; % base64string;</span><br><span class="line">    if &quot;GET&quot; == method:</span><br><span class="line">        headers[&quot;Content-Type&quot;] = &quot;application/x-www-form-urlencoded&quot;</span><br><span class="line">        conn.request(method=method, url=endpoint, headers=headers)</span><br><span class="line">    else :</span><br><span class="line">        headers[&quot;Content-Type&quot;] = &quot;application/json&quot;</span><br><span class="line">        conn.request(method=method, url=endpoint, body=params, headers=headers)</span><br><span class="line">    response = conn.getresponse()</span><br><span class="line">    res = response.read()</span><br><span class="line">    return res</span><br><span class="line">def httpGet(host, endpoint, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    return httpRequest(&quot;GET&quot;, host, endpoint, &quot;&quot;, username, password)</span><br><span class="line">def httpPost(host, endpoint, params, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    return httpRequest(&quot;POST&quot;, host, endpoint, params, username, password)</span><br><span class="line">def httpPut(host, endpoint, params, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    return httpRequest(&quot;PUT&quot;, host, endpoint, params, username, password)</span><br><span class="line">def getIndices(host, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    endpoint = &quot;/_cat/indices&quot;</span><br><span class="line">    indicesResult = httpGet(oldClusterHost, endpoint, oldClusterUserName, oldClusterPassword)</span><br><span class="line">    indicesList = indicesResult.split(&quot;\n&quot;)</span><br><span class="line">    indexList = []</span><br><span class="line">    for indices in indicesList:</span><br><span class="line">        if (indices.find(&quot;open&quot;) &gt; 0):</span><br><span class="line">            indexList.append(indices.split()[2])</span><br><span class="line">    return indexList</span><br><span class="line">def getSettings(index, host, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    endpoint = &quot;/&quot; + index + &quot;/_settings&quot;</span><br><span class="line">    indexSettings = httpGet(host, endpoint, username, password)</span><br><span class="line">    print (index + &quot;  原始settings如下：\n&quot; + indexSettings)</span><br><span class="line">    settingsDict = json.loads(indexSettings)</span><br><span class="line">    ## 分片数默认和源集群索引保持一致。</span><br><span class="line">    number_of_shards = settingsDict[index][&quot;settings&quot;][&quot;index&quot;][&quot;number_of_shards&quot;]</span><br><span class="line">    ## 副本数默认为0。</span><br><span class="line">    number_of_replicas = DEFAULT_REPLICAS</span><br><span class="line">    newSetting = &quot;\&quot;settings\&quot;: &#123;\&quot;number_of_shards\&quot;: %s, \&quot;number_of_replicas\&quot;: %s&#125;&quot; % (number_of_shards, number_of_replicas)</span><br><span class="line">    return newSetting</span><br><span class="line">def getMapping(index, host, username=&quot;&quot;, password=&quot;&quot;):</span><br><span class="line">    endpoint = &quot;/&quot; + index + &quot;/_mapping&quot;</span><br><span class="line">    indexMapping = httpGet(host, endpoint, username, password)</span><br><span class="line">    print (index + &quot; 原始mapping如下：\n&quot; + indexMapping)</span><br><span class="line">    mappingDict = json.loads(indexMapping)</span><br><span class="line">    mappings = json.dumps(mappingDict[index][&quot;mappings&quot;])</span><br><span class="line">    newMapping = &quot;\&quot;mappings\&quot; : &quot; + mappings</span><br><span class="line">    return newMapping</span><br><span class="line">def createIndexStatement(oldIndexName):</span><br><span class="line">    settingStr = getSettings(oldIndexName, oldClusterHost, oldClusterUserName, oldClusterPassword)</span><br><span class="line">    mappingStr = getMapping(oldIndexName, oldClusterHost, oldClusterUserName, oldClusterPassword)</span><br><span class="line">    createstatement = &quot;&#123;\n&quot; + str(settingStr) + &quot;,\n&quot; + str(mappingStr) + &quot;\n&#125;&quot;</span><br><span class="line">    return createstatement</span><br><span class="line">def createIndex(oldIndexName, newIndexName=&quot;&quot;):</span><br><span class="line">    if (newIndexName == &quot;&quot;) :</span><br><span class="line">        newIndexName = oldIndexName</span><br><span class="line">    createstatement = createIndexStatement(oldIndexName)</span><br><span class="line">    print (&quot;新索引 &quot; + newIndexName + &quot; 的setting和mapping如下：\n&quot; + createstatement)</span><br><span class="line">    endpoint = &quot;/&quot; + newIndexName</span><br><span class="line">    createResult = httpPut(newClusterHost, endpoint, createstatement, newClusterUser, newClusterPassword)</span><br><span class="line">    print (&quot;新索引 &quot; + newIndexName + &quot; 创建结果：&quot; + createResult)</span><br><span class="line">## main</span><br><span class="line">#indexList = getIndices(oldClusterHost, oldClusterUserName, oldClusterPassword)</span><br><span class="line">systemIndex = []</span><br><span class="line">indexneed = [&apos;traderecord&apos;]</span><br><span class="line">#print(indexList)</span><br><span class="line">#print(systemIndex)</span><br><span class="line">for index in indexneed:</span><br><span class="line">    if (index.startswith(&quot;.&quot;)):</span><br><span class="line">        systemIndex.append(index)</span><br><span class="line">    else :</span><br><span class="line">        createIndex(index, index)</span><br><span class="line">if (len(systemIndex) &gt; 0) :</span><br><span class="line">    for index in systemIndex:</span><br><span class="line">        print (index + &quot; 或许是系统索引，不会重新创建，如有需要，请单独处理～&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-2、执行Python脚本，创建目标索引"><a href="#1-4-2、执行Python脚本，创建目标索引" class="headerlink" title="1.4.2、执行Python脚本，创建目标索引"></a>1.4.2、执行Python脚本，创建目标索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/python indiceCreate.py</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-3、查看目标ES的索引是否创建"><a href="#1-4-3、查看目标ES的索引是否创建" class="headerlink" title="1.4.3、查看目标ES的索引是否创建"></a>1.4.3、查看目标ES的索引是否创建</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://10.60.2.31:9200/traderecord/_mapping?pretty</span><br></pre></td></tr></table></figure>
+<h2 id="2、启动logstash服务"><a href="#2、启动logstash服务" class="headerlink" title="2、启动logstash服务"></a>2、启动logstash服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#启动命令</span><br><span class="line">nohup /home/sspusr/logstash-7.3.2/bin/logstash &amp;</span><br><span class="line">#日志目录</span><br><span class="line">/home/sspusr/logstash-7.3.2/logs/*</span><br></pre></td></tr></table></figure>
+<h3 id="2-1、查看数据迁移结果"><a href="#2-1、查看数据迁移结果" class="headerlink" title="2.1、查看数据迁移结果"></a>2.1、查看数据迁移结果</h3><h2 id="3、注意事项"><a href="#3、注意事项" class="headerlink" title="3、注意事项"></a>3、注意事项</h2><ol>
+<li>趣街所使用的ES索引中，所有跟时间相关的字段，均为（type:text）类型，这就导致了阿里提供的logstash增量迁移方法，无法根据时间范围查询数据，需要有type:date的时间字段才可以进行范围定时抽取数据；</li>
+<li>对logstash的全量pipline配置，进行调整，将增量中提到的定时任务添加到全量配置里，实现每分钟实时增量同步，logstash会记录checkpoint，不会出现重复数据；</li>
+<li>索引的mapping及setting使用阿里的python脚本进行同步，目前已对脚本做了适配改造，支持同步指定索引</li>
+<li>阿里官方迁移手册：<a href="https://help.aliyun.com/document_detail/418418.html" target="_blank" rel="noopener">通过Logstash将自建Elasticsearch数据全量或增量迁移至阿里云</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+	</div>
+	
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="LiGuanCheng wechat" style="width: 200px; max-width: 100%;">
+    <div>如有问题，请与我微信交流或通过右下角“daovoice”与我联系~。</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>请我喝一杯咖啡~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="LiGuanCheng 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="LiGuanCheng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+    <div>    
+       
+       
+      <ul class="post-copyright">
+        <li class="post-copyright-author">
+            <strong>本文作者：</strong>LiGuanCheng
+        </li>
+        <li class="post-copyright-link">
+          <strong>本文链接：</strong>
+          <a href="/2023/11/30/Elasticserach数据迁移验证/" title="Elasticserach数据迁移验证">2023/11/30/Elasticserach数据迁移验证/</a>
+        </li>
+        <li class="post-copyright-license">
+          <strong>版权： </strong>
+          本博客文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
+      
+      </div>
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ELK文档/" rel="tag"><i class="fa fa-tag"></i> ELK文档</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/09/30/基于Logstash的Elasticsearch数据迁移方案/" rel="next" title="基于Logstash的Elasticsearch数据迁移方案">
+                <i class="fa fa-chevron-left"></i> 基于Logstash的Elasticsearch数据迁移方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/11/30/ES7.14未经授权漏洞整改手册/" rel="prev" title="ES7.14未经授权漏洞整改手册">
+                ES7.14未经授权漏洞整改手册 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/16573001?s=400&u=3593be79dbb80f0e88e42fe308aa00083cc52aa9&v=4" alt="LiGuanCheng">
+            
+              <p class="site-author-name" itemprop="name">LiGuanCheng</p>
+              <p class="site-description motion-element" itemprop="description">做自己想做的事，爱自己所爱的人。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/a807257775" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:807257775@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/u/2478378940" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/a807257775" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Elasticserach数据迁移验证"><span class="nav-number">1.</span> <span class="nav-text">Elasticserach数据迁移验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、前置条件梳理"><span class="nav-number">1.1.</span> <span class="nav-text">1、前置条件梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1、本地ES信息整理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、本地ES信息整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2、阿里云ES信息整理"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2、阿里云ES信息整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3、logstash的配置与使用"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、logstash的配置与使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1、安装并创建所需目录"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.3.1、安装并创建所需目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3、创建piplines文件"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">1.3.3、创建piplines文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4、修改logstash-yml配置文件"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">1.3.4、修改logstash.yml配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4、迁移索引元数据（设置和映射）"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4、迁移索引元数据（设置和映射）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1、创建indiceCreate-py迁移脚本"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.4.1、创建indiceCreate.py迁移脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2、执行Python脚本，创建目标索引"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">1.4.2、执行Python脚本，创建目标索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3、查看目标ES的索引是否创建"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">1.4.3、查看目标ES的索引是否创建</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、启动logstash服务"><span class="nav-number">1.2.</span> <span class="nav-text">2、启动logstash服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1、查看数据迁移结果"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、查看数据迁移结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、注意事项"><span class="nav-number">1.3.</span> <span class="nav-text">3、注意事项</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LiGuanCheng</span>
+
+<!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">99.3k</span>
+  
+-->  
+</div>
+
+
+  <div class="powered-by"> lisir's blog</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">版权声明 &mdash;  李sir</div>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'QXjuPkLfyo6SsBQ2Di7hozfX-gzGzoHsz',
+        appKey: 'R2yFEGgPkmA4u2T8dbgNuAgw',
+        placeholder: '评价一下吧，写的怎么样~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
